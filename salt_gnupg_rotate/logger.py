@@ -54,9 +54,11 @@ def create_logger(
         )
         logger.addHandler(syslog_handler)
         logger.addHandler(
-            rich.logging.RichHandler(rich_tracebacks=True, console=CONSOLE)
+            rich.logging.RichHandler(rich_tracebacks=True, console=CONSOLE, show_path=False)
         )
 
     logger.setLevel(log_level or DEFAULTS.get("log_level", None) or "NOTSET")
 
     return logger
+
+LOGGER = create_logger()

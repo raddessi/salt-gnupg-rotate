@@ -20,6 +20,7 @@ import click
 from salt_gnupg_rotate import __version__
 from salt_gnupg_rotate.config import (
     APP_NAME,
+    DEFAULTS,
 )
 from salt_gnupg_rotate.main import main
 from typing import (
@@ -40,6 +41,12 @@ from typing import (
     show_default=True,
 )
 @click.option(
+    "--dir",
+    required=True,
+    type=click.STRING,
+    show_default=True,
+)
+@click.option(
     "-l",
     "--log-level",
     default="DEBUG",
@@ -52,6 +59,7 @@ from typing import (
 def cli(
     required_config_key: Union[str, int, bool, None],
     optional_config_key: Union[str, int, bool, None],
+    dir: str,
     log_level: Union[str, int, None]
 ) -> int:
     """Easily rotate gnupg encryption keys.
@@ -68,6 +76,7 @@ def cli(
     main(
         required_config_key=required_config_key,
         optional_config_key=optional_config_key,
+        dirpath=dir,
         log_level=log_level.upper() if isinstance(log_level, str) else log_level,
     )
 

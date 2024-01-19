@@ -12,7 +12,7 @@ import rich.traceback
 from salt_gnupg_rotate.config import (
     DEFAULTS,
 )
-from salt_gnupg_rotate.logger import create_logger
+from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.rotate import process_directory
 
 rich.pretty.install()
@@ -22,11 +22,11 @@ rich.traceback.install()
 
 def main(
     required_config_key: Union[int, str, None, bool],
+    dirpath: str,
     optional_config_key: Union[int, str, None, bool] = DEFAULTS.get(
         "optional_config_key", None
     ),
-    dirpath: str = DEFAULTS.get("dirpath"),
-    log_level: Union[int, str, None, bool] = DEFAULTS.get("log_level", None),
+    log_level: Union[int, str, None, bool] = DEFAULTS["log_level"],
 ) -> int:
     """Main entrypoint.
 
@@ -39,25 +39,27 @@ def main(
         int: An exit code
 
     """
-    logger = create_logger(log_level=log_level)
+    logger = LOGGER
+    LOGGER.setLevel(log_level)
 
     retcode = 0
-    logger.debug("starting up")
+    LOGGER.debug("starting up")
     # perform any required startup actions here
+    import os
+    dirpath = os.path.realpath(dirpath)
+
+    LOGGER.debug("started OK :thumbsup:", extra={"markup": True})
+    LOGGER.debug("required_config_key: %s", required_config_key)
+    LOGGER.debug("dirpath=%s", dirpath)
+    LOGGER.debug("log_level=%s", log_level)
+
     # directory = './pillar'
     new_key_id = 'salt-master'
     import gnupg
-    import os
     gpg = gnupg.GPG(homedir=os.path.expanduser("~/.gnupg"))
-    
     process_directory(dirpath, gpg, new_key_id)
 
 
-    logger.debug("started OK :thumbsup:", extra={"markup": True})
-    logger.debug("required_config_key: %s", required_config_key)
-    logger.debug("optional_config_key: %s", optional_config_key)
-
-
-    logger.debug("exiting")
+    LOGGER.debug("exiting")
 
     return retcode
