@@ -8,6 +8,7 @@ import rich.traceback
 from rich import print  # pylint: disable=redefined-builtin
 
 from salt_gnupg_rotate.config import CONSOLE, DEFAULTS
+from salt_gnupg_rotate.rotate import process_directory
 
 rich.pretty.install()
 rich.traceback.install()
@@ -18,6 +19,7 @@ def main(
     optional_config_key: Union[int, str, None, bool] = DEFAULTS.get(
         "optional_config_key", None
     ),
+    dirpath: str = DEFAULTS.get("dirpath"),
 ) -> int:
     """Main entrypoint.
 
@@ -29,16 +31,23 @@ def main(
         int: An exit code
 
     """
-
     retcode = 0
+
     print("[cyan]starting up")
-    # perform any required startup actions here
 
-    print("running!")
-    CONSOLE.rule("[bold cyan]doing something!")
-    print(f"required_config_key: {required_config_key}")
-    print(f"optional_config_key: {optional_config_key}")
+    # directory = './pillar'
+    new_key_id = 'salt-master'
+    import gnupg
+    import os
+    gpg = gnupg.GPG(homedir=os.path.expanduser("~/.gnupg"))
+    
+    process_directory(dirpath, gpg, new_key_id)
 
-    print("[bold green]exiting")
+    # print("running!")
+    # CONSOLE.rule("[bold cyan]doing something!")
+    # print(f"required_config_key: {required_config_key}")
+    # print(f"optional_config_key: {optional_config_key}")
+
+    # print("[bold green]exiting")
 
     return retcode
