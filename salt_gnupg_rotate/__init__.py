@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """salt-gnupg-rotate package.
 
 Easily rotate gnupg encryption keys

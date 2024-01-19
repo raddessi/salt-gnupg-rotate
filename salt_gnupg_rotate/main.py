@@ -1,17 +1,23 @@
+# -*- coding: utf-8 -*-
 """Main code."""
-from typing import Union
+from typing import (
+    Union,
+)
 
 # pylint: disable=import-error
 import rich
 import rich.pretty
 import rich.traceback
-from rich import print  # pylint: disable=redefined-builtin
 
-from salt_gnupg_rotate.config import CONSOLE, DEFAULTS
+from salt_gnupg_rotate.config import (
+    DEFAULTS,
+)
+from salt_gnupg_rotate.logger import create_logger
 from salt_gnupg_rotate.rotate import process_directory
 
 rich.pretty.install()
 rich.traceback.install()
+
 
 
 def main(
@@ -20,21 +26,24 @@ def main(
         "optional_config_key", None
     ),
     dirpath: str = DEFAULTS.get("dirpath"),
+    log_level: Union[int, str, None, bool] = DEFAULTS.get("log_level", None),
 ) -> int:
     """Main entrypoint.
 
     Args:
         required_config_key: A key that is required but has no default value
         optional_config_key: A key that is required and has a default value
+        log_level: The logging level name or integer to use.
 
     Returns:
         int: An exit code
 
     """
+    logger = create_logger(log_level=log_level)
+
     retcode = 0
-
-    print("[cyan]starting up")
-
+    logger.debug("starting up")
+    # perform any required startup actions here
     # directory = './pillar'
     new_key_id = 'salt-master'
     import gnupg
@@ -43,11 +52,12 @@ def main(
     
     process_directory(dirpath, gpg, new_key_id)
 
-    # print("running!")
-    # CONSOLE.rule("[bold cyan]doing something!")
-    # print(f"required_config_key: {required_config_key}")
-    # print(f"optional_config_key: {optional_config_key}")
 
-    # print("[bold green]exiting")
+    logger.debug("started OK :thumbsup:", extra={"markup": True})
+    logger.debug("required_config_key: %s", required_config_key)
+    logger.debug("optional_config_key: %s", optional_config_key)
+
+
+    logger.debug("exiting")
 
     return retcode

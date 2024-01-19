@@ -36,10 +36,8 @@ Write any steps that can be run to reproduce the behavior:
 - Python version:
 - Operating System:
 - Output of `poetry show` or other virtualenv export (if relevant):
-
-  ```
-
-  ```
+    ```
+    ```
 
 <!-- If there is any other system information you feel is relevant please add it here -->
 

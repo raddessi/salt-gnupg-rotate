@@ -1,10 +1,9 @@
+# -*- coding: utf-8 -*-
 """Tests for the `cli` module."""
 
-from typing import Mapping, Optional, Sequence, Union
-
 import pytest
+from typing import Union, Optional, Sequence, Mapping
 from click.testing import CliRunner
-
 from salt_gnupg_rotate import cli
 
 
