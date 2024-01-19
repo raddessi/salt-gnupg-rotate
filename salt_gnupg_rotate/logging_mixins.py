@@ -1,4 +1,4 @@
-"""Additions to the logger module."""
+"""Additions to the logging module."""
 
 from typing import Optional, Union
 
