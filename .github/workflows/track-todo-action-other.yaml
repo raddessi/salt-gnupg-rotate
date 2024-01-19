@@ -1,0 +1,28 @@
+name: TODOs on PRs
+
+# only for branches other than main
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+  pull_request:
+    branches:
+      - "**"
+      - "!main"
+
+jobs:
+  dry-run:
+    # this can be changed to `self-hosted` to move to self-hosted
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Run tdg-github-action
+        uses: ribtoks/tdg-github-action@v0.4.5-beta
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
+          DRY_RUN: true

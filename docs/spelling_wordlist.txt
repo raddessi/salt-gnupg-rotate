@@ -1,0 +1,16 @@
+Cookiecutter
+conda
+linter
+magnite
+nox
+prebuilt
+preconfigured
+pytest
+reStructuredText
+refactor
+repo
+staged
+stdout
+templated
+templating
+unstaged

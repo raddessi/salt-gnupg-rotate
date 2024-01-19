@@ -1,0 +1,108 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    # this can be changed to `self-hosted` to move to self-hosted
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Python Semantic Release
+        uses: relekang/python-semantic-release@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Store the release tag
+        id: release_version
+        run: |
+          echo "release_version=$(poetry version --short)" >> $GITHUB_ENV
+
+    outputs:
+      release_version: ${{ env.release_version }}
+
+  build:
+    needs: tag
+    # this can be changed to `self-hosted` to move to self-hosted
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: v${{ needs.tag.outputs.release_version }}
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Build
+        run: poetry build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: salt-gnupg-rotate
+          path: dist/*
+          if-no-files-found: error
+
+      - name: Upload Artifacts to Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*
+          file_glob: true
+          tag: v${{ needs.tag.outputs.release_version }}
+          overwrite: true
+
+  docs-build:
+    needs: tag
+    # this can be changed to `self-hosted` to move to self-hosted
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: v${{ needs.tag.outputs.release_version }}
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry nox nox-poetry
+
+      - name: Build the standalone documentation
+        run: |
+          nox -s docs-build --force-color
+
+      - name: Create standalone documentation zip
+        working-directory: docs/_build
+        run: |
+          zip -r {{ python_package_distribution_name }}-${{ needs.tag.outputs.release_version }}-documentation.zip .*
+
+      - name: Upload Artifacts to Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: docs/_build/*.zip
+          file_glob: true
+          tag: v${{ needs.tag.outputs.release_version }}
+          overwrite: true

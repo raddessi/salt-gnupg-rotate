@@ -1,0 +1,27 @@
+# Changes here will be overwritten by Copier
+_commit: v1.5.0
+_src_path: /home/raddessi/dev/spotx/copier-python
+author_email: raddessi@users.noreply.github.com
+author_fullname: Ryan Addessi
+author_username: raddessi
+copyright_date: "2024"
+copyright_holder: Ryan Addessi
+copyright_license: BSD 2-Clause 'Simplified' License
+friendly_name: salt-gnupg-rotate
+github_actions_runner_type: GitHub-hosted
+include_click_code_examples: true
+include_logger: false
+include_main_dunder: false
+include_main_entrypoint: true
+max_python_version: "3.10"
+min_python_version: "3.10"
+project_description: Easily rotate gnupg encryption keys
+project_name: salt-gnupg-rotate
+public_or_private: private
+python_package_command_line_name: salt-gnupg-rotate
+python_package_distribution_name: salt-gnupg-rotate
+python_package_import_name: salt_gnupg_rotate
+repository_name: salt-gnupg-rotate
+repository_namespace: raddessi
+repository_provider: github.com
+use_config_loader: false

@@ -1,0 +1,177 @@
+# Poetry package config
+[tool.poetry]
+name = "salt-gnupg-rotate"
+version = "0.1.0"
+description = "Easily rotate gnupg encryption keys"
+authors = ["Ryan Addessi <raddessi@users.noreply.github.com>"]
+license = "BSD 2-Clause 'Simplified' License"
+readme = "README.md"
+repository = "https://github.com/raddessi/salt-gnupg-rotate"
+homepage = "https://github.com/raddessi/salt-gnupg-rotate"
+keywords = []
+packages = [{ include = "salt_gnupg_rotate" }]
+classifiers = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.0.3"
+rich = "^10.14.0"
+
+[tool.poetry.dev-dependencies]
+"ruamel.yaml" = "^0.17.17"
+coverage = {extras = ["toml"], version = "^6.2"}
+furo = "^2022.1.2"
+jinja2-time = "^0.2.0"
+mypy = "^0.931"
+myst-parser = "^0.16.1"
+nox = "^2021.10.1"
+nox-poetry = "^0.9.0"
+pre-commit = "^2.16.0"
+pytest = "^6.2.5"
+pytest-mock = "^3.6.1"
+safety = "^1.10.3"
+sphinx = "^4.3.2"
+sphinx-autobuild = ">=2021.3.14"
+sphinx-click = "^3.0.2"
+sphinx-copybutton = "^0.4.0"
+sphinx-inline-tabs = {version = "^2022.1.2b11", python = ">=3.8,<4.0"}
+sphinxcontrib-mermaid = "^0.7.1"
+sphinxcontrib-spelling = "^7.3.2"
+sphinxcontrib-versioning = "^2.2.1"
+sphinxemoji = "^0.2.0"
+typeguard = "^2.13.0"
+xdoctest = {extras = ["colors"], version = "^0.15.10"}
+
+
+[tool.poetry.scripts]
+salt-gnupg-rotate = "salt_gnupg_rotate.cli:cli"
+
+[tool.poetry.urls]
+Changelog = "https://github.com/raddessi/salt-gnupg-rotate/releases"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+## Config for other tools
+
+[tool.black]
+line-length = 88
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | tests/fixtures
+
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+)/
+'''
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+
+[tool.coverage.html]
+directory = "build/coverage"
+
+[tool.coverage.json]
+output = "build/coverage.json"
+
+[tool.coverage.paths]
+source = ["salt_gnupg_rotate", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["salt_gnupg_rotate"]
+parallel = true
+
+[tool.coverage.report]
+show_missing = true
+precision = 2
+fail_under = 100
+# omit = [
+#   "configuration_files",
+# ]
+
+[tool.isort]
+line_length = 88
+not_skip = "__init__.py"
+multi_line_output = 3
+force_single_line = false
+balanced_wrapping = true
+default_section = "THIRDPARTY"
+known_first_party = "salt_gnupg_rotate"
+include_trailing_comma = true
+
+[tool.mypy]
+strict = true
+warn_unreachable = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+ignore_missing_imports = true
+# exclude = "somedir/"
+
+[tool.pydocstyle]
+convention = "google"
+add_ignore = [
+    "D103",  # handled by pylint
+    "D106",  # handled by pylint
+    "D301",  # for Click "\f" delimiters
+]
+
+[tool.pylint]
+
+[tool.pylint.MASTER]
+ignore-paths = []
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+    "bad-continuation",  # pylint isn't compat with black on this one
+    "duplicate-code",  # not possible to disable inline currently
+    "fixme",  # these get converted in to github issues
+    "import-error",  # pre-commit does not have all the package deps available, yet
+]
+
+[tool.pytest.ini_options]
+# `log_cli` would be AMAZING to enable but it currently conflicts with click's CliRunner
+log_cli = false
+norecursedirs = [
+    ".git",
+    ".tox",
+    ".env",
+    "dist",
+    "build",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+    "tests.py",
+]
+addopts = [
+    "-rsx",
+    "-vv",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.semantic_release]
+version_variable = [
+    "salt_gnupg_rotate/__init__.py:__version__",
+    "pyproject.toml:version"
+]
+branch = "main"
+upload_to_pypi = false
+upload_to_release = false
+build_command = "poetry build"
