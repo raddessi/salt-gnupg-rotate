@@ -24,8 +24,11 @@ rich.traceback.install()
 def main(
     required_config_key: Union[int, str, None, bool],
     dirpath: str,
-    optional_config_key: Union[int, str, None, bool] = DEFAULTS.get(
-        "optional_config_key", None
+    decryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
+        "decryption_gpg_homedir", None
+    ),
+    encryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
+        "encryption_gpg_homedir", None
     ),
     log_level: Union[int, str, None, bool] = DEFAULTS["log_level"],
 ) -> int:
@@ -54,7 +57,7 @@ def main(
 
     new_key_id = 'salt-master'
     import gnupg
-    gpg = gnupg.GPG(homedir=os.path.expanduser("~/.gnupg"))
+    gpg = gnupg.GPG(homedir=decryption_gpg_homedir)
     try:
         process_directory(dirpath, gpg, new_key_id)
     except DecryptionError as err:

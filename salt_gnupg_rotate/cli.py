@@ -35,8 +35,14 @@ from typing import (
     show_default=True,
 )
 @click.option(
-    "--optional-config-key",
-    default="foo",
+    "--decryption-gpg-homedir",
+    default=DEFAULTS["decryption_gpg_homedir"],
+    required=False,
+    show_default=True,
+)
+@click.option(
+    "--encryption-gpg-homedir",
+    default=DEFAULTS["encryption_gpg_homedir"],
     required=False,
     show_default=True,
 )
@@ -49,17 +55,17 @@ from typing import (
 @click.option(
     "-l",
     "--log-level",
-    default="DEBUG",
-    # pylint: disable=protected-access
-    type=click.Choice(list(logging._nameToLevel.keys())),
+    default=DEFAULTS["log_level"],
+    type=click.Choice(choices=DEFAULTS["log_levels"], case_sensitive=False),
     show_default=True,
 )
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
 def cli(
     required_config_key: Union[str, int, bool, None],
-    optional_config_key: Union[str, int, bool, None],
     dir: str,
+    decryption_gpg_homedir: str,
+    encryption_gpg_homedir: str,
     log_level: Union[str, int, None]
 ) -> int:
     """Easily rotate gnupg encryption keys.
@@ -75,8 +81,9 @@ def cli(
     """
     main(
         required_config_key=required_config_key,
-        optional_config_key=optional_config_key,
         dirpath=dir,
+        decryption_gpg_homedir=decryption_gpg_homedir,
+        encryption_gpg_homedir=encryption_gpg_homedir,
         log_level=log_level.upper() if isinstance(log_level, str) else log_level,
     )
 

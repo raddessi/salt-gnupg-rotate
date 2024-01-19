@@ -28,7 +28,7 @@ class PartiallyEncryptedFile(object):
     def __init__(self, path):
         self.path = path
 
-        self.logger.debug(f"opening file {path}")
+        self.logger.info(f"Loading file {path}")
         with open(self.path, 'r') as self._fdesc:
             self.contents = self._fdesc.read()
 
@@ -39,6 +39,8 @@ class PartiallyEncryptedFile(object):
 
         pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
         self.encrypted_blocks = re.findall(pattern, self.contents, re.DOTALL)
+
+        self.logger.debug(f"Found {len(self.encrypted_blocks)} encrypted blocks in file {self.path}")
 
         return self.encrypted_blocks
 
@@ -51,7 +53,7 @@ class PartiallyEncryptedFile(object):
             padding_size = line_length_before - line_length_after
 
 
-            self.logger.debug(f"block before (padding size {padding_size}):\n{block}")
+            self.logger.trace(f"block before (padding size {padding_size}):\n{block}")
 
             block = dedent(block)
             decrypted_data = gpg.decrypt(block, passphrase=None, always_trust=True)
@@ -71,7 +73,7 @@ class PartiallyEncryptedFile(object):
             else:
                 encrypted_data = str(encrypted_data)
 
-            self.logger.debug(f"block after:\n{encrypted_data}")
+            self.logger.trace(f"block after:\n{encrypted_data}")
             content = content.replace(block, encrypted_data)
             # print(f"content after:\n{content}")
 
@@ -96,7 +98,7 @@ def collect_file_paths(directory):
     return fpaths
 
 def process_directory(directory, gpg, new_key_id, logger=LOGGER):
-    logger.debug(f'{{"dir": "{directory}"}}')
+    logger.info(f'{{"dir": "{directory}"}}')
 
     files = []
     fpaths = collect_file_paths(directory=directory)
