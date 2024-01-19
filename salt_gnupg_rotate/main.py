@@ -3,6 +3,7 @@
 from typing import (
     Union,
 )
+import os
 
 # pylint: disable=import-error
 import rich
@@ -13,7 +14,7 @@ from salt_gnupg_rotate.config import (
     DEFAULTS,
 )
 from salt_gnupg_rotate.logger import LOGGER
-from salt_gnupg_rotate.rotate import process_directory
+from salt_gnupg_rotate.rotate import process_directory, DecryptionError
 
 rich.pretty.install()
 rich.traceback.install()
@@ -44,22 +45,22 @@ def main(
 
     retcode = 0
     LOGGER.debug("starting up")
-    # perform any required startup actions here
-    import os
+    # validation
     dirpath = os.path.realpath(dirpath)
 
-    LOGGER.debug("started OK :thumbsup:", extra={"markup": True})
     LOGGER.debug("required_config_key: %s", required_config_key)
     LOGGER.debug("dirpath=%s", dirpath)
     LOGGER.debug("log_level=%s", log_level)
 
-    # directory = './pillar'
     new_key_id = 'salt-master'
     import gnupg
     gpg = gnupg.GPG(homedir=os.path.expanduser("~/.gnupg"))
-    process_directory(dirpath, gpg, new_key_id)
-
-
-    LOGGER.debug("exiting")
+    try:
+        process_directory(dirpath, gpg, new_key_id)
+    except DecryptionError as err:
+        LOGGER.error(err)
+        retcode = 1
+    else:
+        LOGGER.warning("success! :rocket:", extra={"markup": True})
 
     return retcode
