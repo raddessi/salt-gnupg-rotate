@@ -44,8 +44,7 @@ def main(
 
     """
     LOGGER.setLevel(log_level)
-    retcode = 0
-    LOGGER.debug("starting up")
+    LOGGER.debug("Starting up")
 
     # validation
     dirpath = os.path.realpath(dirpath)
@@ -59,15 +58,30 @@ def main(
     LOGGER.debug("log_level=%s", log_level)
 
     import gnupg
-    gpg = gnupg.GPG(
+    decrypt_gpg = gnupg.GPG(
         gnupghome=decryption_gpg_homedir,
     )
+
+    encrypt_gpg = gnupg.GPG(
+        gnupghome=encryption_gpg_homedir,
+    )
+
+    # check the recipient secret key exists
+    if encrypt_gpg.list_keys(secret=True, keys=recipient):
+        LOGGER.debug(
+            f"Secret key for recipient '{recipient}' found in keyring at "
+            f"{encryption_gpg_homedir} :thumbs_up:",
+            extra={"markup": True},
+        )
+    else:
+        raise NameError(
+            f"Secret key for recipient '{recipient}' not present in keyring at "
+            f"{encryption_gpg_homedir}"
+        )
+
     try:
-        process_directory(dirpath, gpg, recipient)
+        process_directory(dirpath, decrypt_gpg, recipient)
     except DecryptionError as err:
         LOGGER.error(err)
-        retcode = 1
     else:
         LOGGER.info("Success! :rocket:", extra={"markup": True})
-
-    return retcode

@@ -102,11 +102,13 @@ def process_directory(directory, gpg, new_key_id, logger=LOGGER):
     files = []
     fpaths = collect_file_paths(directory=directory)
 
+    logger.debug(f"Opening files in directory {directory} ...")
     for fpath in track(fpaths, description="Opening files...", console=CONSOLE):
         file = PartiallyEncryptedFile(path=fpath)
         files.append(file)
 
     decryption_success = True
+    logger.debug("Decrypting the loaded files ...")
     for file in track(files, description="Decrypting...", console=CONSOLE):
         success = file.decrypt(new_key_id=new_key_id, gpg=gpg)
         if not success:

@@ -22,6 +22,7 @@ from salt_gnupg_rotate.config import (
     APP_NAME,
     DEFAULTS,
 )
+from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
 from typing import (
     Union,
@@ -81,12 +82,21 @@ def cli(
         int: An exit code
 
     """
-    main(
-        dirpath=dir,
-        decryption_gpg_homedir=decryption_gpg_homedir,
-        encryption_gpg_homedir=encryption_gpg_homedir,
-        recipient=recipient,
-        log_level=log_level.upper() if isinstance(log_level, str) else log_level,
-    )
+    try:
+        main(
+            dirpath=dir,
+            decryption_gpg_homedir=decryption_gpg_homedir,
+            encryption_gpg_homedir=encryption_gpg_homedir,
+            recipient=recipient,
+            log_level=log_level.upper() if isinstance(log_level, str) else log_level,
+        )
+    except NameError as err:
+        LOGGER.critical(err)
+        retcode = 1
+    except Exception as err:
+        LOGGER.critical(err)
+        retcode = 9
+    else:
+        retcode = 0
 
-    return 0
+    exit(retcode)
