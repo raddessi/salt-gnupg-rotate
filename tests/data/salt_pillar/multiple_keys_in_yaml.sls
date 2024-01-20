@@ -18,5 +18,5 @@ nested:
     lSmZEU+pp+XVtQJV4QjvaL+glHMsa6G3TT8=
     =8WZL
     -----END PGP MESSAGE-----
-    
+
   fun: sometimes

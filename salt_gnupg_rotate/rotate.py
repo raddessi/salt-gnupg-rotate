@@ -1,27 +1,27 @@
-# -*- coding: utf-8 -*-
 """Rotation functions."""
 
 import os
 import re
+from textwrap import dedent, indent
 
 import gnupg
-from textwrap import indent, dedent
 from rich import print
 from rich.progress import track
 
-from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.config import CONSOLE
+from salt_gnupg_rotate.logger import LOGGER
 
 
 def find_pgp_blocks(text):
     pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
     return re.findall(pattern, text, re.DOTALL)
 
+
 class DecryptionError(ValueError):
     pass
 
 
-class PartiallyEncryptedFile(object):
+class PartiallyEncryptedFile:
     encrypted_blocks = None
     logger = LOGGER
 
@@ -29,7 +29,7 @@ class PartiallyEncryptedFile(object):
         self.path = path
 
         self.logger.info(f"Loading file {path}")
-        with open(self.path, 'r') as self._fdesc:
+        with open(self.path) as self._fdesc:
             self.contents = self._fdesc.read()
 
     # TODO: change to getter
@@ -40,30 +40,34 @@ class PartiallyEncryptedFile(object):
         pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
         self.encrypted_blocks = re.findall(pattern, self.contents, re.DOTALL)
 
-        self.logger.debug(f"Found {len(self.encrypted_blocks)} encrypted blocks in file {self.path}")
+        self.logger.debug(
+            f"Found {len(self.encrypted_blocks)} encrypted blocks in file {self.path}"
+        )
 
         return self.encrypted_blocks
 
-    def decrypt(self, new_key_id, gpg):
-
+    def decrypt(self, new_key_id, decryption_gpg_keyring):
         success = True
         for block in self.find_encrypted_blocks():
-            line_length_before = max((len(line) for line in block.splitlines()))
-            line_length_after = max((len(line.lstrip()) for line in block.splitlines()))
+            line_length_before = max(len(line) for line in block.splitlines())
+            line_length_after = max(len(line.lstrip()) for line in block.splitlines())
             padding_size = line_length_before - line_length_after
-
 
             self.logger.trace(f"block before (padding size {padding_size}):\n{block}")
 
             block = dedent(block)
-            decrypted_data = gpg.decrypt(block, passphrase=None, always_trust=True)
+            decrypted_data = decryption_gpg_keyring.decrypt(
+                block, passphrase=None, always_trust=True
+            )
             # print(decrypted_data.__dict__)
 
             if not decrypted_data.ok:
                 self.logger.error(f"Failed to decrypt block in {self.path}")
                 return False
 
-            encrypted_data = gpg.encrypt(str(decrypted_data), new_key_id, always_trust=True)
+            encrypted_data = decryption_gpg_keyring.encrypt(
+                str(decrypted_data), new_key_id, always_trust=True
+            )
 
             if not encrypted_data.ok:
                 self.logger.error(f"Failed to encrypt block in {self.path}")
@@ -87,6 +91,7 @@ class PartiallyEncryptedFile(object):
         pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
         return re.findall(pattern, text, re.DOTALL)
 
+
 def collect_file_paths(directory):
     fpaths = []
     for root, dirs, files in os.walk(directory):
@@ -95,10 +100,17 @@ def collect_file_paths(directory):
                 continue
             file_path = os.path.join(root, name)
             fpaths.append(file_path)
-    
+
     return fpaths
 
-def process_directory(directory, gpg, new_key_id, logger=LOGGER):
+
+def process_directory(
+    directory,
+    decryption_gpg_keyring,
+    encryption_gpg_keyring,
+    new_key_id,
+    logger=LOGGER,
+):
     files = []
     fpaths = collect_file_paths(directory=directory)
 
@@ -110,7 +122,11 @@ def process_directory(directory, gpg, new_key_id, logger=LOGGER):
     decryption_success = True
     logger.debug("Decrypting the loaded files ...")
     for file in track(files, description="Decrypting...", console=CONSOLE):
-        success = file.decrypt(new_key_id=new_key_id, gpg=gpg)
+        success = file.decrypt(
+            new_key_id=new_key_id,
+            decryption_gpg_keyring=decryption_gpg_keyring,
+            # encryption_gpg_keyring=encryption_gpg_keyring,
+        )
         if not success:
             decryption_success = False
     if not decryption_success:

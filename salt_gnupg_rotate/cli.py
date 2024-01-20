@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Why does this file exist, and why not put this in `__main__`?
 #
@@ -13,20 +12,15 @@
 
 """CLI interactions."""
 import logging
+from typing import Union
 
 # pylint: disable=import-error
 import click
 
 from salt_gnupg_rotate import __version__
-from salt_gnupg_rotate.config import (
-    APP_NAME,
-    DEFAULTS,
-)
+from salt_gnupg_rotate.config import APP_NAME, DEFAULTS
 from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
-from typing import (
-    Union,
-)
 
 
 @click.command()
@@ -69,7 +63,7 @@ def cli(
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
     recipient: str,
-    log_level: Union[str, int, None]
+    log_level: Union[str, int, None],
 ) -> int:
     """Easily rotate gnupg encryption keys.
     \f

@@ -1,24 +1,19 @@
-# -*- coding: utf-8 -*-
 """Main code."""
-from typing import (
-    Union,
-)
 import os
+from typing import Union
 
 # pylint: disable=import-error
+import gnupg
 import rich
 import rich.pretty
 import rich.traceback
 
-from salt_gnupg_rotate.config import (
-    DEFAULTS,
-)
+from salt_gnupg_rotate.config import DEFAULTS
 from salt_gnupg_rotate.logger import LOGGER
-from salt_gnupg_rotate.rotate import process_directory, DecryptionError
+from salt_gnupg_rotate.rotate import DecryptionError, process_directory
 
 rich.pretty.install()
 rich.traceback.install()
-
 
 
 def main(
@@ -57,17 +52,16 @@ def main(
     LOGGER.debug("recipient=%s", recipient)
     LOGGER.debug("log_level=%s", log_level)
 
-    import gnupg
-    decrypt_gpg = gnupg.GPG(
+    decryption_gpg_keyring = gnupg.GPG(
         gnupghome=decryption_gpg_homedir,
     )
 
-    encrypt_gpg = gnupg.GPG(
+    encryption_gpg_keyring = gnupg.GPG(
         gnupghome=encryption_gpg_homedir,
     )
 
     # check the recipient secret key exists
-    if encrypt_gpg.list_keys(secret=True, keys=recipient):
+    if encryption_gpg_keyring.list_keys(secret=True, keys=recipient):
         LOGGER.debug(
             f"Secret key for recipient '{recipient}' found in keyring at "
             f"{encryption_gpg_homedir} :thumbs_up:",
@@ -80,7 +74,12 @@ def main(
         )
 
     try:
-        process_directory(dirpath, decrypt_gpg, recipient)
+        process_directory(
+            directory=dirpath,
+            decryption_gpg_keyring=decryption_gpg_keyring,
+            encryption_gpg_keyring=encryption_gpg_keyring,
+            new_key_id=recipient,
+        )
     except DecryptionError as err:
         LOGGER.error(err)
     else:

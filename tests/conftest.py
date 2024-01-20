@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Configuration for the pytest test suite."""
 
 import functools

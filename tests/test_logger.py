@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 """Tests for the `logger` module."""
 
 import logging
-import pytest
 from contextlib import ExitStack as does_not_raise
-from typing import ContextManager, Union, Any
+from typing import Any, ContextManager, Union
+
+import pytest
 
 from salt_gnupg_rotate.logger import create_logger
 

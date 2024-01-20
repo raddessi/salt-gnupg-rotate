@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests suite for `salt_gnupg_rotate`."""
 
 from pathlib import Path

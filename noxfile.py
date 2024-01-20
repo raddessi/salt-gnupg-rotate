@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Nox sessions."""
 import shutil
 import sys
