@@ -22,7 +22,6 @@ rich.traceback.install()
 
 
 def main(
-    required_config_key: Union[int, str, None, bool],
     dirpath: str,
     recipient: str,
     decryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
@@ -44,7 +43,6 @@ def main(
         int: An exit code
 
     """
-    logger = LOGGER
     LOGGER.setLevel(log_level)
     retcode = 0
     LOGGER.debug("starting up")

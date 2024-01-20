@@ -30,11 +30,6 @@ from typing import (
 
 @click.command()
 @click.option(
-    "--required-config-key",
-    required=True,
-    show_default=True,
-)
-@click.option(
     "--decryption-gpg-homedir",
     default=DEFAULTS["decryption_gpg_homedir"],
     required=False,
@@ -69,7 +64,6 @@ from typing import (
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
 def cli(
-    required_config_key: Union[str, int, bool, None],
     dir: str,
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
@@ -88,7 +82,6 @@ def cli(
 
     """
     main(
-        required_config_key=required_config_key,
         dirpath=dir,
         decryption_gpg_homedir=decryption_gpg_homedir,
         encryption_gpg_homedir=encryption_gpg_homedir,
