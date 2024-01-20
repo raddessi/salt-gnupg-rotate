@@ -47,6 +47,13 @@ from typing import (
     show_default=True,
 )
 @click.option(
+    "-r",
+    "--recipient",
+    required=True,
+    type=click.STRING,
+    show_default=True,
+)
+@click.option(
     "--dir",
     required=True,
     type=click.STRING,
@@ -66,6 +73,7 @@ def cli(
     dir: str,
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
+    recipient: str,
     log_level: Union[str, int, None]
 ) -> int:
     """Easily rotate gnupg encryption keys.
@@ -84,6 +92,7 @@ def cli(
         dirpath=dir,
         decryption_gpg_homedir=decryption_gpg_homedir,
         encryption_gpg_homedir=encryption_gpg_homedir,
+        recipient=recipient,
         log_level=log_level.upper() if isinstance(log_level, str) else log_level,
     )
 

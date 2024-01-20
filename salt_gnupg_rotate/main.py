@@ -24,6 +24,7 @@ rich.traceback.install()
 def main(
     required_config_key: Union[int, str, None, bool],
     dirpath: str,
+    recipient: str,
     decryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
         "decryption_gpg_homedir", None
     ),
@@ -45,25 +46,30 @@ def main(
     """
     logger = LOGGER
     LOGGER.setLevel(log_level)
-
     retcode = 0
     LOGGER.debug("starting up")
+
     # validation
     dirpath = os.path.realpath(dirpath)
+    decryption_gpg_homedir = os.path.realpath(decryption_gpg_homedir)
+    encryption_gpg_homedir = os.path.realpath(encryption_gpg_homedir)
 
-    LOGGER.debug("required_config_key: %s", required_config_key)
     LOGGER.debug("dirpath=%s", dirpath)
+    LOGGER.debug("decryption_gpg_homedir=%s", decryption_gpg_homedir)
+    LOGGER.debug("encryption_gpg_homedir=%s", encryption_gpg_homedir)
+    LOGGER.debug("recipient=%s", recipient)
     LOGGER.debug("log_level=%s", log_level)
 
-    new_key_id = 'salt-master'
     import gnupg
-    gpg = gnupg.GPG(homedir=decryption_gpg_homedir)
+    gpg = gnupg.GPG(
+        gnupghome=decryption_gpg_homedir,
+    )
     try:
-        process_directory(dirpath, gpg, new_key_id)
+        process_directory(dirpath, gpg, recipient)
     except DecryptionError as err:
         LOGGER.error(err)
         retcode = 1
     else:
-        LOGGER.warning("success! :rocket:", extra={"markup": True})
+        LOGGER.info("Success! :rocket:", extra={"markup": True})
 
     return retcode

@@ -57,6 +57,7 @@ class PartiallyEncryptedFile(object):
 
             block = dedent(block)
             decrypted_data = gpg.decrypt(block, passphrase=None, always_trust=True)
+            # print(decrypted_data.__dict__)
 
             if not decrypted_data.ok:
                 self.logger.error(f"Failed to decrypt block in {self.path}")
@@ -74,7 +75,7 @@ class PartiallyEncryptedFile(object):
                 encrypted_data = str(encrypted_data)
 
             self.logger.trace(f"block after:\n{encrypted_data}")
-            content = content.replace(block, encrypted_data)
+            content = self.contents.replace(block, encrypted_data)
             # print(f"content after:\n{content}")
 
         # file.seek(0)
@@ -98,8 +99,6 @@ def collect_file_paths(directory):
     return fpaths
 
 def process_directory(directory, gpg, new_key_id, logger=LOGGER):
-    logger.info(f'{{"dir": "{directory}"}}')
-
     files = []
     fpaths = collect_file_paths(directory=directory)
 

@@ -16,7 +16,7 @@ classifiers = []
 python = "^3.10"
 click = "^8.0.3"
 rich = "^10.14.0"
-gnupg = "^2.3.1"
+python-gnupg = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 "ruamel.yaml" = "^0.17.17"

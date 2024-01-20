@@ -111,3 +111,6 @@ Gemfile.lock
 
 # nox
 .nox/
+
+
+tests/data/gnupg/random_seed
