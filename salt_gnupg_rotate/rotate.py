@@ -145,7 +145,6 @@ class PartiallyEncryptedFile:
             self.encrypt()
 
         self.logger.debug(f"Writing updated file {self.path}")
-        self.logger.info(self.reencrypted_contents == self.contents)
         with open(self.path, "w") as fdesc:
             fdesc.seek(0)
             fdesc.write(self.reencrypted_contents)
@@ -175,8 +174,8 @@ def process_directory(
     files = []
     fpaths = collect_file_paths(dirpath=dirpath)
 
-    logger.info(f"Opening files in directory {dirpath} ...")
-    for fpath in track(fpaths, description="Opening files...", console=CONSOLE):
+    logger.info(f"Loading files in directory {dirpath} ...")
+    for fpath in track(fpaths, description="Loading files...", console=CONSOLE):
         file = PartiallyEncryptedFile(
             path=fpath,
             decryption_gpg_keyring=decryption_gpg_keyring,
@@ -223,3 +222,5 @@ def process_directory(
             )
     else:
         logger.info("Skipping writing out changes")
+
+    return len(files)
