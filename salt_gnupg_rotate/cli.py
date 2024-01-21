@@ -19,9 +19,9 @@ import click
 
 from salt_gnupg_rotate import __version__
 from salt_gnupg_rotate.config import APP_NAME, DEFAULTS
+from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
-from salt_gnupg_rotate.exceptions import EncryptionError, DecryptionError
 
 
 @click.command()

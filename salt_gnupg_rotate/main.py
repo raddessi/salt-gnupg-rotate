@@ -25,7 +25,7 @@ def main(
     encryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
         "encryption_gpg_homedir", None
     ),
-    write: bool=False,
+    write: bool = False,
     log_level: Union[int, str, None, bool] = DEFAULTS["log_level"],
 ) -> int:
     """Main entrypoint.
