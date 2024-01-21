@@ -1,12 +1,12 @@
 """Tests for the `salt_gnupg_rotate.main` submodule."""
 
-import gnupg
-import os
 import logging
+import os
 import shutil
 from contextlib import ExitStack as does_not_raise
 from typing import Any, ContextManager, Union
 
+import gnupg
 import pytest
 
 from salt_gnupg_rotate.exceptions import DecryptionError
@@ -15,7 +15,6 @@ from salt_gnupg_rotate.rotate import (
     collect_file_paths,
     process_directory,
 )
-
 
 SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
 GNUPG_HOMEDIR = "./tests/data/gnupg"
@@ -181,6 +180,7 @@ def test_process_directory(mocker, salt_pillar_fpath):
         recipient="pytest",
     )
 
+
 def test_process_directory_decrypt_failure(mocker, salt_pillar_fpath):
     mocker.patch(
         "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.decrypt",
@@ -199,6 +199,7 @@ def test_process_directory_decrypt_failure(mocker, salt_pillar_fpath):
             recipient="pytest",
         )
 
+
 def test_process_directory_encrypt_failure(mocker, salt_pillar_fpath):
     mocker.patch(
         "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt",
@@ -216,7 +217,8 @@ def test_process_directory_encrypt_failure(mocker, salt_pillar_fpath):
             encryption_gpg_keyring=gpg,
             recipient="pytest",
         )
-    
+
+
 def test_process_directory_write(mocker, salt_pillar_fpath):
     gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
     process_directory(
@@ -226,6 +228,7 @@ def test_process_directory_write(mocker, salt_pillar_fpath):
         recipient="pytest",
         write=True,
     )
+
 
 def test_process_directory_write_failure(mocker, salt_pillar_fpath):
     mocker.patch(
