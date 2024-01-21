@@ -40,7 +40,102 @@ def salt_pillar_fpath(tmp_path_factory, request):
     return temp_fpath
 
 
-def test_PartiallyEncryptedFile_reencrypt_datafiles(mocker, salt_pillar_fpath):
+@pytest.fixture(scope="session")
+def new_gnupg_homedir(tmp_path_factory):
+    temp_fpath = tmp_path_factory.mktemp("gnupg")
+    gpg = gnupg.GPG(gnupghome=temp_fpath)
+    gpg.gen_key_input(key_type="RSA", key_length=1024)
+    return temp_fpath
+
+
+def test_PartiallyEncryptedFile_find_encrypted_blocks(salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.find_encrypted_blocks()
+    file.find_encrypted_blocks()
+
+
+def test_PartiallyEncryptedFile_decrypt(salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.decrypt()
+    file.decrypt()
+
+
+def test_PartiallyEncryptedFile_decrypt_ValueError(
+    salt_pillar_fpath, new_gnupg_homedir
+):
+    gpg = gnupg.GPG(gnupghome=new_gnupg_homedir)
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.find_encrypted_blocks()
+    with pytest.raises(ValueError):
+        file.decrypt()
+
+
+def test_PartiallyEncryptedFile_encrypt(salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.encrypt()
+    file.encrypt()
+
+
+def test_PartiallyEncryptedFile_encrypt_ValueError_1(mocker, salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    mocked_gpg = mocker.Mock(
+        encrypt=mocker.Mock(
+            return_value=mocker.Mock(ok=False, problems=[{"status": "foo"}])
+        )
+    )
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=mocked_gpg,
+        recipient="pytest",
+    )
+    file.decrypt()
+    with pytest.raises(ValueError):
+        file.encrypt()
+
+
+def test_PartiallyEncryptedFile_encrypt_ValueError_2(mocker, salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    mocked_gpg = mocker.Mock(
+        encrypt=mocker.Mock(
+            return_value=mocker.Mock(ok=False, problems=[{"status": "foo"}])
+        )
+    )
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=mocked_gpg,
+        recipient="pytest",
+    )
+    file.decrypt()
+    with pytest.raises(ValueError):
+        file.encrypt()
+
+
+def test_PartiallyEncryptedFile_write_reencrypted_contents(salt_pillar_fpath):
     gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
@@ -49,8 +144,6 @@ def test_PartiallyEncryptedFile_reencrypt_datafiles(mocker, salt_pillar_fpath):
         recipient="pytest",
     )
     file.write_reencrypted_contents()
-
-
 
 
 # def test_main_return_value(mocker):

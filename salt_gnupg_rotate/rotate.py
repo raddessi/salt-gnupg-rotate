@@ -4,8 +4,6 @@ import os
 import re
 from textwrap import dedent, indent
 
-import gnupg
-from rich import print
 from rich.markup import escape
 from rich.progress import track
 
