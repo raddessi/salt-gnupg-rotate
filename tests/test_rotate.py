@@ -10,7 +10,11 @@ from typing import Any, ContextManager, Union
 import pytest
 
 from salt_gnupg_rotate.exceptions import DecryptionError
-from salt_gnupg_rotate.rotate import PartiallyEncryptedFile, collect_file_paths
+from salt_gnupg_rotate.rotate import (
+    PartiallyEncryptedFile,
+    collect_file_paths,
+    process_directory,
+)
 
 
 SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
@@ -164,54 +168,80 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents(salt_pillar_fpath):
 
 
 def test_collect_file_paths(salt_pillar_fpath):
-    collect_file_paths(salt_pillar_fpath.rsplit("/", 1)[0])
+    collect_file_paths(salt_pillar_fpath)
 
 
-# def test_main_return_value(mocker):
-#     mocked_process_directory = mocker.patch(
-#         "salt_gnupg_rotate.main.process_directory",
-#         return_value=2,
-#     )
-#     main(
-#         dirpath="./tests/data/salt_pillar",
-#         recipient="pytest",
-#     )
-#     mocked_process_directory.assert_called()
+def test_process_directory(mocker, salt_pillar_fpath):
+    mocked_file = mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile")
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    process_directory(
+        salt_pillar_fpath.rsplit("/", 1)[0],
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
 
+def test_process_directory_decrypt_failure(mocker, salt_pillar_fpath):
+    mocker.patch(
+        "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.decrypt",
+        side_effect=Exception,
+    )
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
+        expectation = does_not_raise()
+    else:
+        expectation = pytest.raises(ValueError)
+    with expectation:
+        process_directory(
+            salt_pillar_fpath.rsplit("/", 1)[0],
+            decryption_gpg_keyring=gpg,
+            encryption_gpg_keyring=gpg,
+            recipient="pytest",
+        )
 
-# def test_main_return_value_on_write(mocker):
-#     mocked_process_directory = mocker.patch(
-#         "salt_gnupg_rotate.main.process_directory",
-#         return_value=2,
-#     )
-#     main(
-#         dirpath="./tests/data/salt_pillar",
-#         recipient="pytest",
-#         write=True,
-#     )
-#     mocked_process_directory.assert_called()
+def test_process_directory_encrypt_failure(mocker, salt_pillar_fpath):
+    mocker.patch(
+        "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt",
+        side_effect=Exception,
+    )
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
+        expectation = does_not_raise()
+    else:
+        expectation = pytest.raises(ValueError)
+    with expectation:
+        process_directory(
+            salt_pillar_fpath.rsplit("/", 1)[0],
+            decryption_gpg_keyring=gpg,
+            encryption_gpg_keyring=gpg,
+            recipient="pytest",
+        )
+    
+def test_process_directory_write(mocker, salt_pillar_fpath):
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    process_directory(
+        salt_pillar_fpath.rsplit("/", 1)[0],
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+        write=True,
+    )
 
-
-# def test_main_gpg_keyring_missing_secret_key(mocker):
-#     mocked_gpg = mocker.patch("salt_gnupg_rotate.main.gnupg.GPG")
-#     mocked_gpg.side_effect = [
-#         mocker.Mock(),
-#         mocker.Mock(list_keys=mocker.Mock(return_value=[])),
-#     ]
-#     with pytest.raises(NameError):
-#         main(
-#             dirpath="./tests/data/salt_pillar",
-#             recipient="pytest",
-#         )
-
-
-# def test_main_decryption_error(mocker):
-#     mocked_process_directory = mocker.patch(
-#         "salt_gnupg_rotate.main.process_directory",
-#         side_effect=DecryptionError,
-#     )
-#     main(
-#         dirpath="./tests/data/salt_pillar",
-#         recipient="pytest",
-#     )
-#     mocked_process_directory.assert_called()
+def test_process_directory_write_failure(mocker, salt_pillar_fpath):
+    mocker.patch(
+        "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.write_reencrypted_contents",
+        side_effect=Exception,
+    )
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
+        expectation = does_not_raise()
+    else:
+        expectation = pytest.raises(Exception)
+    with expectation:
+        process_directory(
+            salt_pillar_fpath.rsplit("/", 1)[0],
+            decryption_gpg_keyring=gpg,
+            encryption_gpg_keyring=gpg,
+            recipient="pytest",
+            write=True,
+        )
