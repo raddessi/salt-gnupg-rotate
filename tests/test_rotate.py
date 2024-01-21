@@ -119,18 +119,20 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_1(mocker, salt_pillar_fpath):
 
 def test_PartiallyEncryptedFile_encrypt_ValueError_2(mocker, salt_pillar_fpath):
     gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
-    mocked_gpg = mocker.Mock(
-        encrypt=mocker.Mock(
-            return_value=mocker.Mock(ok=False, problems=[{"status": "foo"}])
-        )
-    )
+    # mocked_gpg = mocker.Mock(
+    #     encrypt=mocker.Mock(
+    #         return_value=mocker.Mock(ok=False, problems=[{"status": "foo"}])
+    #     )
+    # )
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
-        encryption_gpg_keyring=mocked_gpg,
+        encryption_gpg_keyring=gpg,
         recipient="pytest",
     )
     file.decrypt()
+    # corrupt the replacement source data 
+    file.decrypted_blocks[0] = ("asdfasdf", *file.decrypted_blocks[0][1:])
     with pytest.raises(ValueError):
         file.encrypt()
 
