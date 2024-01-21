@@ -1,4 +1,4 @@
-"""Tests for the `cli` submodule."""
+"""Tests for the `salt_gnupg_rotate.cli` submodule."""
 
 from typing import Mapping, Optional, Sequence, Union
 

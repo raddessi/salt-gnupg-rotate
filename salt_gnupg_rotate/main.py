@@ -26,8 +26,8 @@ def main(
         "encryption_gpg_homedir", None
     ),
     write: bool = False,
-    log_level: Union[int, str, None, bool] = DEFAULTS["log_level"],
-) -> int:
+    log_level: Union[int, str, bool] = DEFAULTS["log_level"],
+) -> None:
     """Main entrypoint.
 
     Args:
@@ -39,7 +39,7 @@ def main(
         int: An exit code
 
     """
-    LOGGER.setLevel(log_level)
+    LOGGER.setLevel(log_level.upper())
     LOGGER.debug("Starting up")
 
     # validation
@@ -87,7 +87,8 @@ def main(
     else:
         if write:
             LOGGER.info(
-                f"Success! Rotated encryption on blocks in {updated_count} files :rocket:",
+                f"Success! Rotated encryption on blocks in {updated_count} files "
+                ":rocket:",
                 extra={"markup": True},
             )
         else:

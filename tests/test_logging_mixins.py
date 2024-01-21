@@ -1,4 +1,4 @@
-"""Tests for the `logging_mixins` submodule."""
+"""Tests for the `salt_gnupg_rotate.logging_mixins` submodule."""
 
 import logging
 from contextlib import ExitStack as does_not_raise
@@ -7,7 +7,7 @@ from typing import Any, ContextManager, Union
 import pytest
 import rich.console
 
-from salt_gnupg_rotate.logging_mixins import add_trace_logging_level, create_logger
+from salt_gnupg_rotate.logging_mixins import create_logger
 
 
 @pytest.mark.parametrize(
@@ -64,4 +64,6 @@ def test_create_logger(
         logger = create_logger(app_name=app_name, log_level=log_level, console=console)
 
         assert isinstance(logger, logging.Logger)
+        assert logging._levelToName[logger.level] == expected_log_level
+
         logger.trace("verify trace level logging works")

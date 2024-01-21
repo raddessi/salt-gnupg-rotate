@@ -36,17 +36,6 @@ def create_logger(
     """
     logger = logging.getLogger(f"{app_name}")
 
-    syslog_handler = logging.handlers.SysLogHandler("/dev/log")
-    syslog_handler.formatter = logging.Formatter(
-        f"{app_name}:"
-        ' { "loggerName": "%(name)s", '
-        '"timestamp": "%(asctime)s", "pathName": "%(pathname)s", '
-        '"logRecordCreationTime": "%(created)f", '
-        '"functionName": "%(funcName)s", "levelNo": "%(levelno)s", '
-        '"lineNo": "%(lineno)d", "time": "%(msecs)d", '
-        '"levelName": "%(levelname)s", "message": "%(message)s"}'
-    )
-    logger.addHandler(syslog_handler)
     logger.addHandler(
         rich.logging.RichHandler(
             rich_tracebacks=True, console=console, show_path=False
