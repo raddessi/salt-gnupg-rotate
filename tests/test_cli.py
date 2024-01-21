@@ -6,72 +6,65 @@ import pytest
 from click.testing import CliRunner
 
 from salt_gnupg_rotate import cli
+from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 
 
 @pytest.mark.parametrize(
-    "args,env,config_files,expected_retcode",
+    "args,exception,expected_retcode",
     [
-        pytest.param(None, {}, {}, 2, id="run_without_args"),
-        pytest.param(["--show-config"], {}, {}, 2, id="show_config"),
+        pytest.param(None, None, 2, id="run_without_args"),
         pytest.param(
-            ["--something-unhandled", "--show-config"],
-            {},
-            {},
+            [
+                "--directory=./tests/data/salt_pillar",
+                "--recipient=pytest",
+            ],
+            None,
+            0,
+            id="run_with_minimal_kwargs",
+        ),
+        pytest.param(
+            [
+                "--directory=./tests/data/salt_pillar",
+                "--recipient=pytest",
+            ],
+            NameError,
+            1,
+            id="raise_NameError",
+        ),
+        pytest.param(
+            [
+                "--directory=./tests/data/salt_pillar",
+                "--recipient=pytest",
+            ],
+            DecryptionError,
             2,
-            id="show_config_with_unhandled_arg",
+            id="raise_DecryptionError",
         ),
         pytest.param(
             [
-                "--required-config-key=foo",
+                "--directory=./tests/data/salt_pillar",
+                "--recipient=pytest",
             ],
-            {"SALT_GNUPG_ROTATE_unhandled": "bar"},
-            {},
-            0,
-            id="run_with_unhandled_env_config_key",
+            EncryptionError,
+            3,
+            id="raise_EncryptionError",
         ),
         pytest.param(
             [
-                "--required-config-key=foo",
-                "--optional-config-key=4",
+                "--directory=./tests/data/salt_pillar",
+                "--recipient=pytest",
             ],
-            {},
-            {},
-            0,
-            id="run_with_both_config_keys",
-        ),
-        pytest.param(
-            ["--required-config-key=foo"],
-            {"SALT_GNUPG_ROTATE_optional_config_key": "1000"},
-            {},
-            0,
-            id="run_with_optional_env_config_key",
-        ),
-        pytest.param(
-            [
-                "--required-config-key=foo",
-            ],
-            {},
-            {},
-            0,
-            id="run",
-        ),
-        pytest.param(
-            [
-                "--required-config-key=foo",
-                "--optional-config-key=bar",
-            ],
-            {},
-            {},
-            0,
-            id="run_with_optional_config",
+            Exception,
+            9,
+            id="raise_Exception",
         ),
     ],
 )
 def test_cli(
+    mocker,
     runner: CliRunner,
     args: Optional[Union[Sequence[str], str]],
-    env: Optional[Mapping[str, Optional[str]]],
-    config_files: Mapping[str, Mapping[str, Union[str, int]]],
+    exception,
     expected_retcode: int,
 ) -> None:
     """Verify it runs as expected.
@@ -85,15 +78,22 @@ def test_cli(
         expected_retcode: The expected exit status from the invocation
 
     """
-    # TODO: how to load data from config files here?
-    for config_file, config_data in config_files.items():
-        print(config_file, config_data)
+    mocked_main = mocker.patch(
+        "salt_gnupg_rotate.cli.main",
+        return_value=2,
+        side_effect=exception,
+    )
 
     result = runner.invoke(
         cli.cli,
         args=args,
-        env=env,
         catch_exceptions=bool(expected_retcode),
     )
+
+    if expected_retcode and not exception:
+        mocked_main.assert_not_called()
+    else:
+        mocked_main.assert_called()
+
     print(result.output)
     assert result.exit_code == expected_retcode
