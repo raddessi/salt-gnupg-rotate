@@ -10,7 +10,7 @@ from typing import Any, ContextManager, Union
 import pytest
 
 from salt_gnupg_rotate.exceptions import DecryptionError
-from salt_gnupg_rotate.rotate import PartiallyEncryptedFile
+from salt_gnupg_rotate.rotate import PartiallyEncryptedFile, collect_file_paths
 
 
 SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
@@ -32,6 +32,7 @@ def test_PartiallyEncryptedFile_instance(mocker):
         "encrypted_file.gpg",
         "multiple_keys_in_yaml.sls",
         "one_key_in_yaml.sls",
+        "nonconforming_file_type.txt",
     ],
 )
 def salt_pillar_fpath(tmp_path_factory, request):
@@ -83,7 +84,12 @@ def test_PartiallyEncryptedFile_decrypt_ValueError(
         recipient="pytest",
     )
     file.find_encrypted_blocks()
-    with pytest.raises(ValueError):
+
+    if file.encrypted_blocks:
+        expectation = pytest.raises(ValueError)
+    else:
+        expectation = does_not_raise()
+    with expectation:
         file.decrypt()
 
 
@@ -113,7 +119,11 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_1(mocker, salt_pillar_fpath):
         recipient="pytest",
     )
     file.decrypt()
-    with pytest.raises(ValueError):
+    if file.encrypted_blocks:
+        expectation = pytest.raises(ValueError)
+    else:
+        expectation = does_not_raise()
+    with expectation:
         file.encrypt()
 
 
@@ -131,9 +141,13 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_2(mocker, salt_pillar_fpath):
         recipient="pytest",
     )
     file.decrypt()
-    # corrupt the replacement source data 
-    file.decrypted_blocks[0] = ("asdfasdf", *file.decrypted_blocks[0][1:])
-    with pytest.raises(ValueError):
+    if file.decrypted_blocks:
+        # corrupt the replacement source data
+        file.decrypted_blocks[0] = ("asdfasdf", *file.decrypted_blocks[0][1:])
+        expectation = pytest.raises(ValueError)
+    else:
+        expectation = does_not_raise()
+    with expectation:
         file.encrypt()
 
 
@@ -146,6 +160,11 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents(salt_pillar_fpath):
         recipient="pytest",
     )
     file.write_reencrypted_contents()
+    file.write_reencrypted_contents()
+
+
+def test_collect_file_paths(salt_pillar_fpath):
+    collect_file_paths(salt_pillar_fpath.rsplit("/", 1)[0])
 
 
 # def test_main_return_value(mocker):
