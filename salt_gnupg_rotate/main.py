@@ -86,6 +86,9 @@ def main(
         LOGGER.error(err)
     else:
         if write:
-            LOGGER.info(f"Success! Rotated encryption on blocks in {updated_count} files :rocket:", extra={"markup": True})
+            LOGGER.info(
+                f"Success! Rotated encryption on blocks in {updated_count} files :rocket:",
+                extra={"markup": True},
+            )
         else:
             LOGGER.info("Success! Pass '--write' to write out the changes")

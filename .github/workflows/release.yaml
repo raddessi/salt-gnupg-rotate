@@ -30,7 +30,6 @@ jobs:
           echo "release_version=$(poetry version --short)" >> $GITHUB_ENV
 
     outputs:
-
       release_version: ${{ env.release_version }}
 
   build:

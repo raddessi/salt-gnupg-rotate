@@ -4,12 +4,12 @@ name: TODOs on PRs
 on:
   push:
     branches:
-      - '**'
-      - '!main'
+      - "**"
+      - "!main"
   pull_request:
     branches:
-      - '**'
-      - '!main'
+      - "**"
+      - "!main"
 
 jobs:
   dry-run:
