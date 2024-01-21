@@ -21,9 +21,26 @@ from salt_gnupg_rotate import __version__
 from salt_gnupg_rotate.config import APP_NAME, DEFAULTS
 from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
+from salt_gnupg_rotate.exceptions import EncryptionError, DecryptionError
 
 
 @click.command()
+@click.option(
+    "-d",
+    "--dir",
+    "--directory",
+    "directory",
+    required=True,
+    type=click.STRING,
+    show_default=True,
+)
+@click.option(
+    "-r",
+    "--recipient",
+    required=True,
+    type=click.STRING,
+    show_default=True,
+)
 @click.option(
     "--decryption-gpg-homedir",
     default=DEFAULTS["decryption_gpg_homedir"],
@@ -37,21 +54,17 @@ from salt_gnupg_rotate.main import main
     show_default=True,
 )
 @click.option(
-    "-r",
-    "--recipient",
-    required=True,
-    type=click.STRING,
-    show_default=True,
-)
-@click.option(
-    "--dir",
-    required=True,
-    type=click.STRING,
+    "--write",
+    is_flag=True,
+    default=False,
+    required=False,
     show_default=True,
 )
 @click.option(
     "-l",
+    "--log",
     "--log-level",
+    "log_level",
     default=DEFAULTS["log_level"],
     type=click.Choice(choices=DEFAULTS["log_levels"], case_sensitive=False),
     show_default=True,
@@ -59,11 +72,12 @@ from salt_gnupg_rotate.main import main
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
 def cli(
-    dir: str,
+    directory: str,
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
     recipient: str,
     log_level: Union[str, int, None],
+    write: bool,
 ) -> int:
     """Easily rotate gnupg encryption keys.
     \f
@@ -78,18 +92,30 @@ def cli(
     """
     try:
         main(
-            dirpath=dir,
+            dirpath=directory,
             decryption_gpg_homedir=decryption_gpg_homedir,
             encryption_gpg_homedir=encryption_gpg_homedir,
             recipient=recipient,
+            write=write,
             log_level=log_level.upper() if isinstance(log_level, str) else log_level,
         )
+
     except NameError as err:
         LOGGER.critical(err)
         retcode = 1
-    except Exception as err:
+
+    except DecryptionError as err:
         LOGGER.critical(err)
+        retcode = 2
+
+    except EncryptionError as err:
+        LOGGER.critical(err)
+        retcode = 3
+
+    except Exception as err:
+        LOGGER.exception(err)
         retcode = 9
+
     else:
         retcode = 0
 

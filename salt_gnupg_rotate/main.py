@@ -25,6 +25,7 @@ def main(
     encryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
         "encryption_gpg_homedir", None
     ),
+    write: bool=False,
     log_level: Union[int, str, None, bool] = DEFAULTS["log_level"],
 ) -> int:
     """Main entrypoint.
@@ -75,12 +76,16 @@ def main(
 
     try:
         process_directory(
-            directory=dirpath,
+            dirpath=dirpath,
             decryption_gpg_keyring=decryption_gpg_keyring,
             encryption_gpg_keyring=encryption_gpg_keyring,
-            new_key_id=recipient,
+            recipient=recipient,
+            write=write,
         )
     except DecryptionError as err:
         LOGGER.error(err)
     else:
-        LOGGER.info("Success! :rocket:", extra={"markup": True})
+        if write:
+            LOGGER.info("Success! :rocket:", extra={"markup": True})
+        else:
+            LOGGER.info("Success! Pass '--write' to write out the changes")
