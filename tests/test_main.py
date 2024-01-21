@@ -5,11 +5,11 @@ from contextlib import ExitStack as does_not_raise
 from typing import Any, ContextManager, Union
 
 import pytest
-# import rich.console
 
-from salt_gnupg_rotate.main import main
 from salt_gnupg_rotate.exceptions import DecryptionError
+from salt_gnupg_rotate.main import main
 
+# import rich.console
 
 
 def test_main_return_value(mocker):
@@ -36,6 +36,7 @@ def test_main_return_value_on_write(mocker):
     )
     mocked_process_directory.assert_called()
 
+
 def test_main_gpg_keyring_missing_secret_key(mocker):
     mocked_gpg = mocker.patch("salt_gnupg_rotate.main.gnupg.GPG")
     mocked_gpg.side_effect = [
@@ -48,6 +49,7 @@ def test_main_gpg_keyring_missing_secret_key(mocker):
             recipient="pytest",
         )
 
+
 def test_main_decryption_error(mocker):
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
@@ -58,6 +60,7 @@ def test_main_decryption_error(mocker):
         recipient="pytest",
     )
     mocked_process_directory.assert_called()
+
 
 # @pytest.mark.parametrize(
 #     "app_name,log_level,expectation,expected_log_level",

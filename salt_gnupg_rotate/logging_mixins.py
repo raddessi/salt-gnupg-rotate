@@ -37,9 +37,7 @@ def create_logger(
     logger = logging.getLogger(f"{app_name}")
 
     logger.addHandler(
-        rich.logging.RichHandler(
-            rich_tracebacks=True, console=console, show_path=False
-        )
+        rich.logging.RichHandler(rich_tracebacks=True, console=console, show_path=False)
     )
 
     logger.setLevel((log_level or "NOTSET").upper())
