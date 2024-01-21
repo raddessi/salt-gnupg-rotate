@@ -1,4 +1,4 @@
-"""Tests for the `cli` module."""
+"""Tests for the `cli` submodule."""
 
 from typing import Mapping, Optional, Sequence, Union
 

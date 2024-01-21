@@ -1,66 +1,53 @@
-"""Tests for the `logger` module."""
+"""Tests for the `logging_mixins` submodule."""
 
 import logging
 from contextlib import ExitStack as does_not_raise
 from typing import Any, ContextManager, Union
 
 import pytest
+import rich.console
 
-from salt_gnupg_rotate.logger import create_logger
+from salt_gnupg_rotate.logging_mixins import add_trace_logging_level, create_logger
 
 
 @pytest.mark.parametrize(
-    "child_name,reset_handlers,log_level,expectation",
+    "app_name,log_level,expectation,expected_log_level",
     [
         pytest.param(
-            None,
-            False,
+            "mylogger",
             None,
             does_not_raise(),
+            "NOTSET",
             id="defaults",
         ),
         pytest.param(
-            "childlogger1",
-            False,
-            None,
+            "mylogger",
+            "debug",
             does_not_raise(),
-            id="child",
+            "DEBUG",
+            id="log_level_debug_lowercase",
         ),
         pytest.param(
-            None,
-            True,
-            None,
+            "mylogger",
+            "TRACE",
             does_not_raise(),
-            id="reset_handlers",
+            "TRACE",
+            id="log_level_trace",
         ),
         pytest.param(
-            "childlogger2",
-            True,
-            None,
-            does_not_raise(),
-            id="reset_handlers_on_child",
-        ),
-        pytest.param(
-            None,
-            False,
-            "INFO",
-            does_not_raise(),
-            id="log_level_INFO",
-        ),
-        pytest.param(
-            None,
-            False,
+            "mylogger",
             "FOO",
             pytest.raises(ValueError),
-            id="log_level_FOO",
+            None,
+            id="invalid_log_level",
         ),
     ],
 )
 def test_create_logger(
-    child_name: Union[str, None],
-    reset_handlers: bool,
+    app_name: str,
     log_level: Union[int, str],
     expectation: ContextManager[Any],
+    expected_log_level: str,
 ) -> None:
     """Verify that creating a logger works as expected.
 
@@ -72,11 +59,9 @@ def test_create_logger(
             this test
 
     """
+    console = rich.console.Console(stderr=True)
     with expectation:
-        logger = create_logger(
-            child_name=child_name, reset_handlers=reset_handlers, log_level=log_level
-        )
+        logger = create_logger(app_name=app_name, log_level=log_level, console=console)
 
         assert isinstance(logger, logging.Logger)
-        if child_name:
-            assert logger.name.endswith(f".{child_name}")
+        logger.trace("verify trace level logging works")
