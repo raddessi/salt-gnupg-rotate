@@ -5,12 +5,14 @@ import re
 from textwrap import dedent, indent
 from typing import List
 
+from gnupg import GPG
 from rich.markup import escape
 from rich.progress import track
 
 from salt_gnupg_rotate.config import CONSOLE
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.logger import LOGGER
+from salt_gnupg_rotate.logging_mixins import CustomLogger
 
 
 class PartiallyEncryptedFile:
@@ -21,7 +23,13 @@ class PartiallyEncryptedFile:
     decrypted_blocks = None
     reencrypted_contents = None
 
-    def __init__(self, path, decryption_gpg_keyring, encryption_gpg_keyring, recipient) -> None:
+    def __init__(
+        self,
+        path: str,
+        decryption_gpg_keyring: GPG,
+        encryption_gpg_keyring: GPG,
+        recipient: str,
+    ) -> None:
         """Constructor.
 
         Args:
@@ -43,9 +51,6 @@ class PartiallyEncryptedFile:
 
     def find_encrypted_blocks(self) -> None:
         """Find any encrypted blocks within the file."""
-        if self.encrypted_blocks is not None:
-            return
-
         pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
         self.encrypted_blocks = re.findall(pattern, self.contents, re.DOTALL)
 
@@ -67,6 +72,9 @@ class PartiallyEncryptedFile:
         """
         if self.encrypted_blocks is None:
             self.find_encrypted_blocks()
+
+        if not isinstance(self.encrypted_blocks, list):
+            return
 
         decrypted_blocks = []
         total_count = len(self.encrypted_blocks)
@@ -113,6 +121,9 @@ class PartiallyEncryptedFile:
         """
         if self.decrypted_blocks is None:
             self.decrypt()
+
+        if not isinstance(self.decrypted_blocks, list):
+            return
 
         new_contents = self.contents
         total_count = len(self.decrypted_blocks)
@@ -166,14 +177,15 @@ class PartiallyEncryptedFile:
         if self.reencrypted_contents is None:
             self.encrypt()
 
-        self.logger.debug(f"Writing updated file {self.path}")
-        with open(self.path, "w") as fdesc:
-            fdesc.seek(0)
-            fdesc.write(self.reencrypted_contents)
-            fdesc.truncate()
+        if isinstance(self.reencrypted_contents, str):
+            self.logger.debug(f"Writing updated file {self.path}")
+            with open(self.path, "w") as fdesc:
+                fdesc.seek(0)
+                fdesc.write(self.reencrypted_contents)
+                fdesc.truncate()
 
 
-def collect_file_paths(dirpath) -> List[str]:
+def collect_file_paths(dirpath: str) -> List[str]:
     fpaths = []
     for root, dirs, files in os.walk(dirpath):
         for name in files:
@@ -186,12 +198,12 @@ def collect_file_paths(dirpath) -> List[str]:
 
 
 def process_directory(
-    dirpath,
-    decryption_gpg_keyring,
-    encryption_gpg_keyring,
-    recipient,
-    write=False,
-    logger=LOGGER,
+    dirpath: str,
+    decryption_gpg_keyring: GPG,
+    encryption_gpg_keyring: GPG,
+    recipient: str,
+    write: bool = False,
+    logger: CustomLogger = LOGGER,
 ) -> int:
     files = []
     fpaths = collect_file_paths(dirpath=dirpath)

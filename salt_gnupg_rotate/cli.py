@@ -20,10 +20,10 @@ import click
 from salt_gnupg_rotate import __version__
 from salt_gnupg_rotate.config import (
     APP_NAME,
-    LOG_LEVEL,
-    LOG_LEVELS,
     DECRYPTION_GPG_HOMEDIR,
     ENCRYPTION_GPG_HOMEDIR,
+    LOG_LEVEL,
+    LOG_LEVELS,
 )
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.logger import LOGGER

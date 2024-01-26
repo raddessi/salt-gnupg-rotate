@@ -1,24 +1,25 @@
 """Additions to the logging module."""
 
 import logging
-import logging.handlers
-from typing import Optional, Union
+from typing import Any, Optional
 
 import rich.console
 import rich.logging
 
 TRACE_LEVEL_NUM = 5
 
+
 class CustomLogger(logging.Logger):
     """Logger module with a trace level added."""
 
-    def trace(self, message, *args, **kwargs) -> None:
+    def trace(self, message: str, *args: Any, **kwargs: Any) -> None:
         if self.isEnabledFor(TRACE_LEVEL_NUM):
             self._log(TRACE_LEVEL_NUM, message, args, **kwargs)
 
+
 def create_logger(
     app_name: str,
-    log_level: Optional[Union[int, str]] = None,
+    log_level: Optional[str] = None,
     console: Optional[rich.console.Console] = None,
 ) -> CustomLogger:
     """Set up the logger instance.
@@ -31,8 +32,19 @@ def create_logger(
     Returns:
         CustomLogger: Logger instance
 
+    Raises:
+        TypeError: If the logger class is not as expected
+
     """
-    logger = logging.getLogger(f"{app_name}")
+    logger = logging.getLogger(app_name)
+    if not isinstance(logger, CustomLogger):
+        logging.setLoggerClass(CustomLogger)
+        logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
+
+        logger = logging.getLogger(app_name)
+
+    if not isinstance(logger, CustomLogger):
+        raise TypeError(f"Logger instance not of type CustomLogger: {type(logger)}")
 
     logger.addHandler(
         rich.logging.RichHandler(rich_tracebacks=True, console=console, show_path=False)
@@ -41,8 +53,3 @@ def create_logger(
     logger.setLevel((log_level or "NOTSET").upper())
 
     return logger
-
-
-
-logging.setLoggerClass(CustomLogger)
-logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")

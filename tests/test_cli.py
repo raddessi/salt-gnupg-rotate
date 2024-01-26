@@ -1,11 +1,10 @@
 """Tests for the `salt_gnupg_rotate.cli` submodule."""
 
 from typing import Optional, Sequence, Union
-from pytest_mock import MockerFixture
-
 
 import pytest
 from click.testing import CliRunner
+from pytest_mock import MockerFixture
 
 from salt_gnupg_rotate import cli
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError

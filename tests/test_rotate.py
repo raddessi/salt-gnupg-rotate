@@ -4,15 +4,15 @@ import logging
 import os
 import shutil
 from contextlib import nullcontext
-from typing import Any, Union
-from _pytest.python_api import RaisesContext
-from _pytest.tmpdir import TempPathFactory
-from _pytest.fixtures import FixtureRequest
 from pathlib import Path
-from pytest_mock import MockerFixture
+from typing import Any, Union
 
 import gnupg
 import pytest
+from _pytest.fixtures import FixtureRequest
+from _pytest.python_api import RaisesContext
+from _pytest.tmpdir import TempPathFactory
+from pytest_mock import MockerFixture
 
 from salt_gnupg_rotate.exceptions import DecryptionError
 from salt_gnupg_rotate.rotate import (
@@ -43,7 +43,9 @@ def test_PartiallyEncryptedFile_instance(mocker: MockerFixture) -> None:
         "nonconforming_file_type.txt",
     ],
 )
-def salt_pillar_fpath(tmp_path_factory: TempPathFactory, request: FixtureRequest) -> str:
+def salt_pillar_fpath(
+    tmp_path_factory: TempPathFactory, request: FixtureRequest
+) -> str:
     temp_fpath = os.path.join(tmp_path_factory.mktemp("data"), request.param)
     shutil.copy(os.path.join(SALT_PILLAR_DATADIR, request.param), temp_fpath)
     return temp_fpath

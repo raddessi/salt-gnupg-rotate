@@ -8,9 +8,13 @@ import rich
 import rich.pretty
 import rich.traceback
 
-from salt_gnupg_rotate.config import LOG_LEVEL, DECRYPTION_GPG_HOMEDIR, ENCRYPTION_GPG_HOMEDIR
-from salt_gnupg_rotate.logger import LOGGER
+from salt_gnupg_rotate.config import (
+    DECRYPTION_GPG_HOMEDIR,
+    ENCRYPTION_GPG_HOMEDIR,
+    LOG_LEVEL,
+)
 from salt_gnupg_rotate.exceptions import DecryptionError
+from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.rotate import process_directory
 
 rich.pretty.install()

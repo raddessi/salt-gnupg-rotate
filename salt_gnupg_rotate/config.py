@@ -1,11 +1,11 @@
 """Configuration."""
 
 import os
-from typing import Mapping, Union, List
+from typing import List, Mapping, Union
 
 from rich.console import Console
 
-from salt_gnupg_rotate.logging_mixins import logging
+from salt_gnupg_rotate.logging_mixins import logging  # type: ignore[attr-defined]
 
 APP_NAME = "salt_gnupg_rotate"
 ENV_APP_NAME = "SALT_GNUPG_ROTATE"
@@ -16,9 +16,7 @@ LOG_LEVELS: List[str] = list(
         str.lower,
         [
             level_name
-            for level, level_name in sorted(
-                logging._levelToName.items(), reverse=True
-            )
+            for _, level_name in sorted(logging._levelToName.items(), reverse=True)
         ],
     )
 )  # pylint: disable=protected-access

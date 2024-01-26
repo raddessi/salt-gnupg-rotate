@@ -3,9 +3,9 @@
 import logging
 from contextlib import ExitStack as does_not_raise
 from typing import Any, ContextManager, Union
-from pytest_mock import MockerFixture
 
 import pytest
+from pytest_mock import MockerFixture
 
 from salt_gnupg_rotate.exceptions import DecryptionError
 from salt_gnupg_rotate.main import main
