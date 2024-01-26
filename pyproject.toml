@@ -143,7 +143,6 @@ ignore-paths = []
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = [
-    "bad-continuation",  # pylint isn't compat with black on this one
     "duplicate-code",  # not possible to disable inline currently
     "fixme",  # these get converted in to github issues
     "import-error",  # pre-commit does not have all the package deps available, yet
