@@ -21,7 +21,16 @@ class PartiallyEncryptedFile:
     reencrypted_contents = None
 
     def __init__(self, path, decryption_gpg_keyring, encryption_gpg_keyring, recipient):
-        """Constructor."""
+        """Constructor.
+
+        Args:
+            path: The path to the file
+            decryption_gpg_keyring: The keyring that should be used to decrypt the file
+            encryption_gpg_keyring: The keyring that should be used to encrypt the file
+            recipient: The name of the recipient of the key in the
+                encryption_gpg_keyring that the data should be re-encrypted for
+
+        """
         self.path = path
         self.decryption_gpg_keyring = decryption_gpg_keyring
         self.encryption_gpg_keyring = encryption_gpg_keyring
@@ -31,11 +40,10 @@ class PartiallyEncryptedFile:
         with open(self.path) as fdesc:
             self.contents = fdesc.read()
 
-    # TODO: change to getter
     def find_encrypted_blocks(self):
         """Find any encrypted blocks within the file."""
         if self.encrypted_blocks is not None:
-            return self.encrypted_blocks
+            return
 
         pattern = r"\n?(\s*?-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----)"
         self.encrypted_blocks = re.findall(pattern, self.contents, re.DOTALL)
@@ -49,10 +57,13 @@ class PartiallyEncryptedFile:
                 f"Block {count} of {total_count} in file {self.path} before decryption:\n{escape(encrypted_block)}"
             )
 
-        return self.encrypted_blocks
-
     def decrypt(self):
-        """Decrypt any encrypted blocks in the file."""
+        """Decrypt any encrypted blocks in the file.
+
+        Raises:
+            DecryptionError: If there was an error during decryption
+
+        """
         if self.encrypted_blocks is None:
             self.find_encrypted_blocks()
 
@@ -74,7 +85,7 @@ class PartiallyEncryptedFile:
             )
 
             if not decrypted_block.ok:
-                raise ValueError(
+                raise DecryptionError(
                     f"Failed to decrypt block in {self.path}: {decrypted_block.problems[0]['status']}"
                 )
 
@@ -93,7 +104,12 @@ class PartiallyEncryptedFile:
         self.decrypted_blocks = decrypted_blocks
 
     def encrypt(self):
-        """Re-encrypt the decrypted blocks from the file."""
+        """Re-encrypt the decrypted blocks from the file.
+
+        Raises:
+            EncryptionError: If there was an error during encryption
+
+        """
         if self.decrypted_blocks is None:
             self.decrypt()
 
@@ -110,7 +126,7 @@ class PartiallyEncryptedFile:
             )
 
             if not reencrypted_data.ok:
-                raise ValueError(
+                raise EncryptionError(
                     f"Failed to encrypt block in {self.path}: {reencrypted_data.problems[0]['status']}"
                 )
 
@@ -133,7 +149,7 @@ class PartiallyEncryptedFile:
             )
             # check if nothing was changed incorrectly
             if proposed_change == new_contents:
-                raise ValueError(
+                raise EncryptionError(
                     f"Attempt to replace block {count} of {total_count} in file {self.path} failed"
                 )
             new_contents = proposed_change

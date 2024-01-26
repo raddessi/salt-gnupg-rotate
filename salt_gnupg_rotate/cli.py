@@ -33,6 +33,30 @@ from salt_gnupg_rotate.main import main
     required=True,
     type=click.STRING,
     show_default=True,
+    help=(
+        "The directory of encrypted data to recursively re-encrypt encrypted blocks "
+        "within."
+    ),
+)
+@click.option(
+    "--decryption-gpg-homedir",
+    default=DEFAULTS["decryption_gpg_homedir"],
+    required=False,
+    show_default=True,
+    help=(
+        "The path of the directory of the gnupg keyring that should be used for "
+        "decryption."
+    ),
+)
+@click.option(
+    "--encryption-gpg-homedir",
+    default=DEFAULTS["encryption_gpg_homedir"],
+    required=False,
+    show_default=True,
+    help=(
+        "The path of the directory of the gnupg keyring that should be used for "
+        "encryption."
+    ),
 )
 @click.option(
     "-r",
@@ -40,18 +64,7 @@ from salt_gnupg_rotate.main import main
     required=True,
     type=click.STRING,
     show_default=True,
-)
-@click.option(
-    "--decryption-gpg-homedir",
-    default=DEFAULTS["decryption_gpg_homedir"],
-    required=False,
-    show_default=True,
-)
-@click.option(
-    "--encryption-gpg-homedir",
-    default=DEFAULTS["encryption_gpg_homedir"],
-    required=False,
-    show_default=True,
+    help="The name of the recipient key to use in the encryption keyring.",
 )
 @click.option(
     "--write",
@@ -59,6 +72,10 @@ from salt_gnupg_rotate.main import main
     default=False,
     required=False,
     show_default=True,
+    help=(
+        "Write the re-encrypted data back out to disk. If not passed then no changes "
+        "will be made."
+    ),
 )
 @click.option(
     "-l",
@@ -68,6 +85,7 @@ from salt_gnupg_rotate.main import main
     default=DEFAULTS["log_level"],
     type=click.Choice(choices=DEFAULTS["log_levels"], case_sensitive=False),
     show_default=True,
+    help="The logging verbosity level to use",
 )
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
@@ -79,15 +97,20 @@ def cli(
     log_level: Union[str, int, None],
     write: bool,
 ) -> int:
-    """Easily rotate gnupg encryption keys.
+    """Easily rotate gnupg encryption keys of fully or partially encrypted files.
     \f
     Args:
-        required_config_key: A key that is required but has no default value
-        optional_config_key: A key that is required and has a default value
+        directory: The directory path to search for files within that should be
+            re-encrypted
+        recipient: The recipient name of the gpg key in the encryption keyring to use
+        decryption_gpg_homedir: The directory path of the gnupg keyring to use for
+            decryption
+        encryption_gpg_homedir: The directory path of the gnupg keyring to use for
+            encryption
+        recipient: The recipient name of the gpg key in the encryption keyring to use
         log_level: The logging level name or integer to use.
-
-    Returns:
-        int: An exit code
+        write: If True, write out the changes to disk. If False, only check that
+            re-encryption succeeds in memory and make no changes to disk
 
     """
     try:

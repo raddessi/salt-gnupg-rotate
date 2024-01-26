@@ -67,14 +67,13 @@ def test_cli(
     exception,
     expected_retcode: int,
 ) -> None:
-    """Verify it runs as expected.
+    """Verify the CLI runs as expected.
 
     Args:
+        mocker: The pytest-mock mocker fixture
         runner: The Click CLI test runner
         args: Any args to be passed to the cli runner
-        env: Any env variables that should be set for the cli runner
-        config_files: A dict of file path names to dicts containing configuration
-            variables that would have been read from those files
+        exception: The side effect exception to raise from within the call if desired
         expected_retcode: The expected exit status from the invocation
 
     """

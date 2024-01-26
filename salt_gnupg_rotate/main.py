@@ -31,12 +31,19 @@ def main(
     """Main entrypoint.
 
     Args:
-        required_config_key: A key that is required but has no default value
-        optional_config_key: A key that is required and has a default value
+        dirpath: The directory path to search for files within that should be
+            re-encrypted
+        recipient: The recipient name of the gpg key in the encryption keyring to use
+        decryption_gpg_homedir: The directory path of the gnupg keyring to use for
+            decryption
+        encryption_gpg_homedir: The directory path of the gnupg keyring to use for
+            encryption
+        write: If True, write out the changes to disk. If False, only check that
+            re-encryption succeeds in memory and make no changes to disk
         log_level: The logging level name or integer to use.
 
-    Returns:
-        int: An exit code
+    Raises:
+        NameError: If the named recipient key is not found in the encryption keyring
 
     """
     LOGGER.setLevel(log_level.upper())

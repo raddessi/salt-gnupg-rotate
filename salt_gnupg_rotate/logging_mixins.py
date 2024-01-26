@@ -9,6 +9,7 @@ import rich.logging
 
 
 def add_trace_logging_level():
+    """Add a trace logging level to the logging module."""
     trace_level_num = 5
     logging.addLevelName(trace_level_num, "TRACE")
 
@@ -29,6 +30,7 @@ def create_logger(
     Args:
         app_name: The name of the logger to create
         log_level: The logging level name or integer to use.
+        console: The rich module console to use for output
 
     Returns:
         logging.Logger: Logger instance

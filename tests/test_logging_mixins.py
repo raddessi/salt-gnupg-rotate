@@ -52,11 +52,11 @@ def test_create_logger(
     """Verify that creating a logger works as expected.
 
     Args:
-        child_name: The name of the child logger to set up, if a child is desired
-        reset_handlers: True if the existing handlers should be reset
+        app_name: The name of the application
         log_level: The logging level to use
         expectation: The context manager for the expected exception raising condition of
             this test
+        expected_log_level: The expected log level the logger shoudl be set to
 
     """
     console = rich.console.Console(stderr=True)
