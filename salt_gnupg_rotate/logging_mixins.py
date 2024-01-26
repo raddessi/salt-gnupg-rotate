@@ -7,24 +7,20 @@ from typing import Optional, Union
 import rich.console
 import rich.logging
 
+TRACE_LEVEL_NUM = 5
 
-def add_trace_logging_level():
-    """Add a trace logging level to the logging module."""
-    trace_level_num = 5
-    logging.addLevelName(trace_level_num, "TRACE")
+class CustomLogger(logging.Logger):
+    """Logger module with a trace level added."""
 
-    def trace(self, message, *args, **kwargs):
-        if self.isEnabledFor(trace_level_num):
-            self._log(trace_level_num, message, args, **kwargs)
-
-    logging.Logger.trace = trace
-
+    def trace(self, message, *args, **kwargs) -> None:
+        if self.isEnabledFor(TRACE_LEVEL_NUM):
+            self._log(TRACE_LEVEL_NUM, message, args, **kwargs)
 
 def create_logger(
     app_name: str,
     log_level: Optional[Union[int, str]] = None,
     console: Optional[rich.console.Console] = None,
-) -> logging.Logger:
+) -> CustomLogger:
     """Set up the logger instance.
 
     Args:
@@ -33,7 +29,7 @@ def create_logger(
         console: The rich module console to use for output
 
     Returns:
-        logging.Logger: Logger instance
+        CustomLogger: Logger instance
 
     """
     logger = logging.getLogger(f"{app_name}")
@@ -47,4 +43,6 @@ def create_logger(
     return logger
 
 
-add_trace_logging_level()
+
+logging.setLoggerClass(CustomLogger)
+logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")

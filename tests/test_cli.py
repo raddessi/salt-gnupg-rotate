@@ -1,6 +1,8 @@
 """Tests for the `salt_gnupg_rotate.cli` submodule."""
 
-from typing import Mapping, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
+from pytest_mock import MockerFixture
+
 
 import pytest
 from click.testing import CliRunner
@@ -61,10 +63,10 @@ from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
     ],
 )
 def test_cli(
-    mocker,
+    mocker: MockerFixture,
     runner: CliRunner,
     args: Optional[Union[Sequence[str], str]],
-    exception,
+    exception: Union[Exception, None],
     expected_retcode: int,
 ) -> None:
     """Verify the CLI runs as expected.

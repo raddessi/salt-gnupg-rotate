@@ -3,6 +3,7 @@
 import os
 import re
 from textwrap import dedent, indent
+from typing import List
 
 from rich.markup import escape
 from rich.progress import track
@@ -20,7 +21,7 @@ class PartiallyEncryptedFile:
     decrypted_blocks = None
     reencrypted_contents = None
 
-    def __init__(self, path, decryption_gpg_keyring, encryption_gpg_keyring, recipient):
+    def __init__(self, path, decryption_gpg_keyring, encryption_gpg_keyring, recipient) -> None:
         """Constructor.
 
         Args:
@@ -40,7 +41,7 @@ class PartiallyEncryptedFile:
         with open(self.path) as fdesc:
             self.contents = fdesc.read()
 
-    def find_encrypted_blocks(self):
+    def find_encrypted_blocks(self) -> None:
         """Find any encrypted blocks within the file."""
         if self.encrypted_blocks is not None:
             return
@@ -57,7 +58,7 @@ class PartiallyEncryptedFile:
                 f"Block {count} of {total_count} in file {self.path} before decryption:\n{escape(encrypted_block)}"
             )
 
-    def decrypt(self):
+    def decrypt(self) -> None:
         """Decrypt any encrypted blocks in the file.
 
         Raises:
@@ -103,7 +104,7 @@ class PartiallyEncryptedFile:
 
         self.decrypted_blocks = decrypted_blocks
 
-    def encrypt(self):
+    def encrypt(self) -> None:
         """Re-encrypt the decrypted blocks from the file.
 
         Raises:
@@ -160,7 +161,7 @@ class PartiallyEncryptedFile:
 
         self.reencrypted_contents = new_contents
 
-    def write_reencrypted_contents(self):
+    def write_reencrypted_contents(self) -> None:
         """Write the file back to disk after re-encrypting any encrypted blocks."""
         if self.reencrypted_contents is None:
             self.encrypt()
@@ -172,7 +173,7 @@ class PartiallyEncryptedFile:
             fdesc.truncate()
 
 
-def collect_file_paths(dirpath):
+def collect_file_paths(dirpath) -> List[str]:
     fpaths = []
     for root, dirs, files in os.walk(dirpath):
         for name in files:
@@ -191,7 +192,7 @@ def process_directory(
     recipient,
     write=False,
     logger=LOGGER,
-):
+) -> int:
     files = []
     fpaths = collect_file_paths(dirpath=dirpath)
 

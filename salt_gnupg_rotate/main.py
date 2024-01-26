@@ -8,9 +8,10 @@ import rich
 import rich.pretty
 import rich.traceback
 
-from salt_gnupg_rotate.config import DEFAULTS
+from salt_gnupg_rotate.config import LOG_LEVEL, DECRYPTION_GPG_HOMEDIR, ENCRYPTION_GPG_HOMEDIR
 from salt_gnupg_rotate.logger import LOGGER
-from salt_gnupg_rotate.rotate import DecryptionError, process_directory
+from salt_gnupg_rotate.exceptions import DecryptionError
+from salt_gnupg_rotate.rotate import process_directory
 
 rich.pretty.install()
 rich.traceback.install()
@@ -19,14 +20,10 @@ rich.traceback.install()
 def main(
     dirpath: str,
     recipient: str,
-    decryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
-        "decryption_gpg_homedir", None
-    ),
-    encryption_gpg_homedir: Union[int, str, None, bool] = DEFAULTS.get(
-        "encryption_gpg_homedir", None
-    ),
+    decryption_gpg_homedir: str = DECRYPTION_GPG_HOMEDIR,
+    encryption_gpg_homedir: str = ENCRYPTION_GPG_HOMEDIR,
     write: bool = False,
-    log_level: Union[int, str, bool] = DEFAULTS["log_level"],
+    log_level: str = LOG_LEVEL,
 ) -> None:
     """Main entrypoint.
 

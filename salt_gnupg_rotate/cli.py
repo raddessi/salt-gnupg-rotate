@@ -18,7 +18,13 @@ from typing import Union
 import click
 
 from salt_gnupg_rotate import __version__
-from salt_gnupg_rotate.config import APP_NAME, DEFAULTS
+from salt_gnupg_rotate.config import (
+    APP_NAME,
+    LOG_LEVEL,
+    LOG_LEVELS,
+    DECRYPTION_GPG_HOMEDIR,
+    ENCRYPTION_GPG_HOMEDIR,
+)
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
@@ -40,7 +46,7 @@ from salt_gnupg_rotate.main import main
 )
 @click.option(
     "--decryption-gpg-homedir",
-    default=DEFAULTS["decryption_gpg_homedir"],
+    default=DECRYPTION_GPG_HOMEDIR,
     required=False,
     show_default=True,
     help=(
@@ -50,7 +56,7 @@ from salt_gnupg_rotate.main import main
 )
 @click.option(
     "--encryption-gpg-homedir",
-    default=DEFAULTS["encryption_gpg_homedir"],
+    default=ENCRYPTION_GPG_HOMEDIR,
     required=False,
     show_default=True,
     help=(
@@ -82,8 +88,8 @@ from salt_gnupg_rotate.main import main
     "--log",
     "--log-level",
     "log_level",
-    default=DEFAULTS["log_level"],
-    type=click.Choice(choices=DEFAULTS["log_levels"], case_sensitive=False),
+    default=LOG_LEVEL,
+    type=click.Choice(choices=LOG_LEVELS, case_sensitive=False),
     show_default=True,
     help="The logging verbosity level to use",
 )
@@ -94,7 +100,7 @@ def cli(
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
     recipient: str,
-    log_level: Union[str, int, None],
+    log_level: str,
     write: bool,
 ) -> int:
     """Easily rotate gnupg encryption keys of fully or partially encrypted files.
@@ -120,7 +126,7 @@ def cli(
             encryption_gpg_homedir=encryption_gpg_homedir,
             recipient=recipient,
             write=write,
-            log_level=log_level.upper() if isinstance(log_level, str) else log_level,
+            log_level=log_level.upper(),
         )
 
     except NameError as err:
