@@ -1,7 +1,7 @@
 """Configuration."""
 
 import os
-from typing import List, Mapping, Union
+from typing import List
 
 from rich.console import Console
 
@@ -16,9 +16,10 @@ LOG_LEVELS: List[str] = list(
         str.lower,
         [
             level_name
+            # pylint: disable=protected-access
             for _, level_name in sorted(logging._levelToName.items(), reverse=True)
         ],
     )
-)  # pylint: disable=protected-access
+)
 DECRYPTION_GPG_HOMEDIR: str = os.path.expanduser("~/.gnupg")
 ENCRYPTION_GPG_HOMEDIR: str = os.path.expanduser("~/.gnupg")

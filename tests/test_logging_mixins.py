@@ -2,7 +2,7 @@
 
 import logging
 from contextlib import ExitStack as does_not_raise
-from typing import Any, ContextManager, Union
+from typing import Any, ContextManager
 
 import pytest
 import rich.console
@@ -64,6 +64,7 @@ def test_create_logger(
         logger = create_logger(app_name=app_name, log_level=log_level, console=console)
 
         assert isinstance(logger, logging.Logger)
+        # pylint: disable=protected-access
         assert logging._levelToName[logger.level] == expected_log_level
 
         logger.trace("verify trace level logging works")

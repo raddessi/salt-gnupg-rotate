@@ -1,6 +1,5 @@
 """Main code."""
 import os
-from typing import Union
 
 # pylint: disable=import-error
 import gnupg
@@ -21,7 +20,7 @@ rich.pretty.install()
 rich.traceback.install()
 
 
-def main(
+def main(  # pylint: disable=too-many-arguments
     dirpath: str,
     recipient: str,
     decryption_gpg_homedir: str = DECRYPTION_GPG_HOMEDIR,
@@ -72,8 +71,9 @@ def main(
     # check the recipient secret key exists
     if encryption_gpg_keyring.list_keys(secret=True, keys=recipient):
         LOGGER.debug(
-            f"Secret key for recipient '{recipient}' found in keyring at "
-            f"{encryption_gpg_homedir} :thumbs_up:",
+            "Secret key for recipient '%s' found in keyring at %s :thumbs_up:",
+            recipient,
+            encryption_gpg_homedir,
             extra={"markup": True},
         )
     else:
@@ -95,8 +95,8 @@ def main(
     else:
         if write:
             LOGGER.info(
-                f"Success! Rotated encryption on blocks in {updated_count} files "
-                ":rocket:",
+                "Success! Rotated encryption on blocks in %s files :rocket:",
+                updated_count,
                 extra={"markup": True},
             )
         else:

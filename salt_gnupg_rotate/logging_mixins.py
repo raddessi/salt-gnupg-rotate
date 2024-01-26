@@ -25,6 +25,10 @@ class CustomLogger(logging.Logger):
             self._log(TRACE_LEVEL_NUM, message, args, **kwargs)
 
 
+logging.setLoggerClass(CustomLogger)
+logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
+
+
 def create_logger(
     app_name: str,
     log_level: Optional[str] = None,
@@ -45,11 +49,6 @@ def create_logger(
 
     """
     logger = logging.getLogger(app_name)
-    if not isinstance(logger, CustomLogger):
-        logging.setLoggerClass(CustomLogger)
-        logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
-
-        logger = logging.getLogger(app_name)
 
     if not isinstance(logger, CustomLogger):
         raise TypeError(f"Logger instance not of type CustomLogger: {type(logger)}")

@@ -15,7 +15,7 @@ from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.logging_mixins import CustomLogger
 
 
-class PartiallyEncryptedFile:
+class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
     """A file that is either partially or fully encrypted."""
 
     encrypted_blocks = None
@@ -45,8 +45,8 @@ class PartiallyEncryptedFile:
         self.encryption_gpg_keyring = encryption_gpg_keyring
         self.recipient = recipient
 
-        self.logger.info(f"Loading file {path}")
-        with open(self.path) as fdesc:
+        self.logger.info("Loading file %s", path)
+        with open(self.path, encoding="utf-8") as fdesc:
             self.contents = fdesc.read()
 
     def find_encrypted_blocks(self) -> None:
@@ -55,12 +55,18 @@ class PartiallyEncryptedFile:
         self.encrypted_blocks = re.findall(pattern, self.contents, re.DOTALL)
 
         self.logger.debug(
-            f"Found {len(self.encrypted_blocks)} encrypted blocks in file {self.path}"
+            "Found %s encrypted blocks in file %s",
+            len(self.encrypted_blocks),
+            self.path,
         )
         total_count = len(self.encrypted_blocks)
         for count, encrypted_block in enumerate(self.encrypted_blocks, start=1):
             self.logger.trace(
-                f"Block {count} of {total_count} in file {self.path} before decryption:\n{escape(encrypted_block)}"
+                "Block %s of %s in file %s before decryption:\n%s",
+                count,
+                total_count,
+                self.path,
+                escape(encrypted_block),
             )
 
     def decrypt(self) -> None:
@@ -80,7 +86,10 @@ class PartiallyEncryptedFile:
         total_count = len(self.encrypted_blocks)
         for count, encrypted_block in enumerate(self.encrypted_blocks, start=1):
             self.logger.debug(
-                f"Decrypting block {count} of {total_count} in file {self.path}"
+                "Decrypting block %s of %s in file %s",
+                count,
+                total_count,
+                self.path,
             )
             line_length_before = max(len(line) for line in encrypted_block.splitlines())
             line_length_after = max(
@@ -95,11 +104,13 @@ class PartiallyEncryptedFile:
 
             if not decrypted_block.ok:
                 raise DecryptionError(
-                    f"Failed to decrypt block in {self.path}: {decrypted_block.problems[0]['status']}"
+                    f"Failed to decrypt block in {self.path}: "
+                    f"{decrypted_block.problems[0]['status']}"
                 )
 
             self.logger.trace(
-                f"Block after decryption (some characters may not be printable):\n{escape(decrypted_block.data.decode())}"
+                "Block after decryption (some characters may not be printable):\n%s",
+                escape(decrypted_block.data.decode()),
             )
             decrypted_blocks.append(
                 (
@@ -129,7 +140,7 @@ class PartiallyEncryptedFile:
         total_count = len(self.decrypted_blocks)
         for count, (
             encrypted_block,
-            encrypted_stripped_block,
+            _,
             decrypted_block,
             padding_size,
         ) in enumerate(self.decrypted_blocks, start=1):
@@ -139,7 +150,8 @@ class PartiallyEncryptedFile:
 
             if not reencrypted_data.ok:
                 raise EncryptionError(
-                    f"Failed to encrypt block in {self.path}: {reencrypted_data.problems[0]['status']}"
+                    f"Failed to encrypt block in {self.path}: "
+                    f"{reencrypted_data.problems[0]['status']}"
                 )
 
             if padding_size:
@@ -150,10 +162,17 @@ class PartiallyEncryptedFile:
                 reencrypted_padded_block = str(reencrypted_data)
 
             self.logger.debug(
-                f"Re-encrypted block {count} of {total_count} in file {self.path}"
+                "Re-encrypted block %s of %s in file %s",
+                count,
+                total_count,
+                self.path,
             )
             self.logger.trace(
-                f"Block {count} of {total_count} in file {self.path} after re-encryption:\n{escape(reencrypted_padded_block)}"
+                "Block %s of %s in file %s after re-encryption:\n%s",
+                count,
+                total_count,
+                self.path,
+                escape(reencrypted_padded_block),
             )
 
             proposed_change = new_contents.replace(
@@ -162,12 +181,14 @@ class PartiallyEncryptedFile:
             # check if nothing was changed incorrectly
             if proposed_change == new_contents:
                 raise EncryptionError(
-                    f"Attempt to replace block {count} of {total_count} in file {self.path} failed"
+                    f"Attempt to replace block {count} of {total_count} in file "
+                    f"{self.path} failed"
                 )
             new_contents = proposed_change
 
         self.logger.trace(
-            f"Proposed contents of file {self.path} after re-encryption:\n{new_contents}"
+            f"Proposed contents of file {self.path} after re-encryption:\n"
+            f"{new_contents}"
         )
 
         self.reencrypted_contents = new_contents
@@ -178,16 +199,24 @@ class PartiallyEncryptedFile:
             self.encrypt()
 
         if isinstance(self.reencrypted_contents, str):
-            self.logger.debug(f"Writing updated file {self.path}")
-            with open(self.path, "w") as fdesc:
+            self.logger.debug("Writing updated file %s", self.path)
+            with open(self.path, "w", encoding="utf-8") as fdesc:
                 fdesc.seek(0)
                 fdesc.write(self.reencrypted_contents)
                 fdesc.truncate()
 
 
 def collect_file_paths(dirpath: str) -> List[str]:
+    """Find any supported files that we should search for encrypted blocks in.
+
+    Args:
+        dirpath: The directory path to search for files within
+
+    Returns:
+        list: Of str file paths
+    """
     fpaths = []
-    for root, dirs, files in os.walk(dirpath):
+    for root, _, files in os.walk(dirpath):
         for name in files:
             if name.rsplit(".", 1)[-1] not in ["sls", "gpg"]:
                 continue
@@ -197,7 +226,7 @@ def collect_file_paths(dirpath: str) -> List[str]:
     return fpaths
 
 
-def process_directory(
+def process_directory(  # pylint: disable=too-many-arguments
     dirpath: str,
     decryption_gpg_keyring: GPG,
     encryption_gpg_keyring: GPG,
@@ -205,6 +234,25 @@ def process_directory(
     write: bool = False,
     logger: CustomLogger = LOGGER,
 ) -> int:
+    """Recursively search for and re-encrypt encrypted blocks in files.
+
+    Args:
+        dirpath: The directory path to search for files within that should be
+            re-encrypted
+        decryption_gpg_keyring: The gnupg keyring to use for decryption
+        encryption_gpg_keyring: The gnupg keyring to use for encryption
+        recipient: The recipient name of the gpg key in the encryption keyring to use
+        write: If True, write out the changes to disk. If False, only check that
+            re-encryption succeeds in memory and make no changes to disk
+        logger: The logger instance to use
+
+    Returns:
+        int: The number of files that were or would have been updated
+
+    Raises:
+        DecryptionError: If there was an error decrypting data
+        EncryptionError: If there was an error encrypting data
+    """
     files = []
     fpaths = collect_file_paths(dirpath=dirpath)
 
@@ -224,7 +272,7 @@ def process_directory(
     for file in track(files, description="Decrypting...", console=CONSOLE):
         try:
             file.decrypt()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-except
             logger.exception(err)
             decryption_success = False
     if not decryption_success:
@@ -235,7 +283,7 @@ def process_directory(
     for file in track(files, description="Re-encrypting...", console=CONSOLE):
         try:
             file.encrypt()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-except
             logger.exception(err)
             reencryption_success = False
     if not reencryption_success:
@@ -247,7 +295,7 @@ def process_directory(
         for file in track(files, description="Writing...", console=CONSOLE):
             try:
                 file.write_reencrypted_contents()
-            except Exception as err:
+            except Exception as err:  # pylint: disable=broad-except
                 logger.exception(err)
                 writes_success = False
         if not writes_success:

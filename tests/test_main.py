@@ -1,9 +1,5 @@
 """Tests for the `salt_gnupg_rotate.main` submodule."""
 
-import logging
-from contextlib import ExitStack as does_not_raise
-from typing import Any, ContextManager, Union
-
 import pytest
 from pytest_mock import MockerFixture
 
@@ -12,6 +8,11 @@ from salt_gnupg_rotate.main import main
 
 
 def test_main_return_value(mocker: MockerFixture) -> None:
+    """Verify that main returns as expected.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
         return_value=2,
@@ -24,6 +25,11 @@ def test_main_return_value(mocker: MockerFixture) -> None:
 
 
 def test_main_return_value_on_write(mocker: MockerFixture) -> None:
+    """Verify that main returns as expected when write=True.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
         return_value=2,
@@ -37,6 +43,11 @@ def test_main_return_value_on_write(mocker: MockerFixture) -> None:
 
 
 def test_main_gpg_keyring_missing_secret_key(mocker: MockerFixture) -> None:
+    """Verify that main raises as expected when a secret key is missing.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
     mocked_gpg = mocker.patch("salt_gnupg_rotate.main.gnupg.GPG")
     mocked_gpg.side_effect = [
         mocker.Mock(),
@@ -50,6 +61,11 @@ def test_main_gpg_keyring_missing_secret_key(mocker: MockerFixture) -> None:
 
 
 def test_main_decryption_error(mocker: MockerFixture) -> None:
+    """Verify that main raises as expected on a decryption error.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
         side_effect=DecryptionError,

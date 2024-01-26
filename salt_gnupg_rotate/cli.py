@@ -11,10 +11,8 @@
 #   there's no `salt_gnupg_rotate.__main__` in `sys.modules`.
 
 """CLI interactions."""
-import logging
-from typing import Union
+import sys
 
-# pylint: disable=import-error
 import click
 
 from salt_gnupg_rotate import __version__
@@ -95,7 +93,7 @@ from salt_gnupg_rotate.main import main
 )
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
-def cli(
+def cli(  # pylint: disable=too-many-arguments
     directory: str,
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
@@ -141,11 +139,11 @@ def cli(
         LOGGER.critical(err)
         retcode = 3
 
-    except Exception as err:
+    except Exception as err:  # pylint: disable=broad-except
         LOGGER.exception(err)
         retcode = 9
 
     else:
         retcode = 0
 
-    exit(retcode)
+    sys.exit(retcode)
