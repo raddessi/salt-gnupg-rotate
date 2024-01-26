@@ -13,6 +13,14 @@ class CustomLogger(logging.Logger):
     """Logger module with a trace level added."""
 
     def trace(self, message: str, *args: Any, **kwargs: Any) -> None:
+        """Emit a trace log message.
+
+        Args:
+            message: The log message contents
+            *args: Any args
+            **kwargs: Any keyword args
+
+        """
         if self.isEnabledFor(TRACE_LEVEL_NUM):
             self._log(TRACE_LEVEL_NUM, message, args, **kwargs)
 
