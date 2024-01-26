@@ -145,7 +145,7 @@ def docs_build(session: Session) -> None:
 
     """
     # run with `-b dirhtml` for nicer URLS when building for publishing to a server
-    args = session.posargs or ["-b", "html", "-W", "--keep-going"]
+    args = session.posargs or ["-b", "html", "-W", "--keep-going", "-v"]
     session.install(".")
     session.install(
         "furo",

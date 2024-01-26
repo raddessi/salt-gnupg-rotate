@@ -103,12 +103,13 @@ def cli(  # pylint: disable=too-many-arguments
 ) -> int:
     """Easily rotate gnupg encryption keys of fully or partially encrypted files.
     \f
+    \b
     Args:
         directory: The directory path to search for files within that should be
-            re-encrypted
+                   re-encrypted
         recipient: The recipient name of the gpg key in the encryption keyring to use
         decryption_gpg_homedir: The directory path of the gnupg keyring to use for
-            decryption
+                                decryption
         encryption_gpg_homedir: The directory path of the gnupg keyring to use for
             encryption
         recipient: The recipient name of the gpg key in the encryption keyring to use
