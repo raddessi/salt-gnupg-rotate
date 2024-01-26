@@ -184,6 +184,7 @@ def docs_spelling(session: Session) -> None:
         "docs/_spelling",
     ]
     session.install(".")
+    session.conda_install("hunspell", channel="conda-forge")
     session.install(
         "furo",
         "myst-parser",
@@ -195,7 +196,6 @@ def docs_spelling(session: Session) -> None:
         "sphinxcontrib-mermaid",
         "sphinxcontrib-spelling",
         "sphinxemoji",
-        "hunspell",
     )
     # maybe use https://pyspellchecker.readthedocs.io/en/latest/index.html?
     # session.conda_install("enchant", channel="conda-forge")

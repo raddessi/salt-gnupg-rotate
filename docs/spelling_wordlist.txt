@@ -1,7 +1,12 @@
+Args
 Cookiecutter
 conda
+gnupg
+gpg
+homedir
+keyring
 linter
-magnite
+notset
 nox
 prebuilt
 preconfigured
