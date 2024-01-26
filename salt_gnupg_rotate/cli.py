@@ -28,7 +28,9 @@ from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.main import main
 
 
-@click.command()
+@click.command(
+    help="Easily rotate gnupg encryption keys of fully or partially encrypted files.",
+)
 @click.option(
     "-d",
     "--dir",
@@ -103,8 +105,6 @@ def cli(  # pylint: disable=too-many-arguments
 ) -> int:
     """Easily rotate gnupg encryption keys of fully or partially encrypted files.
     \f
-
-    \b
     Args:
         directory: The directory path to search for files within that should be
             re-encrypted

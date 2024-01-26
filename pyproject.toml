@@ -14,9 +14,10 @@ classifiers = []
 
 [tool.poetry.dependencies]
 python = "^3.10"
-click = ">=8.0.3"
+click = "^8.1.7"
 rich = ">=10.14.0"
 python-gnupg = ">=0.5.2"
+sphinx-click = "^5.1.0"
 
 [tool.poetry.dev-dependencies]
 "ruamel.yaml" = ">=0.17.17"
