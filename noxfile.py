@@ -195,7 +195,10 @@ def docs_spelling(session: Session) -> None:
         "sphinxcontrib-mermaid",
         "sphinxcontrib-spelling",
         "sphinxemoji",
+        "hunspell-en",
     )
+    # maybe use https://pyspellchecker.readthedocs.io/en/latest/index.html?
+    # session.conda_install("enchant", channel="conda-forge")
 
     spelling_dir = Path("docs", "_spelling")
     if spelling_dir.exists():

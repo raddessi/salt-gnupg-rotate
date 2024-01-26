@@ -35,7 +35,6 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        entry: prettier --write --ignore-unknown --no-error-on-unmatched-pattern
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.6

@@ -13,12 +13,15 @@ from salt_gnupg_rotate.logger import LOGGER
 
 
 class PartiallyEncryptedFile:
+    """A file that is either partially or fully encrypted."""
+
     encrypted_blocks = None
     logger = LOGGER
     decrypted_blocks = None
     reencrypted_contents = None
 
     def __init__(self, path, decryption_gpg_keyring, encryption_gpg_keyring, recipient):
+        """Constructor."""
         self.path = path
         self.decryption_gpg_keyring = decryption_gpg_keyring
         self.encryption_gpg_keyring = encryption_gpg_keyring
@@ -30,6 +33,7 @@ class PartiallyEncryptedFile:
 
     # TODO: change to getter
     def find_encrypted_blocks(self):
+        """Find any encrypted blocks within the file."""
         if self.encrypted_blocks is not None:
             return self.encrypted_blocks
 
@@ -48,6 +52,7 @@ class PartiallyEncryptedFile:
         return self.encrypted_blocks
 
     def decrypt(self):
+        """Decrypt any encrypted blocks in the file."""
         if self.encrypted_blocks is None:
             self.find_encrypted_blocks()
 
@@ -88,6 +93,7 @@ class PartiallyEncryptedFile:
         self.decrypted_blocks = decrypted_blocks
 
     def encrypt(self):
+        """Re-encrypt the decrypted blocks from the file."""
         if self.decrypted_blocks is None:
             self.decrypt()
 
@@ -139,6 +145,7 @@ class PartiallyEncryptedFile:
         self.reencrypted_contents = new_contents
 
     def write_reencrypted_contents(self):
+        """Write the file back to disk after re-encrypting any encrypted blocks."""
         if self.reencrypted_contents is None:
             self.encrypt()
 
