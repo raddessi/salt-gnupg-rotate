@@ -74,13 +74,14 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
         Raises:
             DecryptionError: If there was an error during decryption
+            ValueError: If there was an error finding the encrypted blocks
 
         """
         if self.encrypted_blocks is None:
             self.find_encrypted_blocks()
 
         if not isinstance(self.encrypted_blocks, list):
-            return
+            raise ValueError("expected to find encrypted blocks but found none")
 
         decrypted_blocks = []
         total_count = len(self.encrypted_blocks)
@@ -128,13 +129,14 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
         Raises:
             EncryptionError: If there was an error during encryption
+            ValueError: If there was an error finding the decrypted blocks
 
         """
         if self.decrypted_blocks is None:
             self.decrypt()
 
         if not isinstance(self.decrypted_blocks, list):
-            return
+            raise ValueError("expected to find decrypted blocks but found none")
 
         new_contents = self.contents
         total_count = len(self.decrypted_blocks)

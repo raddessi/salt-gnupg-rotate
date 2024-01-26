@@ -6,6 +6,7 @@ from typing import Any, ContextManager
 
 import pytest
 import rich.console
+from pytest_mock import MockerFixture
 
 from salt_gnupg_rotate.logging_mixins import create_logger
 
@@ -68,3 +69,17 @@ def test_create_logger(
         assert logging._levelToName[logger.level] == expected_log_level
 
         logger.trace("verify trace level logging works")
+
+
+def test_create_logger_custom_logger(mocker: MockerFixture) -> None:
+    """Verify that create_logger will always return a CustomLogger.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
+    mocker.patch(
+        "salt_gnupg_rotate.logging_mixins.logging.getLogger",
+        return_value=mocker.Mock(__class__=logging.Logger),
+    )
+    with pytest.raises(TypeError):
+        create_logger(app_name="blah", log_level="INFO", console=mocker.Mock())

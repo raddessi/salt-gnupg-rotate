@@ -13,6 +13,7 @@ from _pytest.python_api import RaisesContext
 from _pytest.tmpdir import TempPathFactory
 from pytest_mock import MockerFixture
 
+from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.rotate import (
     PartiallyEncryptedFile,
     collect_file_paths,
@@ -120,10 +121,10 @@ def test_PartiallyEncryptedFile_decrypt(salt_pillar_fpath: str) -> None:
 
 
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_decrypt_ValueError(
+def test_PartiallyEncryptedFile_decrypt_DecryptionError(
     salt_pillar_fpath: str, new_gnupg_homedir: str
 ) -> None:
-    """Verify that PartiallyEncryptedFile.decrypt raises a ValueError as expected.
+    """Verify that PartiallyEncryptedFile.decrypt raises a DecryptionError as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
@@ -140,10 +141,37 @@ def test_PartiallyEncryptedFile_decrypt_ValueError(
     file.find_encrypted_blocks()
     expectation: Union[nullcontext[None], RaisesContext[Exception]]
     if file.encrypted_blocks:
-        expectation = pytest.raises(ValueError)
+        expectation = pytest.raises(DecryptionError)
     else:
         expectation = nullcontext()
     with expectation:
+        file.decrypt()
+
+
+# pylint: disable=invalid-name
+def test_PartiallyEncryptedFile_decrypt_ValueError(
+    salt_pillar_fpath: str, new_gnupg_homedir: str, mocker: MockerFixture
+) -> None:
+    """Verify that PartiallyEncryptedFile.decrypt raises a ValueError as expected.
+
+    Args:
+        salt_pillar_fpath: pytest fixture
+        new_gnupg_homedir: pytest fixture
+        mocker: pytest-mock mocker fixture
+
+    """
+    gpg = gnupg.GPG(gnupghome=new_gnupg_homedir)
+    mocker.patch(
+        "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.find_encrypted_blocks"
+    )
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.find_encrypted_blocks()
+    with pytest.raises(ValueError):
         file.decrypt()
 
 
@@ -167,10 +195,10 @@ def test_PartiallyEncryptedFile_encrypt(salt_pillar_fpath: str) -> None:
 
 
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_encrypt_ValueError_1(
+def test_PartiallyEncryptedFile_encrypt_EncryptionError_1(
     mocker: MockerFixture, salt_pillar_fpath: str
 ) -> None:
-    """Verify that PartiallyEncryptedFile.encrypt raises a ValueError runs as expected.
+    """Verify that PartiallyEncryptedFile.encrypt raises a EncryptionError runs as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
@@ -192,7 +220,7 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_1(
     file.decrypt()
     expectation: Union[nullcontext[None], RaisesContext[Exception]]
     if file.encrypted_blocks:
-        expectation = pytest.raises(ValueError)
+        expectation = pytest.raises(EncryptionError)
     else:
         expectation = nullcontext()
     with expectation:
@@ -200,8 +228,10 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_1(
 
 
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_encrypt_ValueError_2(salt_pillar_fpath: str) -> None:
-    """Verify that PartiallyEncryptedFile.encrypt raises a ValueError runs as expected.
+def test_PartiallyEncryptedFile_encrypt_EncryptionError_2(
+    salt_pillar_fpath: str,
+) -> None:
+    """Verify that PartiallyEncryptedFile.encrypt raises a EncryptionError runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
@@ -219,10 +249,35 @@ def test_PartiallyEncryptedFile_encrypt_ValueError_2(salt_pillar_fpath: str) -> 
     if file.decrypted_blocks:
         # corrupt the replacement source data
         file.decrypted_blocks[0] = ("asdfasdf", *file.decrypted_blocks[0][1:])
-        expectation = pytest.raises(ValueError)
+        expectation = pytest.raises(EncryptionError)
     else:
         expectation = nullcontext()
     with expectation:
+        file.encrypt()
+
+
+# pylint: disable=invalid-name
+def test_PartiallyEncryptedFile_encrypt_ValueError(
+    salt_pillar_fpath: str, new_gnupg_homedir: str, mocker: MockerFixture
+) -> None:
+    """Verify that PartiallyEncryptedFile.encrypt raises a ValueError as expected.
+
+    Args:
+        salt_pillar_fpath: pytest fixture
+        new_gnupg_homedir: pytest fixture
+        mocker: pytest-mock mocker fixture
+
+    """
+    gpg = gnupg.GPG(gnupghome=new_gnupg_homedir)
+    mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile.decrypt")
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+    file.find_encrypted_blocks()
+    with pytest.raises(ValueError):
         file.encrypt()
 
 
@@ -244,6 +299,28 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents(
         recipient="pytest",
     )
     file.write_reencrypted_contents()
+    file.write_reencrypted_contents()
+
+
+# pylint: disable=invalid-name
+def test_PartiallyEncryptedFile_write_reencrypted_contents_failure(
+    salt_pillar_fpath: str, mocker: MockerFixture
+) -> None:
+    """Verify that PartiallyEncryptedFile.write fails as expected.
+
+    Args:
+        salt_pillar_fpath: pytest fixture
+        mocker: pytest-mock mocker fixture
+
+    """
+    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt")
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
     file.write_reencrypted_contents()
 
 
