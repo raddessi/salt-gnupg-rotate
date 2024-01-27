@@ -7,11 +7,14 @@ from salt_gnupg_rotate.exceptions import DecryptionError
 from salt_gnupg_rotate.main import main
 
 
-def test_main_return_value(mocker: MockerFixture) -> None:
+def test_main_return_value(
+    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that main returns as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
     """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
@@ -19,16 +22,21 @@ def test_main_return_value(mocker: MockerFixture) -> None:
     )
     main(
         dirpath="./tests/data/salt_pillar",
+        decryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
+        encryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
         recipient="pytest",
     )
     mocked_process_directory.assert_called()
 
 
-def test_main_return_value_on_write(mocker: MockerFixture) -> None:
+def test_main_return_value_on_write(
+    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that main returns as expected when write=True.
 
     Args:
         mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
     """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
@@ -36,17 +44,22 @@ def test_main_return_value_on_write(mocker: MockerFixture) -> None:
     )
     main(
         dirpath="./tests/data/salt_pillar",
+        decryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
+        encryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
         recipient="pytest",
         write=True,
     )
     mocked_process_directory.assert_called()
 
 
-def test_main_gpg_keyring_missing_secret_key(mocker: MockerFixture) -> None:
+def test_main_gpg_keyring_missing_secret_key(
+    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that main raises as expected when a secret key is missing.
 
     Args:
         mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
     """
     mocked_gpg = mocker.patch("salt_gnupg_rotate.main.gnupg.GPG")
     mocked_gpg.side_effect = [
@@ -56,15 +69,20 @@ def test_main_gpg_keyring_missing_secret_key(mocker: MockerFixture) -> None:
     with pytest.raises(NameError):
         main(
             dirpath="./tests/data/salt_pillar",
+            decryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
+            encryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
             recipient="pytest",
         )
 
 
-def test_main_decryption_error(mocker: MockerFixture) -> None:
+def test_main_decryption_error(
+    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that main raises as expected on a decryption error.
 
     Args:
         mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
     """
     mocked_process_directory = mocker.patch(
         "salt_gnupg_rotate.main.process_directory",
@@ -72,6 +90,8 @@ def test_main_decryption_error(mocker: MockerFixture) -> None:
     )
     main(
         dirpath="./tests/data/salt_pillar",
+        decryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
+        encryption_gpg_homedir=pytest_gnupg_keyring_dirpath,
         recipient="pytest",
     )
     mocked_process_directory.assert_called()

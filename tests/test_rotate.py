@@ -1,16 +1,12 @@
 """Tests for the `salt_gnupg_rotate.main` submodule."""
 
-import os
-import shutil
+
 from contextlib import nullcontext
-from pathlib import Path
 from typing import Union
 
 import gnupg
 import pytest
-from _pytest.fixtures import FixtureRequest
 from _pytest.python_api import RaisesContext
-from _pytest.tmpdir import TempPathFactory
 from pytest_mock import MockerFixture
 
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
@@ -19,9 +15,6 @@ from salt_gnupg_rotate.rotate import (
     collect_file_paths,
     process_directory,
 )
-
-SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
-GNUPG_HOMEDIR = "./tests/data/gnupg"
 
 
 # pylint: disable=invalid-name
@@ -39,58 +32,18 @@ def test_PartiallyEncryptedFile_instance(mocker: MockerFixture) -> None:
     )
 
 
-@pytest.fixture(
-    name="salt_pillar_fpath",
-    scope="session",
-    params=[
-        "encrypted_file.gpg",
-        "multiple_keys_in_yaml.sls",
-        "one_key_in_yaml.sls",
-        "nonconforming_file_type.txt",
-    ],
-)
-def salt_pillar_fpath_fixture(
-    tmp_path_factory: TempPathFactory, request: FixtureRequest
-) -> str:
-    """A fixture returning the path to a temp directory to use for pillar data.
-
-    Args:
-        tmp_path_factory: pytest-tmpdir fixture
-        request: pytest request fixture
-
-    Returns:
-        str: Of the temp dir
-    """
-    temp_fpath = os.path.join(tmp_path_factory.mktemp("data"), request.param)
-    shutil.copy(os.path.join(SALT_PILLAR_DATADIR, request.param), temp_fpath)
-    return temp_fpath
-
-
-@pytest.fixture(name="new_gnupg_homedir", scope="session")
-def new_gnupg_homedir_fixture(tmp_path_factory: TempPathFactory) -> Path:
-    """A fixture returning a temp dir path with a gnupg keyring inside.
-
-    Args:
-        tmp_path_factory: pytest-tmpdir fixture
-
-    Returns:
-        Path: Of the temp dir
-    """
-    temp_fpath = tmp_path_factory.mktemp("gnupg")
-    gpg = gnupg.GPG(gnupghome=temp_fpath)
-    gpg.gen_key_input(key_type="RSA", key_length=1024)
-    return temp_fpath
-
-
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_find_encrypted_blocks(salt_pillar_fpath: str) -> None:
+def test_PartiallyEncryptedFile_find_encrypted_blocks(
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that PartiallyEncryptedFile.find_encrypted_blocks runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
@@ -102,14 +55,17 @@ def test_PartiallyEncryptedFile_find_encrypted_blocks(salt_pillar_fpath: str) ->
 
 
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_decrypt(salt_pillar_fpath: str) -> None:
+def test_PartiallyEncryptedFile_decrypt(
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that PartiallyEncryptedFile.decrypt runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
@@ -129,7 +85,6 @@ def test_PartiallyEncryptedFile_decrypt_DecryptionError(
     Args:
         salt_pillar_fpath: pytest fixture
         new_gnupg_homedir: pytest fixture
-
     """
     gpg = gnupg.GPG(gnupghome=new_gnupg_homedir)
     file = PartiallyEncryptedFile(
@@ -176,14 +131,17 @@ def test_PartiallyEncryptedFile_decrypt_ValueError(
 
 
 # pylint: disable=invalid-name
-def test_PartiallyEncryptedFile_encrypt(salt_pillar_fpath: str) -> None:
+def test_PartiallyEncryptedFile_encrypt(
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that PartiallyEncryptedFile.encrypt runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
@@ -196,16 +154,17 @@ def test_PartiallyEncryptedFile_encrypt(salt_pillar_fpath: str) -> None:
 
 # pylint: disable=invalid-name
 def test_PartiallyEncryptedFile_encrypt_EncryptionError_1(
-    mocker: MockerFixture, salt_pillar_fpath: str
+    mocker: MockerFixture, salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that PartiallyEncryptedFile.encrypt raises a EncryptionError runs as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     mocked_gpg = mocker.Mock(
         encrypt=mocker.Mock(
             return_value=mocker.Mock(ok=False, problems=[{"status": "foo"}])
@@ -229,15 +188,16 @@ def test_PartiallyEncryptedFile_encrypt_EncryptionError_1(
 
 # pylint: disable=invalid-name
 def test_PartiallyEncryptedFile_encrypt_EncryptionError_2(
-    salt_pillar_fpath: str,
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that PartiallyEncryptedFile.encrypt raises a EncryptionError runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
@@ -283,15 +243,16 @@ def test_PartiallyEncryptedFile_encrypt_ValueError(
 
 # pylint: disable=invalid-name
 def test_PartiallyEncryptedFile_write_reencrypted_contents(
-    salt_pillar_fpath: str,
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that PartiallyEncryptedFile.write runs as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
         decryption_gpg_keyring=gpg,
@@ -304,16 +265,17 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents(
 
 # pylint: disable=invalid-name
 def test_PartiallyEncryptedFile_write_reencrypted_contents_failure(
-    salt_pillar_fpath: str, mocker: MockerFixture
+    salt_pillar_fpath: str, mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that PartiallyEncryptedFile.write fails as expected.
 
     Args:
         salt_pillar_fpath: pytest fixture
         mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt")
     file = PartiallyEncryptedFile(
         path=salt_pillar_fpath,
@@ -334,16 +296,19 @@ def test_collect_file_paths(salt_pillar_fpath: str) -> None:
     collect_file_paths(salt_pillar_fpath)
 
 
-def test_process_directory(mocker: MockerFixture, salt_pillar_fpath: str) -> None:
+def test_process_directory(
+    mocker: MockerFixture, salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that process_directory runs as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
     mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile")
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     process_directory(
         salt_pillar_fpath.rsplit("/", 1)[0],
         decryption_gpg_keyring=gpg,
@@ -353,20 +318,21 @@ def test_process_directory(mocker: MockerFixture, salt_pillar_fpath: str) -> Non
 
 
 def test_process_directory_decrypt_failure(
-    mocker: MockerFixture, salt_pillar_fpath: str
+    mocker: MockerFixture, salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that process_directory raises an exception as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
     mocker.patch(
         "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.decrypt",
         side_effect=Exception,
     )
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     expectation: Union[nullcontext[None], RaisesContext[Exception]]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
@@ -382,20 +348,21 @@ def test_process_directory_decrypt_failure(
 
 
 def test_process_directory_encrypt_failure(
-    mocker: MockerFixture, salt_pillar_fpath: str
+    mocker: MockerFixture, salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that process_directory raises an exception as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
     mocker.patch(
         "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt",
         side_effect=Exception,
     )
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     expectation: Union[nullcontext[None], RaisesContext[Exception]]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
@@ -410,14 +377,17 @@ def test_process_directory_encrypt_failure(
         )
 
 
-def test_process_directory_write(salt_pillar_fpath: str) -> None:
+def test_process_directory_write(
+    salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
+) -> None:
     """Verify that process_directory will write out updates.
 
     Args:
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     process_directory(
         salt_pillar_fpath.rsplit("/", 1)[0],
         decryption_gpg_keyring=gpg,
@@ -428,20 +398,21 @@ def test_process_directory_write(salt_pillar_fpath: str) -> None:
 
 
 def test_process_directory_write_failure(
-    mocker: MockerFixture, salt_pillar_fpath: str
+    mocker: MockerFixture, salt_pillar_fpath: str, pytest_gnupg_keyring_dirpath: str
 ) -> None:
     """Verify that process_directory raises an exception on write as expected.
 
     Args:
         mocker: pytest-mock mocker fixture
         salt_pillar_fpath: pytest fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
 
     """
     mocker.patch(
         "salt_gnupg_rotate.rotate.PartiallyEncryptedFile.write_reencrypted_contents",
         side_effect=Exception,
     )
-    gpg = gnupg.GPG(gnupghome=GNUPG_HOMEDIR)
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     expectation: Union[nullcontext[None], RaisesContext[Exception]]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
