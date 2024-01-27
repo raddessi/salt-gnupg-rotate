@@ -10,7 +10,6 @@
 
 About <about>
 tutorials/index
-topic-guides/index
 reference-guides/index
 how-to-guides/index
 contributing
