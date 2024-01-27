@@ -7,6 +7,7 @@ project = "salt-gnupg-rotate"
 author = "Ryan Addessi"
 copyright = f"{datetime.now().year}, {author}"  # pylint: disable=redefined-builtin
 
+
 autodoc_typehints = "description"
 autosectionlabel_maxdepth = 1
 copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "

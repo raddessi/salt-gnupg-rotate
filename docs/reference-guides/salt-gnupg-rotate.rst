@@ -1,4 +1,4 @@
-API Reference
+CLI Reference
 =============
 
 .. click:: salt_gnupg_rotate.cli:cli

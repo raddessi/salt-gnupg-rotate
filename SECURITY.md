@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Here is a list of the release versions that should and should not be receiving
+Here are the release versions that are currently supported and should be receiving
 security updates:
 
 | Version | Supported |

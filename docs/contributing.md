@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions are welcome, and they are greatly appreciated!
+Contributions are welcome and greatly appreciated!
 
 - It's recommended to file a bug before starting work on anything. It will give
   a chance to talk it over with the owners and validate your approach.
@@ -11,6 +11,6 @@ Thank you for helping improve the project!
 
 Some useful documentation to check out:
 
-- [](tutorials/setting-up-for-development)
-- [](tutorials/running-tests)
+- [](how-to-guides/setting-up-for-development)
+- [](how-to-guides/running-tests)
 - [](how-to-guides/building-documentation)
