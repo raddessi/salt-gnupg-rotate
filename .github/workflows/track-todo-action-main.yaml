@@ -8,23 +8,16 @@ on:
 
 jobs:
   convert:
-    # this can be changed to `self-hosted` to move to self-hosted
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@master
       - name: Run tdg-github-action
-        uses: ribtoks/tdg-github-action@v0.4.5-beta
+        uses: ribtoks/tdg-github-action@v0.4.7-beta
         with:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
           REF: ${{ github.ref }}
-          # LABEL: "my label"
           MIN_WORDS: 1
           MIN_CHARACTERS: 3
-          # ADD_LIMIT: 1
-          # CLOSE_LIMIT: 1
-          # ROOT: "src"
-          # PROJECT_COLUMN_ID: 824533
-          # INCLUDE_PATTERN: "\\.(cpp|h)$"
