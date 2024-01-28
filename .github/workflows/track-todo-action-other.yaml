@@ -24,4 +24,5 @@ jobs:
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
           REF: ${{ github.ref }}
+          EXCLUDE_PATTERN: "\\.git/"
           DRY_RUN: true

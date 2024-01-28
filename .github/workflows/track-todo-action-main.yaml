@@ -21,3 +21,4 @@ jobs:
           REF: ${{ github.ref }}
           MIN_WORDS: 1
           MIN_CHARACTERS: 3
+          EXCLUDE_PATTERN: "\\.git/"
