@@ -40,7 +40,7 @@ sphinx-inline-tabs = {version = ">=2022.1.2b11", python = ">=3.8,<4.0"}
 sphinxcontrib-mermaid = ">=0.7.1"
 sphinxcontrib-spelling = ">=7.3.2"
 sphinxcontrib-versioning = "2.2.1"
-sphinxemoji = "0.2.0"
+sphinxemoji = "0.3.1"
 typeguard = "^2.13.0"
 xdoctest = {extras = ["colors"], version = "1.1.2"}
 
