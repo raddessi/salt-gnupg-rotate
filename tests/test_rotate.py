@@ -417,7 +417,7 @@ def test_process_directory_write_failure(
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
-        expectation = pytest.raises(Exception)
+        expectation = pytest.raises(EncryptionError)
     with expectation:
         process_directory(
             salt_pillar_fpath.rsplit("/", 1)[0],
