@@ -95,13 +95,13 @@ jobs:
       - name: Create standalone documentation zip
         working-directory: docs/_build
         run: |
-          zip -r {{ python_package_distribution_name }}-${{ needs.tag.outputs.release_version }}-documentation.zip .*
+          zip -r salt-gnupg-rotate-${{ needs.tag.outputs.release_version }}-documentation.zip .*
 
       - name: Upload Artifacts to Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: docs/_build/*.zip
+          file: docs/_build/*-documentation.zip
           file_glob: true
           tag: v${{ needs.tag.outputs.release_version }}
           overwrite: true
