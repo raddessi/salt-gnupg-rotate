@@ -1925,18 +1925,21 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "typeguard"
-version = "2.13.0"
+version = "4.1.5"
 description = "Run-time type checker for Python"
 optional = false
-python-versions = ">=3.5.3"
+python-versions = ">=3.8"
 files = [
-    {file = "typeguard-2.13.0-py3-none-any.whl", hash = "sha256:0bc44d1ff865b522eda969627868b0e001c8329296ce50aededbea03febc79ee"},
-    {file = "typeguard-2.13.0.tar.gz", hash = "sha256:04e38f92eb59410c9375d3be23df65e0a7643f2e8bcbd421423d808d2f9e99df"},
+    {file = "typeguard-4.1.5-py3-none-any.whl", hash = "sha256:8923e55f8873caec136c892c3bed1f676eae7be57cdb94819281b3d3bc9c0953"},
+    {file = "typeguard-4.1.5.tar.gz", hash = "sha256:ea0a113bbc111bcffc90789ebb215625c963411f7096a7e9062d4e4630c155fd"},
 ]
 
+[package.dependencies]
+typing-extensions = {version = ">=4.7.0", markers = "python_version < \"3.12\""}
+
 [package.extras]
-doc = ["sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
-test = ["mypy", "pytest", "typing-extensions"]
+doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["coverage[toml] (>=7)", "mypy (>=1.2.0)", "pytest (>=7)"]
 
 [[package]]
 name = "typer"
@@ -2054,4 +2057,4 @@ tests = ["IPython", "cmake", "codecov", "ipykernel", "jupyter-client", "nbconver
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d17163d97d7b03f9cc0c740bcef0135b002162400c624179a277075e16cfd495"
+content-hash = "ff71f807ed6b8b0f45d89fa195fd3914ae38918c347b069ca19ff400bdef2259"
