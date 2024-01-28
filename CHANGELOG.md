@@ -2,6 +2,31 @@
 
 
 
+## v0.1.1 (2024-01-28)
+
+### Chore
+
+* chore(deps): update dependency pytest to v8 (#11)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`0448273`](https://github.com/raddessi/salt-gnupg-rotate/commit/04482739110c2708d2037ea3d8bfcc2847e4b477))
+
+### Ci
+
+* ci: re-enable todo tracking ([`0a8d6d8`](https://github.com/raddessi/salt-gnupg-rotate/commit/0a8d6d8d967868dc6ee1c0a379ff4bca362c20d4))
+
+* ci: fix docs name ([`8cf607c`](https://github.com/raddessi/salt-gnupg-rotate/commit/8cf607cbc1af5f39b82f247c0590e243d1364e3d))
+
+### Fix
+
+* fix: todo ([`594bc51`](https://github.com/raddessi/salt-gnupg-rotate/commit/594bc51e439dd30c441a2f28ab1784b7842ed9ab))
+
+### Unknown
+
+* Merge branch &#39;main&#39; of https://github.com/raddessi/salt-gnupg-rotate ([`534b3f7`](https://github.com/raddessi/salt-gnupg-rotate/commit/534b3f742889029f8c25738628c9c0f473f8a9bd))
+
+* Merge branch &#39;main&#39; of https://github.com/raddessi/salt-gnupg-rotate ([`3acd96b`](https://github.com/raddessi/salt-gnupg-rotate/commit/3acd96b686aba6a7c42a0932d42d74b404d42225))
+
+
 ## v0.1.0 (2024-01-28)
 
 ### Feature
