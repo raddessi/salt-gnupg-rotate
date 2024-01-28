@@ -7,7 +7,6 @@ on:
 
 jobs:
   tag:
-    # this can be changed to `self-hosted` to move to self-hosted
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +23,7 @@ jobs:
           pip3 install poetry
 
       - name: Python Semantic Release
-        uses: python-semantic-release/python-semantic-release@v8.7.2
+        uses: python-semantic-release/python-semantic-release@v8.3.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,7 +37,6 @@ jobs:
 
   build:
     needs: tag
-    # this can be changed to `self-hosted` to move to self-hosted
     runs-on: ubuntu-latest
 
     steps:
@@ -75,7 +73,6 @@ jobs:
 
   docs-build:
     needs: tag
-    # this can be changed to `self-hosted` to move to self-hosted
     runs-on: ubuntu-latest
 
     steps:
