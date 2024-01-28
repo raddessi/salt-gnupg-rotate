@@ -2,6 +2,27 @@
 
 
 
+## v0.1.2 (2024-01-28)
+
+### Chore
+
+* chore(deps): update amannn/action-semantic-pull-request action to v5 (#9)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`0bdb8bf`](https://github.com/raddessi/salt-gnupg-rotate/commit/0bdb8bfa5eb63f25663254eb28bf8035cabf5d4e))
+
+* chore(deps): update codecov/codecov-action action to v3 (#10)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`103971f`](https://github.com/raddessi/salt-gnupg-rotate/commit/103971fa07176cc4370577dff983256355c766c9))
+
+### Ci
+
+* ci: build after ci completes ([`6e76391`](https://github.com/raddessi/salt-gnupg-rotate/commit/6e76391dde9b1cc86a1a889513e6d5ce3b1f05c8))
+
+### Fix
+
+* fix: another test ([`739009b`](https://github.com/raddessi/salt-gnupg-rotate/commit/739009bd4d3c1a4a93b6e1a2b10109ff50ea2bd9))
+
+
 ## v0.1.1 (2024-01-28)
 
 ### Chore
