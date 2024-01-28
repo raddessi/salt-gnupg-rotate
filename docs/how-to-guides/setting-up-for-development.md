@@ -9,10 +9,11 @@ You will need the following python modules installed on your system:
 - `poetry`
 - `nox`
 - `nox-poetry`
+- `pre-commit`
 
 ````{tab} pip
 ```bash
-pip install poetry nox nox-poetry
+pip install poetry nox nox-poetry pre-commit
 ```
 ````
 
@@ -29,8 +30,21 @@ sudo dnf install conda
 ```
 ````
 
-Once these are installed you should be good to go.
+## Checkout the project and install hooks
+
+Checkout the upstream or your own fork of the project
+
+```bash
+# checkout
+git checkout <github project url>
+
+# install commit hooks
+cd salt-gnupg-rotate
+pre-commit install --install-hooks
+```
+
+Now you should be set up to develop the project.
 
 ---
 
-See [](running-tests) for how to run the test suite. nox nox-poetry
+See [](running-tests) for how to run the test suite.
