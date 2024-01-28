@@ -21,11 +21,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+          pip3 install poetry
 
       - name: Python Semantic Release
-        uses: relekang/python-semantic-release@master
+        uses: python-semantic-release/python-semantic-release@v8.7.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,8 +52,7 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+          pip3 install poetry
 
       - name: Build
         run: poetry build
@@ -91,8 +89,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry nox nox-poetry
+          pip3 install poetry nox nox-poetry
 
       - name: Build the standalone documentation
         run: |
