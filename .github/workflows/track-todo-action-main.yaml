@@ -1,23 +1,23 @@
-name: TODOs on main push
+# name: TODOs on main push
 
-# only for the main branch
-on:
-  push:
-    branches:
-      - main
+# # only for the main branch
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  convert:
-    runs-on: ubuntu-latest
+# jobs:
+#   convert:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@master
-      - name: Run tdg-github-action
-        uses: ribtoks/tdg-github-action@v0.4.7-beta
-        with:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          SHA: ${{ github.sha }}
-          REF: ${{ github.ref }}
-          MIN_WORDS: 1
-          MIN_CHARACTERS: 3
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Run tdg-github-action
+#         uses: ribtoks/tdg-github-action@v0.4.7-beta
+#         with:
+#           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           REPO: ${{ github.repository }}
+#           SHA: ${{ github.sha }}
+#           REF: ${{ github.ref }}
+#           MIN_WORDS: 1
+#           MIN_CHARACTERS: 3
