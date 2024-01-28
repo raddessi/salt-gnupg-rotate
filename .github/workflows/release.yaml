@@ -111,3 +111,29 @@ jobs:
           file_glob: true
           tag: v${{ needs.tag.outputs.release_version }}
           overwrite: true
+
+  deploy-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          pip install poetry nox nox-poetry
+      - name: Building documentation
+        run: |
+          nox --session docs-build --force-color
+      - name: Deploy documentation 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          branch: gh-pages
+          folder: docs/_build
+          clean: true
+          clean-exclude: |
+            CNAME
+            .nojekyll
+            index.html
