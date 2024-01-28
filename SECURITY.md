@@ -2,8 +2,8 @@
 
 ## Supported Versions
 
-Here are the release versions that are currently supported and should be receiving
-security updates:
+Here are the release versions that are currently supported and should be
+receiving security updates:
 
 | Version | Supported |
 | ------- | --------- |
