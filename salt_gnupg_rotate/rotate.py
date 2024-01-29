@@ -178,7 +178,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             )
 
             proposed_change = new_contents.replace(
-                encrypted_block, reencrypted_padded_block
+                encrypted_block, reencrypted_padded_block, 1
             )
             # check if nothing was changed incorrectly
             if proposed_change == new_contents:
