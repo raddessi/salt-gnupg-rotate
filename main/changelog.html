@@ -235,6 +235,16 @@
         <article role="main">
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="v1-0-1-2024-01-29">
+<h2>v1.0.1 (2024-01-29)<a class="headerlink" href="#v1-0-1-2024-01-29" title="Link to this heading">#</a></h2>
+<section id="fix">
+<h3>Fix<a class="headerlink" href="#fix" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>fix: duplicate blocks in the same file causes errors (#28)</p></li>
+</ul>
+<p>When an encrypted block is present more than one time in a file it causes errors since the first replacement replaces both instances and the second then fails. (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/21b85430313d4e9923773d03a5f9dab0c033281a"><code class="docutils literal notranslate"><span class="pre">21b8543</span></code></a>)</p>
+</section>
+</section>
 <section id="v1-0-0-2024-01-29">
 <h2>v1.0.0 (2024-01-29)<a class="headerlink" href="#v1-0-0-2024-01-29" title="Link to this heading">#</a></h2>
 <section id="breaking">
@@ -302,6 +312,10 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#v1-0-1-2024-01-29">v1.0.1 (2024-01-29)</a><ul>
+<li><a class="reference internal" href="#fix">Fix</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#v1-0-0-2024-01-29">v1.0.0 (2024-01-29)</a><ul>
 <li><a class="reference internal" href="#breaking">Breaking</a></li>
 </ul>
