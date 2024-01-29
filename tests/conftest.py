@@ -76,6 +76,7 @@ def gnupg_keyring_dirpath() -> str:
         "multiple_keys_in_yaml.sls",
         "one_key_in_yaml.sls",
         "nonconforming_file_type.txt",
+        "duplicate_blocks_in_yaml.sls",
     ],
 )
 def salt_pillar_fpath_fixture(
