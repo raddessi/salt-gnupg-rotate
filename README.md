@@ -1,4 +1,4 @@
-[![ci](https://github.com/raddessi/salt-gnupg-rotate/workflows/ci/badge.svg)](https://github.com/raddessi/salt-gnupg-rotate/actions?query=workflow%3Aci)
+[![CI](https://github.com/raddessi/salt-gnupg-rotate/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/raddessi/salt-gnupg-rotate/actions/workflows/ci.yaml)
 [![documentation](https://img.shields.io/badge/docs-sphinx%20furo-blue.svg?style=flat)](https://github.com/pradyunsg/furo)
 [![Checked with MyPy](https://img.shields.io/badge/mypy-checked-blue.svg)](http://mypy-lang.org/)
 [![Python Versions](https://img.shields.io/badge/python-3.10-blue.svg)](#salt-gnupg-rotate)
@@ -20,7 +20,7 @@ quick and painless.
 ## Documentation
 
 Documentation is hosted at
-[https://raddessi.github.io/salt-gnupg-rotate/](https://raddessi.github.io/salt-gnupg-rotate/)
+[raddessi.github.io/salt-gnupg-rotate/](https://raddessi.github.io/salt-gnupg-rotate/)
 and prebuilt zip files of the project documentation are available for download
 from the [Releases](https://github.com/raddessi/salt-gnupg-rotate/releases)
 page.
@@ -45,9 +45,8 @@ page.
 
 ## Installation
 
-Please see
-[the documentation](https://github.com/raddessi/salt-gnupg-rotate/releases) for
-instructions on installation or upgrades.
+Please see [the documentation](https://raddessi.github.io/salt-gnupg-rotate/)
+for instructions on installation or upgrades.
 
 ## Providing Feedback
 
