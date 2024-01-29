@@ -1,0 +1,6 @@
+.nox
+.pytest_cache
+.venv
+CHANGELOG.md
+docs/_build
+docs/_spelling

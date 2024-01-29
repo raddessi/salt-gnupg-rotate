@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+      - uses: pre-commit/action@v3.0.0
+
+  nox-sessions-matrix-split:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install nox nox-poetry
+      - id: set-matrix
+        run: |
+          echo "::set-output name=matrix::$( nox -l | grep '\*' | grep '\->' | awk '{print $2}' | jq --raw-input | jq --slurp -c '.[] | {session: .}' | jq --slurp -c '. | {include: .}' )"
+
+  nox:
+    needs: nox-sessions-matrix-split
+    strategy:
+      matrix: ${{ fromJson(needs.nox-sessions-matrix-split.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry nox nox-poetry
+      - name: Running nox
+        run: |
+          nox --session "${{ matrix.session }}" --force-color
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos

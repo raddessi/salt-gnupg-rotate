@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: salt-gnupg-rotate GitHub Discussions
+    url: https://github.com/raddessi/salt-gnupg-rotate/discussions
+    about: Please ask and answer questions here.
