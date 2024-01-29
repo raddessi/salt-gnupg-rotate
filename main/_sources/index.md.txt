@@ -12,6 +12,7 @@ About <about>
 tutorials/index
 reference-guides/index
 how-to-guides/index
+changelog
 contributing
 license
 security
