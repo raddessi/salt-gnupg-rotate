@@ -128,7 +128,10 @@ def test_PartiallyEncryptedFile_decrypt_ValueError(
         recipient="pytest",
     )
     file.find_encrypted_blocks()
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match="expected to find encrypted blocks but found none",
+    ):
         file.decrypt()
 
 
@@ -241,7 +244,10 @@ def test_PartiallyEncryptedFile_encrypt_ValueError(
         recipient="pytest",
     )
     file.find_encrypted_blocks()
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match="expected to find decrypted blocks but found none",
+    ):
         file.encrypt()
 
 
@@ -317,7 +323,7 @@ def test_process_directory(
     mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile")
     gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     process_directory(
-        salt_pillar_fpath.rsplit("/", 1)[0],
+        dirpath=salt_pillar_fpath.rsplit("/", 1)[0],
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
@@ -346,10 +352,13 @@ def test_process_directory_decrypt_failure(
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
-        expectation = pytest.raises(ValueError)
+        expectation = pytest.raises(
+            ValueError,
+            match="Bailing due to an error during decryption",
+        )
     with expectation:
         process_directory(
-            salt_pillar_fpath.rsplit("/", 1)[0],
+            dirpath=salt_pillar_fpath.rsplit("/", 1)[0],
             decryption_gpg_keyring=gpg,
             encryption_gpg_keyring=gpg,
             recipient="pytest",
@@ -378,10 +387,13 @@ def test_process_directory_encrypt_failure(
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
-        expectation = pytest.raises(ValueError)
+        expectation = pytest.raises(
+            ValueError,
+            match="Bailing due to an error during re-encryption",
+        )
     with expectation:
         process_directory(
-            salt_pillar_fpath.rsplit("/", 1)[0],
+            dirpath=salt_pillar_fpath.rsplit("/", 1)[0],
             decryption_gpg_keyring=gpg,
             encryption_gpg_keyring=gpg,
             recipient="pytest",
@@ -401,7 +413,7 @@ def test_process_directory_write(
     """
     gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
     process_directory(
-        salt_pillar_fpath.rsplit("/", 1)[0],
+        dirpath=salt_pillar_fpath.rsplit("/", 1)[0],
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
@@ -434,7 +446,7 @@ def test_process_directory_write_failure(
         expectation = pytest.raises(EncryptionError)
     with expectation:
         process_directory(
-            salt_pillar_fpath.rsplit("/", 1)[0],
+            dirpath=salt_pillar_fpath.rsplit("/", 1)[0],
             decryption_gpg_keyring=gpg,
             encryption_gpg_keyring=gpg,
             recipient="pytest",

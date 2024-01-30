@@ -90,6 +90,7 @@ select = [
     "ALL",
 ]
 ignore = [
+    "ANN",
     "PL",
     "D203",  # no-blank-line-before-class
     "D213",  # multi-line-summary-second-line

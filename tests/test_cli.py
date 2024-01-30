@@ -11,7 +11,7 @@ from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 
 
 @pytest.mark.parametrize(
-    "args,exception,expected_retcode",
+    ("args", "exception", "expected_retcode"),
     [
         pytest.param(None, None, 2, id="run_without_args"),
         pytest.param(

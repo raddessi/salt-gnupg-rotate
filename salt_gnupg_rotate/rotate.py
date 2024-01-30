@@ -2,6 +2,7 @@
 
 import os
 import re
+from pathlib import Path
 from textwrap import dedent, indent
 
 from gnupg import GPG
@@ -45,7 +46,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
         self.recipient = recipient
 
         self.logger.info("Loading file %s", path)
-        with open(self.path, encoding="utf-8") as fdesc:
+        with Path(self.path).open("r") as fdesc:
             self.contents = fdesc.read()
 
     def find_encrypted_blocks(self) -> None:
@@ -80,7 +81,8 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             self.find_encrypted_blocks()
 
         if not isinstance(self.encrypted_blocks, list):
-            raise ValueError("expected to find encrypted blocks but found none")
+            msg = "expected to find encrypted blocks but found none"
+            raise ValueError(msg)
 
         decrypted_blocks = []
         total_count = len(self.encrypted_blocks)
@@ -137,7 +139,8 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             self.decrypt()
 
         if not isinstance(self.decrypted_blocks, list):
-            raise ValueError("expected to find decrypted blocks but found none")
+            msg = "expected to find decrypted blocks but found none"
+            raise ValueError(msg)
 
         new_contents = self.contents
         total_count = len(self.decrypted_blocks)
@@ -154,10 +157,11 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             )
 
             if not reencrypted_data.ok:
-                raise EncryptionError(
+                msg = (
                     f"Failed to encrypt block in {self.path}: "
-                    f"{reencrypted_data.problems[0]['status']}",
+                    f"{reencrypted_data.problems[0]['status']}"
                 )
+                raise EncryptionError(msg)
 
             if padding_size:
                 reencrypted_padded_block = indent(
@@ -208,7 +212,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
         if isinstance(self.reencrypted_contents, str):
             self.logger.debug("Writing updated file %s", self.path)
-            with open(self.path, "w", encoding="utf-8") as fdesc:
+            with Path(self.path).open("w") as fdesc:
                 fdesc.seek(0)
                 fdesc.write(self.reencrypted_contents)
                 fdesc.truncate()
@@ -228,13 +232,14 @@ def collect_file_paths(dirpath: str) -> list[str]:
         for name in files:
             if name.rsplit(".", 1)[-1] not in ["sls", "gpg"]:
                 continue
-            file_path = os.path.join(root, name)
+            file_path = Path(root) / name
             fpaths.append(file_path)
 
     return fpaths
 
 
 def process_directory(  # pylint: disable=too-many-arguments
+    *,
     dirpath: str,
     decryption_gpg_keyring: GPG,
     encryption_gpg_keyring: GPG,
@@ -264,7 +269,7 @@ def process_directory(  # pylint: disable=too-many-arguments
     files = []
     fpaths = collect_file_paths(dirpath=dirpath)
 
-    logger.info(f"Loading files in directory {dirpath} ...")
+    logger.info("Loading files in directory %s ...", dirpath)
     for fpath in track(fpaths, description="Loading files...", console=CONSOLE):
         file = PartiallyEncryptedFile(
             path=fpath,
@@ -275,41 +280,33 @@ def process_directory(  # pylint: disable=too-many-arguments
         file.find_encrypted_blocks()
         files.append(file)
 
-    decryption_success = True
     logger.info("Decrypting blocks in the loaded files ...")
-    for file in track(files, description="Decrypting...", console=CONSOLE):
-        try:
+    try:
+        for file in track(files, description="Decrypting...", console=CONSOLE):
             file.decrypt()
-        except Exception as err:  # pylint: disable=broad-except
-            logger.exception(err)
-            decryption_success = False
-    if not decryption_success:
-        raise DecryptionError("Bailing due to errors during decryption")
+    except Exception as err:  # pylint: disable=broad-except
+        logger.exception("Error during decryption")
+        msg = "Bailing due to an error during decryption"
+        raise DecryptionError(msg) from err
 
-    reencryption_success = True
     logger.info("Re-encrypting blocks in the loaded files ...")
-    for file in track(files, description="Re-encrypting...", console=CONSOLE):
-        try:
+    try:
+        for file in track(files, description="Re-encrypting...", console=CONSOLE):
             file.encrypt()
-        except Exception as err:  # pylint: disable=broad-except
-            logger.exception(err)
-            reencryption_success = False
-    if not reencryption_success:
-        raise EncryptionError("Bailing due to errors during re-encryption")
+    except Exception as err:  # pylint: disable=broad-except
+        logger.exception("Error while re-encrypting blocks")
+        msg = "Bailing due to an error during re-encryption"
+        raise EncryptionError(msg) from err
 
     if write:
-        writes_success = True
         logger.info("Writing out changes ...")
-        for file in track(files, description="Writing...", console=CONSOLE):
-            try:
+        try:
+            for file in track(files, description="Writing...", console=CONSOLE):
                 file.write_reencrypted_contents()
-            except Exception as err:  # pylint: disable=broad-except
-                logger.exception(err)
-                writes_success = False
-        if not writes_success:
-            raise EncryptionError(
-                "Bailing due to errors while writing the updated contents",
-            )
+        except Exception as err:  # pylint: disable=broad-except
+            logger.exception("Error while writing updated contents")
+            msg = "Bailing due to an error while writing the updated contents"
+            raise EncryptionError(msg) from err
     else:
         logger.info("Skipping writing out changes")
 

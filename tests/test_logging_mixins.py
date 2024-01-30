@@ -1,8 +1,7 @@
 """Tests for the `salt_gnupg_rotate.logging_mixins` submodule."""
 
 import logging
-from contextlib import nullcontext
-from typing import AbstractContextManager, Any
+from contextlib import AbstractContextManager, nullcontext
 
 import pytest
 import rich.console
@@ -38,7 +37,7 @@ from salt_gnupg_rotate.logging_mixins import create_logger
         pytest.param(
             "mylogger",
             "FOO",
-            pytest.raises(ValueError),
+            pytest.raises(ValueError, match="Unknown level:"),
             None,
             id="invalid_log_level",
         ),
@@ -47,7 +46,7 @@ from salt_gnupg_rotate.logging_mixins import create_logger
 def test_create_logger(
     app_name: str,
     log_level: str,
-    expectation: AbstractContextManager[Any],
+    expectation: AbstractContextManager[Exception | None],
     expected_log_level: str,
 ) -> None:
     """Verify that creating a logger works as expected.
