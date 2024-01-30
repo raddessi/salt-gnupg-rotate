@@ -2,6 +2,28 @@
 
 
 
+## v1.1.0 (2024-01-30)
+
+### Chore
+
+* chore(deps): update actions/checkout action to v4 (#25)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`474696d`](https://github.com/raddessi/salt-gnupg-rotate/commit/474696d13df1fb20b1ca621909a61a011a39bd28))
+
+### Documentation
+
+* docs: fix CI badge and link to online docs (#29) ([`3156977`](https://github.com/raddessi/salt-gnupg-rotate/commit/315697762d2178cbe523bdbfa41ad992b97de3cd))
+
+### Feature
+
+* feat: abort earlier on errors (#31)
+
+This change does a few things:
+  - raises exceptions immediately after an error is encountered
+  - swaps out older linters for ruff
+  - fixes some stability and performance issues raised from the new linter ([`68b7030`](https://github.com/raddessi/salt-gnupg-rotate/commit/68b703083257b9566744a800667d08645f7c7415))
+
+
 ## v1.0.1 (2024-01-29)
 
 ### Fix
