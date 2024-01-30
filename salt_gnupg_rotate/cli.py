@@ -95,16 +95,19 @@ from salt_gnupg_rotate.main import main
 )
 @click.version_option(version=__version__, package_name=APP_NAME)
 @click.help_option("-h", "--help")
-def cli(  # pylint: disable=too-many-arguments
+def cli(
     directory: str,
     decryption_gpg_homedir: str,
     encryption_gpg_homedir: str,
     recipient: str,
     log_level: str,
+    *,
     write: bool,
 ) -> int:
-    """Easily rotate gnupg encryption keys of fully or partially encrypted files.
+    r"""Easily rotate gnupg encryption keys of fully or partially encrypted files.
+
     \f
+
     Args:
         directory: The directory path to search for files within that should be
             re-encrypted
@@ -141,7 +144,7 @@ def cli(  # pylint: disable=too-many-arguments
         LOGGER.critical(err)
         retcode = 3
 
-    except Exception as err:  # pylint: disable=broad-except
+    except Exception as err:  # noqa: BLE001
         LOGGER.exception(err)
         retcode = 9
 

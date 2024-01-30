@@ -83,15 +83,13 @@ exclude = [
 "tests/*" = ["S101", "T201"]
 
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = [
-    "ALL",
-]
+select = ["ALL"]
 ignore = [
     "ANN",
     "PL",
+    "TD002",
+    "TD003",
+    "FIX002",
     "D203",  # no-blank-line-before-class
     "D213",  # multi-line-summary-second-line
 ]

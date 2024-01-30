@@ -15,8 +15,7 @@ LOG_LEVELS: list[str] = list(
         str.lower,
         [
             level_name
-            # pylint: disable=protected-access
-            for _, level_name in sorted(logging._levelToName.items(), reverse=True)
+            for _, level_name in sorted(logging._levelToName.items(), reverse=True)  # noqa: SLF001
         ],
     ),
 )

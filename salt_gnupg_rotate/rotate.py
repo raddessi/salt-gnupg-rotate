@@ -15,7 +15,7 @@ from salt_gnupg_rotate.logger import LOGGER
 from salt_gnupg_rotate.logging_mixins import CustomLogger
 
 
-class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
+class PartiallyEncryptedFile:
     """A file that is either partially or fully encrypted."""
 
     encrypted_blocks = None
@@ -82,7 +82,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
         if not isinstance(self.encrypted_blocks, list):
             msg = "expected to find encrypted blocks but found none"
-            raise ValueError(msg)
+            raise ValueError(msg)  # noqa: TRY004
 
         decrypted_blocks = []
         total_count = len(self.encrypted_blocks)
@@ -107,10 +107,11 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             )
 
             if not decrypted_block.ok:
-                raise DecryptionError(
+                msg = (
                     f"Failed to decrypt block in {self.path}: "
-                    f"{decrypted_block.problems[0]['status']}",
+                    f"{decrypted_block.problems[0]['status']}"
                 )
+                raise DecryptionError(msg)
 
             self.logger.trace(
                 "Block after decryption (some characters may not be printable):\n%s",
@@ -140,7 +141,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
         if not isinstance(self.decrypted_blocks, list):
             msg = "expected to find decrypted blocks but found none"
-            raise ValueError(msg)
+            raise ValueError(msg)  # noqa: TRY004
 
         new_contents = self.contents
         total_count = len(self.decrypted_blocks)
@@ -192,10 +193,11 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             )
             # check if nothing was changed incorrectly
             if proposed_change == new_contents:
-                raise EncryptionError(
+                msg = (
                     f"Attempt to replace block {count} of {total_count} in file "
-                    f"{self.path} failed",
+                    f"{self.path} failed"
                 )
+                raise EncryptionError(msg)
             new_contents = proposed_change
 
         self.logger.trace(
@@ -233,12 +235,12 @@ def collect_file_paths(dirpath: str) -> list[str]:
             if name.rsplit(".", 1)[-1] not in ["sls", "gpg"]:
                 continue
             file_path = Path(root) / name
-            fpaths.append(file_path)
+            fpaths.append(str(file_path))
 
     return fpaths
 
 
-def process_directory(  # pylint: disable=too-many-arguments
+def process_directory(
     *,
     dirpath: str,
     decryption_gpg_keyring: GPG,
@@ -284,7 +286,7 @@ def process_directory(  # pylint: disable=too-many-arguments
     try:
         for file in track(files, description="Decrypting...", console=CONSOLE):
             file.decrypt()
-    except Exception as err:  # pylint: disable=broad-except
+    except Exception as err:
         logger.exception("Error during decryption")
         msg = "Bailing due to an error during decryption"
         raise DecryptionError(msg) from err
@@ -293,7 +295,7 @@ def process_directory(  # pylint: disable=too-many-arguments
     try:
         for file in track(files, description="Re-encrypting...", console=CONSOLE):
             file.encrypt()
-    except Exception as err:  # pylint: disable=broad-except
+    except Exception as err:
         logger.exception("Error while re-encrypting blocks")
         msg = "Bailing due to an error during re-encryption"
         raise EncryptionError(msg) from err
@@ -303,7 +305,7 @@ def process_directory(  # pylint: disable=too-many-arguments
         try:
             for file in track(files, description="Writing...", console=CONSOLE):
                 file.write_reencrypted_contents()
-        except Exception as err:  # pylint: disable=broad-except
+        except Exception as err:
             logger.exception("Error while writing updated contents")
             msg = "Bailing due to an error while writing the updated contents"
             raise EncryptionError(msg) from err

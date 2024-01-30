@@ -51,7 +51,8 @@ def create_logger(
     logger = logging.getLogger(app_name)
 
     if not isinstance(logger, CustomLogger):
-        raise TypeError(f"Logger instance not of type CustomLogger: {type(logger)}")
+        msg = f"Logger instance not of type CustomLogger: {type(logger)}"
+        raise TypeError(msg)
 
     logger.addHandler(
         rich.logging.RichHandler(
