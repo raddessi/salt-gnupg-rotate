@@ -1,11 +1,9 @@
 """Configuration for the pytest test suite."""
 
 import functools
-import os
 import shutil
 import sys
 from pathlib import Path
-from typing import Iterator
 
 import gnupg
 import pytest
@@ -16,17 +14,17 @@ from click.testing import CliRunner
 SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
 
 
-@pytest.fixture
-def runner() -> Iterator[CliRunner]:
-    """Yield a click.testing.CliRunner to invoke the CLI.
+@pytest.fixture()
+def runner() -> CliRunner:
+    """Return a click.testing.CliRunner to invoke the CLI.
 
-    Yields:
-        click.testing.CliRunner: Runner for the test suite
+    Returns:
+        CliRunner: Runner for the test suite
 
     """
     class_ = CliRunner
 
-    def invoke_wrapper(func):  # type: ignore
+    def invoke_wrapper(func):  # type: ignore[no-untyped-def]
         """Augment CliRunner.invoke to emit its output to stdout.
 
         This enables pytest to show the output in its logs on test
@@ -41,7 +39,7 @@ def runner() -> Iterator[CliRunner]:
         """
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):  # type: ignore
+        def wrapper(*args, **kwargs):  # type: ignore[no-untyped-def]
             echo = kwargs.pop("echo", False)
             result = func(*args, **kwargs)
 
@@ -52,10 +50,9 @@ def runner() -> Iterator[CliRunner]:
 
         return wrapper
 
-    class_.invoke = invoke_wrapper(class_.invoke)  # type: ignore
-    cli_runner = class_()
+    class_.invoke = invoke_wrapper(class_.invoke)  # type: ignore[method-assign,no-untyped-call]
 
-    yield cli_runner
+    return class_()
 
 
 @pytest.fixture(name="pytest_gnupg_keyring_dirpath")
@@ -80,7 +77,8 @@ def gnupg_keyring_dirpath() -> str:
     ],
 )
 def salt_pillar_fpath_fixture(
-    tmp_path_factory: TempPathFactory, request: FixtureRequest
+    tmp_path_factory: TempPathFactory,
+    request: FixtureRequest,
 ) -> str:
     """A fixture returning the path to a temp directory to use for pillar data.
 
@@ -91,9 +89,9 @@ def salt_pillar_fpath_fixture(
     Returns:
         str: Of the temp dir
     """
-    temp_fpath = os.path.join(tmp_path_factory.mktemp("data"), request.param)
-    shutil.copy(os.path.join(SALT_PILLAR_DATADIR, request.param), temp_fpath)
-    return temp_fpath
+    temp_fpath = Path(tmp_path_factory.mktemp("data")) / request.param
+    shutil.copy(Path(SALT_PILLAR_DATADIR) / request.param, temp_fpath)
+    return str(temp_fpath)
 
 
 @pytest.fixture(name="new_gnupg_homedir", scope="session")

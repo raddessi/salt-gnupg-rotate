@@ -1,7 +1,6 @@
 """Main code."""
-import os
+from pathlib import Path
 
-# pylint: disable=import-error
 import gnupg
 import rich
 import rich.pretty
@@ -20,7 +19,8 @@ rich.pretty.install()
 rich.traceback.install()
 
 
-def main(  # pylint: disable=too-many-arguments
+def main(
+    *,
     dirpath: str,
     recipient: str,
     decryption_gpg_homedir: str = DECRYPTION_GPG_HOMEDIR,
@@ -50,13 +50,9 @@ def main(  # pylint: disable=too-many-arguments
     LOGGER.debug("Starting up")
 
     # validation
-    dirpath = os.path.realpath(dirpath)
-    decryption_gpg_homedir = os.path.realpath(
-        os.path.expanduser(decryption_gpg_homedir)
-    )
-    encryption_gpg_homedir = os.path.realpath(
-        os.path.expanduser(encryption_gpg_homedir)
-    )
+    dirpath = str(Path(dirpath).absolute())
+    decryption_gpg_homedir = str(Path(decryption_gpg_homedir).expanduser().absolute())
+    encryption_gpg_homedir = str(Path(encryption_gpg_homedir).expanduser().absolute())
 
     LOGGER.debug("dirpath=%s", dirpath)
     LOGGER.debug("decryption_gpg_homedir=%s", decryption_gpg_homedir)
@@ -81,10 +77,11 @@ def main(  # pylint: disable=too-many-arguments
             extra={"markup": True},
         )
     else:
-        raise NameError(
+        msg = (
             f"Secret key for recipient '{recipient}' not present in keyring at "
-            f"{encryption_gpg_homedir}"
+            f"{encryption_gpg_homedir}",
         )
+        raise NameError(msg)
 
     try:
         updated_count = process_directory(

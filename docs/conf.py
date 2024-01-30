@@ -1,11 +1,11 @@
 """Sphinx configuration."""
-# pylint: disable=invalid-name
+# ruff: noqa: INP001
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 project = "salt-gnupg-rotate"
 author = "Ryan Addessi"
-copyright = f"{datetime.now().year}, {author}"  # pylint: disable=redefined-builtin
+copyright = f"{datetime.now(tz=timezone.utc).year}, {author}"  # noqa: A001
 
 
 autodoc_typehints = "description"

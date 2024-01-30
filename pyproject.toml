@@ -62,27 +62,77 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 ## Config for other tools
-
-[tool.black]
+[tool.ruff]
 line-length = 88
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-  | tests/fixtures
+indent-width = 4
+target-version = "py310"
+exclude = [
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".tox",
+    ".venv",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "tests/fixtures",
+]
 
-  # The following are specific to Black, you probably don't want those.
-  | blib2to3
-  | tests/data
-)/
-'''
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101", "T201"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",
+    "PL",
+    "TD002",
+    "TD003",
+    "FIX002",
+    "D203",  # no-blank-line-before-class
+    "D213",  # multi-line-summary-second-line
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pep8-naming]
+extend-ignore-names = ["test_*"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = true
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
@@ -110,16 +160,6 @@ fail_under = 100
 #   "configuration_files",
 # ]
 
-[tool.isort]
-line_length = 88
-not_skip = "__init__.py"
-multi_line_output = 3
-force_single_line = false
-balanced_wrapping = true
-default_section = "THIRDPARTY"
-known_first_party = "salt_gnupg_rotate"
-include_trailing_comma = true
-
 [tool.mypy]
 strict = true
 warn_unreachable = true
@@ -129,26 +169,6 @@ show_error_codes = true
 show_error_context = true
 ignore_missing_imports = true
 # exclude = "somedir/"
-
-[tool.pydocstyle]
-convention = "google"
-add_ignore = [
-    "D103",  # handled by pylint
-    "D106",  # handled by pylint
-    "D301",  # for Click "\f" delimiters
-]
-
-[tool.pylint]
-
-[tool.pylint.MASTER]
-ignore-paths = []
-
-[tool.pylint.'MESSAGES CONTROL']
-disable = [
-    "duplicate-code",  # not possible to disable inline currently
-    "fixme",  # these get converted in to github issues
-    "import-error",  # pre-commit does not have all the package deps available, yet
-]
 
 [tool.pytest.ini_options]
 # `log_cli` would be AMAZING to enable but it currently conflicts with click's CliRunner
