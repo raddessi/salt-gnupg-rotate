@@ -52,10 +52,10 @@ def main(  # pylint: disable=too-many-arguments
     # validation
     dirpath = os.path.realpath(dirpath)
     decryption_gpg_homedir = os.path.realpath(
-        os.path.expanduser(decryption_gpg_homedir)
+        os.path.expanduser(decryption_gpg_homedir),
     )
     encryption_gpg_homedir = os.path.realpath(
-        os.path.expanduser(encryption_gpg_homedir)
+        os.path.expanduser(encryption_gpg_homedir),
     )
 
     LOGGER.debug("dirpath=%s", dirpath)
@@ -83,7 +83,7 @@ def main(  # pylint: disable=too-many-arguments
     else:
         raise NameError(
             f"Secret key for recipient '{recipient}' not present in keyring at "
-            f"{encryption_gpg_homedir}"
+            f"{encryption_gpg_homedir}",
         )
 
     try:

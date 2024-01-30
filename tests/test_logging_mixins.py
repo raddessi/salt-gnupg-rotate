@@ -1,8 +1,8 @@
 """Tests for the `salt_gnupg_rotate.logging_mixins` submodule."""
 
 import logging
-from contextlib import ExitStack as does_not_raise
-from typing import Any, ContextManager
+from contextlib import nullcontext
+from typing import AbstractContextManager, Any
 
 import pytest
 import rich.console
@@ -12,26 +12,26 @@ from salt_gnupg_rotate.logging_mixins import create_logger
 
 
 @pytest.mark.parametrize(
-    "app_name,log_level,expectation,expected_log_level",
+    ("app_name", "log_level", "expectation", "expected_log_level"),
     [
         pytest.param(
             "mylogger",
             None,
-            does_not_raise(),
+            nullcontext(),
             "NOTSET",
             id="defaults",
         ),
         pytest.param(
             "mylogger",
             "debug",
-            does_not_raise(),
+            nullcontext(),
             "DEBUG",
             id="log_level_debug_lowercase",
         ),
         pytest.param(
             "mylogger",
             "TRACE",
-            does_not_raise(),
+            nullcontext(),
             "TRACE",
             id="log_level_trace",
         ),
@@ -47,7 +47,7 @@ from salt_gnupg_rotate.logging_mixins import create_logger
 def test_create_logger(
     app_name: str,
     log_level: str,
-    expectation: ContextManager[Any],
+    expectation: AbstractContextManager[Any],
     expected_log_level: str,
 ) -> None:
     """Verify that creating a logger works as expected.
@@ -65,8 +65,7 @@ def test_create_logger(
         logger = create_logger(app_name=app_name, log_level=log_level, console=console)
 
         assert isinstance(logger, logging.Logger)
-        # pylint: disable=protected-access
-        assert logging._levelToName[logger.level] == expected_log_level
+        assert logging._levelToName[logger.level] == expected_log_level  # noqa: SLF001
 
         logger.trace("verify trace level logging works")
 

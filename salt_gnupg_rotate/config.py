@@ -1,7 +1,6 @@
 """Configuration."""
 
 import os
-from typing import List
 
 from rich.console import Console
 
@@ -11,7 +10,7 @@ APP_NAME = "salt_gnupg_rotate"
 ENV_APP_NAME = "SALT_GNUPG_ROTATE"
 CONSOLE = Console(stderr=True)
 LOG_LEVEL: str = "info"
-LOG_LEVELS: List[str] = list(
+LOG_LEVELS: list[str] = list(
     map(
         str.lower,
         [
@@ -19,7 +18,7 @@ LOG_LEVELS: List[str] = list(
             # pylint: disable=protected-access
             for _, level_name in sorted(logging._levelToName.items(), reverse=True)
         ],
-    )
+    ),
 )
 DECRYPTION_GPG_HOMEDIR: str = os.getenv("GNUPGHOME", "~/.gnupg")
 ENCRYPTION_GPG_HOMEDIR: str = os.getenv("GNUPGHOME", "~/.gnupg")

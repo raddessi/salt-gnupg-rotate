@@ -8,7 +8,8 @@ from salt_gnupg_rotate.main import main
 
 
 def test_main_return_value(
-    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+    mocker: MockerFixture,
+    pytest_gnupg_keyring_dirpath: str,
 ) -> None:
     """Verify that main returns as expected.
 
@@ -30,7 +31,8 @@ def test_main_return_value(
 
 
 def test_main_return_value_on_write(
-    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+    mocker: MockerFixture,
+    pytest_gnupg_keyring_dirpath: str,
 ) -> None:
     """Verify that main returns as expected when write=True.
 
@@ -53,7 +55,8 @@ def test_main_return_value_on_write(
 
 
 def test_main_gpg_keyring_missing_secret_key(
-    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+    mocker: MockerFixture,
+    pytest_gnupg_keyring_dirpath: str,
 ) -> None:
     """Verify that main raises as expected when a secret key is missing.
 
@@ -76,7 +79,8 @@ def test_main_gpg_keyring_missing_secret_key(
 
 
 def test_main_decryption_error(
-    mocker: MockerFixture, pytest_gnupg_keyring_dirpath: str
+    mocker: MockerFixture,
+    pytest_gnupg_keyring_dirpath: str,
 ) -> None:
     """Verify that main raises as expected on a decryption error.
 

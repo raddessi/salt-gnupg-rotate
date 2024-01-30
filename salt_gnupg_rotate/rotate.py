@@ -3,7 +3,6 @@
 import os
 import re
 from textwrap import dedent, indent
-from typing import List
 
 from gnupg import GPG
 from rich.markup import escape
@@ -100,13 +99,15 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
 
             encrypted_stripped_block = dedent(encrypted_block)
             decrypted_block = self.decryption_gpg_keyring.decrypt(
-                encrypted_stripped_block, passphrase=None, always_trust=True
+                encrypted_stripped_block,
+                passphrase=None,
+                always_trust=True,
             )
 
             if not decrypted_block.ok:
                 raise DecryptionError(
                     f"Failed to decrypt block in {self.path}: "
-                    f"{decrypted_block.problems[0]['status']}"
+                    f"{decrypted_block.problems[0]['status']}",
                 )
 
             self.logger.trace(
@@ -119,7 +120,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
                     encrypted_stripped_block,
                     decrypted_block,
                     padding_size,
-                )
+                ),
             )
 
         self.decrypted_blocks = decrypted_blocks
@@ -147,18 +148,21 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             padding_size,
         ) in enumerate(self.decrypted_blocks, start=1):
             reencrypted_data = self.encryption_gpg_keyring.encrypt(
-                str(decrypted_block), self.recipient, always_trust=True
+                str(decrypted_block),
+                self.recipient,
+                always_trust=True,
             )
 
             if not reencrypted_data.ok:
                 raise EncryptionError(
                     f"Failed to encrypt block in {self.path}: "
-                    f"{reencrypted_data.problems[0]['status']}"
+                    f"{reencrypted_data.problems[0]['status']}",
                 )
 
             if padding_size:
                 reencrypted_padded_block = indent(
-                    str(reencrypted_data), " " * padding_size
+                    str(reencrypted_data),
+                    " " * padding_size,
                 )
             else:
                 reencrypted_padded_block = str(reencrypted_data)
@@ -178,19 +182,21 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
             )
 
             proposed_change = new_contents.replace(
-                encrypted_block, reencrypted_padded_block, 1
+                encrypted_block,
+                reencrypted_padded_block,
+                1,
             )
             # check if nothing was changed incorrectly
             if proposed_change == new_contents:
                 raise EncryptionError(
                     f"Attempt to replace block {count} of {total_count} in file "
-                    f"{self.path} failed"
+                    f"{self.path} failed",
                 )
             new_contents = proposed_change
 
         self.logger.trace(
             f"Proposed contents of file {self.path} after re-encryption:\n"
-            f"{new_contents}"
+            f"{new_contents}",
         )
 
         self.reencrypted_contents = new_contents
@@ -208,7 +214,7 @@ class PartiallyEncryptedFile:  # pylint: disable=too-many-instance-attributes
                 fdesc.truncate()
 
 
-def collect_file_paths(dirpath: str) -> List[str]:
+def collect_file_paths(dirpath: str) -> list[str]:
     """Find any supported files that we should search for encrypted blocks in.
 
     Args:
@@ -302,7 +308,7 @@ def process_directory(  # pylint: disable=too-many-arguments
                 writes_success = False
         if not writes_success:
             raise EncryptionError(
-                "Bailing due to errors while writing the updated contents"
+                "Bailing due to errors while writing the updated contents",
             )
     else:
         logger.info("Skipping writing out changes")

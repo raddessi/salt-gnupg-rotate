@@ -4,8 +4,8 @@ import functools
 import os
 import shutil
 import sys
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
 
 import gnupg
 import pytest
@@ -16,17 +16,17 @@ from click.testing import CliRunner
 SALT_PILLAR_DATADIR = "./tests/data/salt_pillar"
 
 
-@pytest.fixture
+@pytest.fixture()
 def runner() -> Iterator[CliRunner]:
     """Yield a click.testing.CliRunner to invoke the CLI.
 
-    Yields:
+    Returns:
         click.testing.CliRunner: Runner for the test suite
 
     """
     class_ = CliRunner
 
-    def invoke_wrapper(func):  # type: ignore
+    def invoke_wrapper(func):  # noqa: ANN001, ANN202
         """Augment CliRunner.invoke to emit its output to stdout.
 
         This enables pytest to show the output in its logs on test
@@ -41,7 +41,7 @@ def runner() -> Iterator[CliRunner]:
         """
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):  # type: ignore
+        def wrapper(*args, **kwargs):  # noqa: ANN002, ANN003, ANN202
             echo = kwargs.pop("echo", False)
             result = func(*args, **kwargs)
 
@@ -52,10 +52,9 @@ def runner() -> Iterator[CliRunner]:
 
         return wrapper
 
-    class_.invoke = invoke_wrapper(class_.invoke)  # type: ignore
-    cli_runner = class_()
+    class_.invoke = invoke_wrapper(class_.invoke)
 
-    yield cli_runner
+    return class_()
 
 
 @pytest.fixture(name="pytest_gnupg_keyring_dirpath")
@@ -80,7 +79,8 @@ def gnupg_keyring_dirpath() -> str:
     ],
 )
 def salt_pillar_fpath_fixture(
-    tmp_path_factory: TempPathFactory, request: FixtureRequest
+    tmp_path_factory: TempPathFactory,
+    request: FixtureRequest,
 ) -> str:
     """A fixture returning the path to a temp directory to use for pillar data.
 

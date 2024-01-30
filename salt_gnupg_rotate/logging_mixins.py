@@ -1,7 +1,7 @@
 """Additions to the logging module."""
 
 import logging
-from typing import Any, Optional
+from typing import Any
 
 import rich.console
 import rich.logging
@@ -31,8 +31,8 @@ logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
 
 def create_logger(
     app_name: str,
-    log_level: Optional[str] = None,
-    console: Optional[rich.console.Console] = None,
+    log_level: str | None = None,
+    console: rich.console.Console | None = None,
 ) -> CustomLogger:
     """Set up the logger instance.
 
@@ -54,7 +54,11 @@ def create_logger(
         raise TypeError(f"Logger instance not of type CustomLogger: {type(logger)}")
 
     logger.addHandler(
-        rich.logging.RichHandler(rich_tracebacks=True, console=console, show_path=False)
+        rich.logging.RichHandler(
+            rich_tracebacks=True,
+            console=console,
+            show_path=False,
+        ),
     )
 
     logger.setLevel((log_level or "NOTSET").upper())
