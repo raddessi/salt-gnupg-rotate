@@ -106,10 +106,10 @@ def tests(session: Session) -> None:
             *session.posargs,
         )
     finally:
-        session.notify(target="coverage", posargs=[])
+        session.notify(target=f"coverage-{session.python}", posargs=[])
 
 
-@nox_session(python=DEFAULT_PYTHON_VERSION)
+@nox_session(python=PYTHON_VERSIONS)
 def coverage(session: Session) -> None:
     """Produce the coverage report.
 
