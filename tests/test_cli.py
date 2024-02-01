@@ -67,7 +67,7 @@ from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 def test_cli(
     mocker: MockerFixture,
     runner: CliRunner,
-    args: Union[Sequence, str],
+    args: Union[Sequence[str], str],
     exception: Union[Exception, None],
     expected_retcode: int,
 ) -> None:
