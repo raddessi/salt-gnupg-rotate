@@ -17,8 +17,8 @@ include_logger_stdout_handler: true
 include_logger_syslog_handler: false
 include_main_dunder: false
 include_main_entrypoint: true
-max_python_version: "3.10"
-min_python_version: "3.10"
+max_python_version: "3.8"
+min_python_version: "3.12"
 project_description: Easily rotate gnupg encryption keys
 project_name: salt-gnupg-rotate
 public_or_private: private

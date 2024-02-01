@@ -13,7 +13,7 @@ packages = [{ include = "salt_gnupg_rotate" }]
 classifiers = []
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 click = "^8.1.7"
 rich = ">=10.14.0"
 python-gnupg = ">=0.5.2"
