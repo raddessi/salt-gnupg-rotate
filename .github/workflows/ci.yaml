@@ -49,13 +49,14 @@ jobs:
           nox --session "${{ matrix.session }}" --force-color
       - name: Codecov
         uses: codecov/codecov-action@v4
+        if: always()
         with:
           name: "${{ matrix.session }}"
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: "coverage-report-${{ matrix.session }}"
           path: build/coverage
