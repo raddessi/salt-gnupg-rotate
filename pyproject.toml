@@ -1,3 +1,7 @@
+[project]
+name = "salt-gnupg-rotate"
+requires-python = ">=3.8"
+
 # Poetry package config
 [tool.poetry]
 name = "salt-gnupg-rotate"
