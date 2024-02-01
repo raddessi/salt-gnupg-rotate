@@ -74,7 +74,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 88
 indent-width = 4
-target-version = "py310"
+target-version = "py38"
 exclude = [
     ".git",
     ".hg",
@@ -115,6 +115,11 @@ extend-ignore-names = ["test_*"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+# Needed to support python 3.8 annotation syntax
+keep-runtime-typing = true
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.

@@ -46,7 +46,7 @@ from salt_gnupg_rotate.logging_mixins import create_logger
 def test_create_logger(
     app_name: str,
     log_level: str,
-    expectation: AbstractContextManager[Exception | None],
+    expectation: AbstractContextManager,
     expected_log_level: str,
 ) -> None:
     """Verify that creating a logger works as expected.
