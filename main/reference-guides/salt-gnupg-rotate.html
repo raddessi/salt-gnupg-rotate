@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="author" title="About these documents" href="../about.html" /><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How-To Guides" href="../how-to-guides/index.html" /><link rel="prev" title="Reference Guides" href="index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>CLI Reference - salt-gnupg-rotate documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -237,9 +237,9 @@
         </div>
         <article role="main">
           <section id="cli-reference">
-<h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Link to this heading">#</a></h1>
+<h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Permalink to this heading">#</a></h1>
 <section id="salt-gnupg-rotate">
-<h2>salt-gnupg-rotate<a class="headerlink" href="#salt-gnupg-rotate" title="Link to this heading">#</a></h2>
+<h2>salt-gnupg-rotate<a class="headerlink" href="#salt-gnupg-rotate" title="Permalink to this heading">#</a></h2>
 <p>Easily rotate gnupg encryption keys of fully or partially encrypted files.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>salt-gnupg-rotate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
@@ -247,13 +247,13 @@
 <p class="rubric">Options</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-d">
-<span id="cmdoption-salt-gnupg-rotate-dir"></span><span id="cmdoption-salt-gnupg-rotate-directory"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dir</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--directory</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;directory&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-d" title="Link to this definition">#</a></dt>
+<span id="cmdoption-salt-gnupg-rotate-dir"></span><span id="cmdoption-salt-gnupg-rotate-directory"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dir</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--directory</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;directory&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-d" title="Permalink to this definition">#</a></dt>
 <dd><p><strong>Required</strong> The directory of encrypted data to recursively re-encrypt encrypted blocks within.</p>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-decryption-gpg-homedir">
-<span class="sig-name descname"><span class="pre">--decryption-gpg-homedir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;decryption_gpg_homedir&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-decryption-gpg-homedir" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">--decryption-gpg-homedir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;decryption_gpg_homedir&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-decryption-gpg-homedir" title="Permalink to this definition">#</a></dt>
 <dd><p>The path of the directory of the gnupg keyring that should be used for decryption.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -264,7 +264,7 @@
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-encryption-gpg-homedir">
-<span class="sig-name descname"><span class="pre">--encryption-gpg-homedir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;encryption_gpg_homedir&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-encryption-gpg-homedir" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">--encryption-gpg-homedir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;encryption_gpg_homedir&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-encryption-gpg-homedir" title="Permalink to this definition">#</a></dt>
 <dd><p>The path of the directory of the gnupg keyring that should be used for encryption.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -275,13 +275,13 @@
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-r">
-<span id="cmdoption-salt-gnupg-rotate-recipient"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--recipient</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;recipient&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-r" title="Link to this definition">#</a></dt>
+<span id="cmdoption-salt-gnupg-rotate-recipient"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--recipient</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;recipient&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-r" title="Permalink to this definition">#</a></dt>
 <dd><p><strong>Required</strong> The name of the recipient key to use in the encryption keyring.</p>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-write">
-<span class="sig-name descname"><span class="pre">--write</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-write" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">--write</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-write" title="Permalink to this definition">#</a></dt>
 <dd><p>Write the re-encrypted data back out to disk. If not passed then no changes will be made.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -292,7 +292,7 @@
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-l">
-<span id="cmdoption-salt-gnupg-rotate-log"></span><span id="cmdoption-salt-gnupg-rotate-log-level"></span><span class="sig-name descname"><span class="pre">-l</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--log</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--log-level</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;log_level&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-l" title="Link to this definition">#</a></dt>
+<span id="cmdoption-salt-gnupg-rotate-log"></span><span id="cmdoption-salt-gnupg-rotate-log-level"></span><span class="sig-name descname"><span class="pre">-l</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--log</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--log-level</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;log_level&gt;</span></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-l" title="Permalink to this definition">#</a></dt>
 <dd><p>The logging verbosity level to use</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -306,13 +306,13 @@
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-version">
-<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-version" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-version" title="Permalink to this definition">#</a></dt>
 <dd><p>Show the version and exit.</p>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-salt-gnupg-rotate-h">
-<span id="cmdoption-salt-gnupg-rotate-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-h" title="Link to this definition">#</a></dt>
+<span id="cmdoption-salt-gnupg-rotate-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-salt-gnupg-rotate-h" title="Permalink to this definition">#</a></dt>
 <dd><p>Show this message and exit.</p>
 </dd></dl>
 
@@ -387,9 +387,9 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
