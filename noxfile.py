@@ -20,8 +20,13 @@ except ImportError:
 
 
 PACKAGE = "salt_gnupg_rotate"
+DEFAULT_PYTHON_VERSION = "3.10"
 PYTHON_VERSIONS = [
+    "3.8",
+    "3.9",
     "3.10",
+    "3.11",
+    "3.12",
 ]
 nox.needs_version = ">= 2021.10.1"
 nox.options.default_venv_backend = "conda"
@@ -37,7 +42,7 @@ nox.options.sessions = (
 )
 
 
-@nox_session(python="3.10")
+@nox_session(python=DEFAULT_PYTHON_VERSION)
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages.
 
@@ -101,10 +106,10 @@ def tests(session: Session) -> None:
             *session.posargs,
         )
     finally:
-        session.notify(target="coverage", posargs=[])
+        session.notify(target=f"coverage-{session.python}", posargs=[])
 
 
-@nox_session(python="3.10")
+@nox_session(python=PYTHON_VERSIONS)
 def coverage(session: Session) -> None:
     """Produce the coverage report.
 
@@ -136,7 +141,7 @@ def xdoctest(session: Session) -> None:
     session.run("python", "-m", "xdoctest", PACKAGE, *args)
 
 
-@nox_session(name="docs-build", python="3.10")
+@nox_session(name="docs-build", python=DEFAULT_PYTHON_VERSION)
 def docs_build(session: Session) -> None:
     """Build the documentation.
 
@@ -195,7 +200,7 @@ def docs_build(session: Session) -> None:
     )
 
 
-@nox_session(name="docs-spelling", python="3.10")
+@nox_session(name="docs-spelling", python=DEFAULT_PYTHON_VERSION)
 def docs_spelling(session: Session) -> None:
     """Check spelling in the documentation.
 
@@ -235,7 +240,7 @@ def docs_spelling(session: Session) -> None:
     session.run("sphinx-build", *args)
 
 
-@nox_session(python="3.10")
+@nox_session(python=DEFAULT_PYTHON_VERSION)
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 

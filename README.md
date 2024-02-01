@@ -1,7 +1,7 @@
 [![CI](https://github.com/raddessi/salt-gnupg-rotate/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/raddessi/salt-gnupg-rotate/actions/workflows/ci.yaml)
 [![documentation](https://img.shields.io/badge/docs-sphinx%20furo-blue.svg?style=flat)](https://github.com/pradyunsg/furo)
 [![Checked with MyPy](https://img.shields.io/badge/mypy-checked-blue.svg)](http://mypy-lang.org/)
-[![Python Versions](https://img.shields.io/badge/python-3.10-blue.svg)](#salt-gnupg-rotate)
+[![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12-blue.svg)](#salt-gnupg-rotate)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 <!-- sphinx-include-starts-here -->

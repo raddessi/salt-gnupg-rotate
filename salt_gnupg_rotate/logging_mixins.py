@@ -1,7 +1,9 @@
 """Additions to the logging module."""
 
+from __future__ import annotations
+
 import logging
-from typing import Any
+from typing import Any, Union
 
 import rich.console
 import rich.logging
@@ -31,8 +33,8 @@ logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
 
 def create_logger(
     app_name: str,
-    log_level: str | None = None,
-    console: rich.console.Console | None = None,
+    log_level: Union[str, None] = None,
+    console: Union[rich.console.Console, None] = None,
 ) -> CustomLogger:
     """Set up the logger instance.
 

@@ -1,5 +1,6 @@
 """Tests for the `salt_gnupg_rotate.main` submodule."""
 
+from __future__ import annotations
 
 from contextlib import nullcontext
 from typing import TYPE_CHECKING
@@ -9,7 +10,7 @@ import pytest
 
 if TYPE_CHECKING:
     from _pytest.python_api import RaisesContext
-from pytest_mock import MockerFixture
+from pytest_mock import MockerFixture  # noqa: TCH002
 
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.rotate import (
@@ -31,6 +32,21 @@ def test_PartiallyEncryptedFile_instance(mocker: MockerFixture) -> None:
         encryption_gpg_keyring=mocker.Mock(),
         recipient="pytest",
     )
+
+
+def test_PartiallyEncryptedFile_instance_missing_file(mocker: MockerFixture) -> None:
+    """Test that PartiallyEncryptedFile fails when a file doesn't exist.
+
+    Args:
+        mocker: pytest-mock mocker fixture
+    """
+    with pytest.raises(FileNotFoundError):
+        PartiallyEncryptedFile(
+            path="./tests/data/salt_pillar/file-does-not-exist.xyz",
+            decryption_gpg_keyring=mocker.Mock(),
+            encryption_gpg_keyring=mocker.Mock(),
+            recipient="pytest",
+        )
 
 
 def test_PartiallyEncryptedFile_find_encrypted_blocks(
@@ -295,6 +311,35 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents_failure(
         recipient="pytest",
     )
     file.write_reencrypted_contents()
+
+
+def test_PartiallyEncryptedFile_write_reencrypted_contents_failure2(
+    salt_pillar_fpath: str,
+    mocker: MockerFixture,
+    pytest_gnupg_keyring_dirpath: str,
+) -> None:
+    """Verify that PartiallyEncryptedFile.write fails when file is read only.
+
+    Args:
+        salt_pillar_fpath: pytest fixture
+        mocker: pytest-mock mocker fixture
+        pytest_gnupg_keyring_dirpath: pytest fixture
+
+    """
+    gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
+    mocker.patch("salt_gnupg_rotate.rotate.PartiallyEncryptedFile.encrypt")
+    file = PartiallyEncryptedFile(
+        path=salt_pillar_fpath,
+        decryption_gpg_keyring=gpg,
+        encryption_gpg_keyring=gpg,
+        recipient="pytest",
+    )
+
+    file.reencrypted_contents = "test"
+    mocker.patch("salt_gnupg_rotate.rotate.Path", side_effect=OSError("pytest"))
+
+    with pytest.raises(IOError, match="pytest"):
+        file.write_reencrypted_contents()
 
 
 def test_collect_file_paths(salt_pillar_fpath: str) -> None:

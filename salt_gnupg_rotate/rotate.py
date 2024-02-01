@@ -1,18 +1,20 @@
 """Rotation functions."""
+from __future__ import annotations
 
 import os
 import re
 from pathlib import Path
 from textwrap import dedent, indent
+from typing import List
 
-from gnupg import GPG
+from gnupg import GPG  # noqa: TCH002
 from rich.markup import escape
 from rich.progress import track
 
 from salt_gnupg_rotate.config import CONSOLE
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
 from salt_gnupg_rotate.logger import LOGGER
-from salt_gnupg_rotate.logging_mixins import CustomLogger
+from salt_gnupg_rotate.logging_mixins import CustomLogger  # noqa: TCH001
 
 
 class PartiallyEncryptedFile:
@@ -220,7 +222,7 @@ class PartiallyEncryptedFile:
                 fdesc.truncate()
 
 
-def collect_file_paths(dirpath: str) -> list[str]:
+def collect_file_paths(dirpath: str) -> List[str]:
     """Find any supported files that we should search for encrypted blocks in.
 
     Args:
