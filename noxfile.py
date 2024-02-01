@@ -126,8 +126,16 @@ def coverage(session: Session) -> None:
         session.run("coverage", *session.posargs)
 
     else:
-        session.run("coverage", "xml")
-        session.run("coverage", "html", "--directory", f"build/coverage/{session.name}")
+        session.run("coverage", "xml", "--fail-under", "0")
+        session.run(
+            "coverage",
+            "html",
+            "--directory",
+            f"build/coverage/{session.name}",
+            "--fail-under",
+            "0",
+            "--show-contexts",
+        )
         session.run("coverage", "report")
 
 

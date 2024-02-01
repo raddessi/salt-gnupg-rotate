@@ -305,7 +305,11 @@ def process_directory(
     if write:
         logger.info("Writing out changes ...")
         try:
-            for file in track(files, description="Writing...", console=CONSOLE):
+            for file in track(  # pragma: no branch
+                files,
+                description="Writing...",
+                console=CONSOLE,
+            ):
                 file.write_reencrypted_contents()
         except Exception as err:
             logger.exception("Error while writing updated contents")
