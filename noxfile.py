@@ -117,14 +117,18 @@ def coverage(session: Session) -> None:
         session: The running nox session
 
     """
-    args = session.posargs or ["report"]
-
     session.install("coverage[toml]")
 
-    if not session.posargs and any(Path().glob(".coverage.*")):
+    if any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
 
-    session.run("coverage", *args)
+    if session.posargs:
+        session.run("coverage", *session.posargs)
+
+    else:
+        session.run("coverage", "xml")
+        session.run("coverage", "html", "--directory", f"build/coverage/{session.name}")
+        session.run("coverage", "report")
 
 
 @nox_session(python=PYTHON_VERSIONS)

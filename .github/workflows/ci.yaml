@@ -50,4 +50,12 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          name: "${{ matrix.session }}"
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+
+      - name: Upload coverage report as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: "coverage-report-${{ matrix.session }}"
+          path: build/coverage
