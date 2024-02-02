@@ -112,6 +112,7 @@ Gemfile.lock
 # nox
 .nox/
 
-
+# salt-gnupg-rotate
 tests/data/gnupg/random_seed
 docs/_spelling/
+docs/_asciinema/**/*.cast
