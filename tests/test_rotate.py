@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from contextlib import nullcontext
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import gnupg
@@ -31,6 +32,7 @@ def test_PartiallyEncryptedFile_instance(mocker: MockerFixture) -> None:
         decryption_gpg_keyring=mocker.Mock(),
         encryption_gpg_keyring=mocker.Mock(),
         recipient="pytest",
+        root_dirpath="./tests/data/salt_pillar",
     )
 
 
@@ -46,6 +48,7 @@ def test_PartiallyEncryptedFile_instance_missing_file(mocker: MockerFixture) -> 
             decryption_gpg_keyring=mocker.Mock(),
             encryption_gpg_keyring=mocker.Mock(),
             recipient="pytest",
+            root_dirpath="./tests/data/salt_pillar",
         )
 
 
@@ -66,6 +69,7 @@ def test_PartiallyEncryptedFile_find_encrypted_blocks(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.find_encrypted_blocks()
     file.find_encrypted_blocks()
@@ -88,6 +92,7 @@ def test_PartiallyEncryptedFile_decrypt(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.decrypt()
     file.decrypt()
@@ -109,6 +114,7 @@ def test_PartiallyEncryptedFile_decrypt_DecryptionError(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.find_encrypted_blocks()
     expectation: nullcontext[None] | RaisesContext[Exception]
@@ -142,6 +148,7 @@ def test_PartiallyEncryptedFile_decrypt_ValueError(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.find_encrypted_blocks()
     with pytest.raises(
@@ -168,6 +175,7 @@ def test_PartiallyEncryptedFile_encrypt(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.encrypt()
     file.encrypt()
@@ -197,6 +205,7 @@ def test_PartiallyEncryptedFile_encrypt_EncryptionError_1(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=mocked_gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.decrypt()
     expectation: nullcontext[None] | RaisesContext[Exception]
@@ -225,6 +234,7 @@ def test_PartiallyEncryptedFile_encrypt_EncryptionError_2(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.decrypt()
     expectation: nullcontext[None] | RaisesContext[Exception]
@@ -258,6 +268,7 @@ def test_PartiallyEncryptedFile_encrypt_ValueError(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.find_encrypted_blocks()
     with pytest.raises(
@@ -284,6 +295,7 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.write_reencrypted_contents()
     file.write_reencrypted_contents()
@@ -309,6 +321,7 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents_failure(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.write_reencrypted_contents()
 
@@ -333,6 +346,7 @@ def test_PartiallyEncryptedFile_write_reencrypted_contents_failure2(
         decryption_gpg_keyring=gpg,
         encryption_gpg_keyring=gpg,
         recipient="pytest",
+        root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
 
     file.reencrypted_contents = "test"
