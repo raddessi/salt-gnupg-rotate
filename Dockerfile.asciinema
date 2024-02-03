@@ -1,18 +1,10 @@
 FROM python:3.12-slim
 
+LABEL version="1.0"
 ENV GNUPGHOME /salt-gnupg-rotate/tests/data/gnupg
-
 WORKDIR /salt-gnupg-rotate
-COPY salt_gnupg_rotate/ /salt-gnupg-rotate/salt_gnupg_rotate/
-COPY docs/ /salt-gnupg-rotate/docs/
-COPY tests/ /salt-gnupg-rotate/tests/
-COPY pyproject.toml /salt-gnupg-rotate/
-COPY README.md /salt-gnupg-rotate/
-
-RUN pip install --no-cache .
 
 RUN apt update && apt install curl gpg -y && pip install --no-cache-dir asciinema-automation
-
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes && echo 'eval "$(starship init bash)"' >> ~/.bashrc
 # starship container module does not currently show the container name properly
 RUN mkdir -p /root/.config && \
@@ -20,7 +12,14 @@ RUN mkdir -p /root/.config && \
 [container]
 format = '[$symbol \[demo\]]($style) '
 EOF
-
 RUN mkdir /output
+
+COPY salt_gnupg_rotate/ /salt-gnupg-rotate/salt_gnupg_rotate/
+COPY docs/ /salt-gnupg-rotate/docs/
+COPY tests/ /salt-gnupg-rotate/tests/
+COPY pyproject.toml /salt-gnupg-rotate/
+COPY README.md /salt-gnupg-rotate/
+
+RUN pip install --no-cache .
 
 CMD ["bash"]

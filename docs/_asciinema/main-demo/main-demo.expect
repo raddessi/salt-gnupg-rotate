@@ -1,0 +1,10 @@
+#$ wait 3000
+
+salt-gnupg-rotate --directory ./tests/data/salt_pillar/ -r pytest
+#$ expect \\xe2\\x9d\\xaf
+
+salt-gnupg-rotate --directory ./tests/data/salt_pillar/ -r pytest -l trace
+#$ expect \\xe2\\x9d\\xaf
+
+salt-gnupg-rotate --directory ./tests/data/salt_pillar/ -r pytest --write
+#$ expect \\xe2\\x9d\\xaf
