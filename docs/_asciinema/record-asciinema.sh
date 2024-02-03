@@ -3,6 +3,9 @@
 function show_help() {
     echo "Usage: ${0} <asciinema-automation expect script>"
     echo
+    echo "You will need docker or podman along with the agg application from:"
+    echo "    https://github.com/asciinema/agg"
+    echo
     echo "Options:"
     echo "    -h, --help    Display this help message and exit."
     echo "    -f, --file    Path to the expect script to run."
@@ -55,13 +58,14 @@ done
 # we will eventually write the output cast to the same directory as the expect script,
 # with the same name
 OUTPUT_DIRPATH=$(dirname "$(realpath ${FPATH})")
-OUTPUT_FNAME=$(basename "${FPATH}".cast)
+CAST_FNAME=$(basename "${FPATH%.expect}".cast)
+GIF_FNAME=$(basename "${FPATH%.expect}".gif)
 
 # change working dir to the top level of the git repo
 cd "${GIT_TOP_DIRPATH}" || exit 2
 
 echo -e "Cleaning up previous recording casts ..."
-rm -f "${OUTPUT_DIRPATH}/${OUTPUT_FNAME}"
+rm -f "${OUTPUT_DIRPATH}/${CAST_FNAME}"
 
 if [ ${REBUILD} == "true" ]; then
     echo -e "\nBuilding docker image ..."
@@ -89,8 +93,19 @@ docker run \
                 -c \"env bash\" \
             ' \
             '$(realpath --relative-to=${GIT_TOP_DIRPATH} ${FPATH})' \
-            '/output/${OUTPUT_FNAME}' \
+            '/output/${CAST_FNAME}' \
     "
 
-echo -e "\nDone recording! Cast saved to ${OUTPUT_DIRPATH}/${OUTPUT_FNAME}. Playing back now:"
-asciinema play "${OUTPUT_DIRPATH}/${OUTPUT_FNAME}"
+echo -e "\nDone recording! Cast saved to ${OUTPUT_DIRPATH}/${CAST_FNAME}"
+echo "Converting to gif ${OUTPUT_DIRPATH}/${GIF_FNAME} ..."
+agg \
+    --theme monokai \
+    --font-size 20 \
+    --speed 1 \
+    --rows 24 \
+    --cols 120 \
+    "${OUTPUT_DIRPATH}/${CAST_FNAME}" \
+    "${OUTPUT_DIRPATH}/${GIF_FNAME}"
+
+echo -e "\nPlaying back the cast now:"
+asciinema play "${OUTPUT_DIRPATH}/${CAST_FNAME}"
