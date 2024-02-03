@@ -66,6 +66,7 @@ cd "${GIT_TOP_DIRPATH}" || exit 2
 
 echo -e "Cleaning up previous recording casts ..."
 rm -f "${OUTPUT_DIRPATH}/${CAST_FNAME}"
+rm -f "${OUTPUT_DIRPATH}/${GIF_FNAME}"
 
 if [ ${REBUILD} == "true" ]; then
     echo -e "\nBuilding docker image ..."
@@ -104,6 +105,7 @@ agg \
     --speed 1 \
     --rows 24 \
     --cols 120 \
+    --no-loop \
     "${OUTPUT_DIRPATH}/${CAST_FNAME}" \
     "${OUTPUT_DIRPATH}/${GIF_FNAME}"
 
