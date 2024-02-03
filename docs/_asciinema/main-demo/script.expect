@@ -1,10 +1,7 @@
-export GNUPGHOME=/salt-gnupg-rotate/tests/data/gnupg/
-#$ expect \\xe2\\x9d\\xaf
+#$ wait 3000
 
 salt-gnupg-rotate --directory /salt-gnupg-rotate/tests/data/salt_pillar/ -r pytest
 #$ expect \\xe2\\x9d\\xaf
-
-#$ wait 3000
 
 salt-gnupg-rotate --directory /salt-gnupg-rotate/tests/data/salt_pillar/ -r pytest -l trace
 #$ expect \\xe2\\x9d\\xaf
