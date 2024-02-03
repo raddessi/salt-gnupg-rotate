@@ -1,4 +1,5 @@
 """Rotation functions."""
+
 from __future__ import annotations
 
 import os
@@ -31,6 +32,7 @@ class PartiallyEncryptedFile:
         decryption_gpg_keyring: GPG,
         encryption_gpg_keyring: GPG,
         recipient: str,
+        root_dirpath: str,
     ) -> None:
         """Constructor.
 
@@ -40,14 +42,22 @@ class PartiallyEncryptedFile:
             encryption_gpg_keyring: The keyring that should be used to encrypt the file
             recipient: The name of the recipient of the key in the
                 encryption_gpg_keyring that the data should be re-encrypted for
+            root_dirpath: The path of the directory root that is being searched for
+                files to rotate encryption in. This will be used to generate a relative
+                file path when logging
 
         """
         self.path = path
+        self.relpath = str(Path(path).relative_to(Path(root_dirpath)))
         self.decryption_gpg_keyring = decryption_gpg_keyring
         self.encryption_gpg_keyring = encryption_gpg_keyring
         self.recipient = recipient
 
-        self.logger.info("Loading file %s", path)
+        self.logger.info(
+            "Loading file [magenta]%s",
+            self.relpath,
+            extra={"markup": True},
+        )
         with Path(self.path).open("r") as fdesc:
             self.contents = fdesc.read()
 
@@ -59,7 +69,7 @@ class PartiallyEncryptedFile:
         self.logger.debug(
             "Found %s encrypted blocks in file %s",
             len(self.encrypted_blocks),
-            self.path,
+            self.relpath,
         )
         total_count = len(self.encrypted_blocks)
         for count, encrypted_block in enumerate(self.encrypted_blocks, start=1):
@@ -67,7 +77,7 @@ class PartiallyEncryptedFile:
                 "Block %s of %s in file %s before decryption:\n%s",
                 count,
                 total_count,
-                self.path,
+                self.relpath,
                 escape(encrypted_block),
             )
 
@@ -93,7 +103,7 @@ class PartiallyEncryptedFile:
                 "Decrypting block %s of %s in file %s",
                 count,
                 total_count,
-                self.path,
+                self.relpath,
             )
             line_length_before = max(len(line) for line in encrypted_block.splitlines())
             line_length_after = max(
@@ -110,7 +120,7 @@ class PartiallyEncryptedFile:
 
             if not decrypted_block.ok:
                 msg = (
-                    f"Failed to decrypt block in {self.path}: "
+                    f"Failed to decrypt block in {self.relpath}: "
                     f"{decrypted_block.problems[0]['status']}"
                 )
                 raise DecryptionError(msg)
@@ -161,7 +171,7 @@ class PartiallyEncryptedFile:
 
             if not reencrypted_data.ok:
                 msg = (
-                    f"Failed to encrypt block in {self.path}: "
+                    f"Failed to encrypt block in {self.relpath}: "
                     f"{reencrypted_data.problems[0]['status']}"
                 )
                 raise EncryptionError(msg)
@@ -178,13 +188,13 @@ class PartiallyEncryptedFile:
                 "Re-encrypted block %s of %s in file %s",
                 count,
                 total_count,
-                self.path,
+                self.relpath,
             )
             self.logger.trace(
                 "Block %s of %s in file %s after re-encryption:\n%s",
                 count,
                 total_count,
-                self.path,
+                self.relpath,
                 escape(reencrypted_padded_block),
             )
 
@@ -197,13 +207,13 @@ class PartiallyEncryptedFile:
             if proposed_change == new_contents:
                 msg = (
                     f"Attempt to replace block {count} of {total_count} in file "
-                    f"{self.path} failed"
+                    f"{self.relpath} failed"
                 )
                 raise EncryptionError(msg)
             new_contents = proposed_change
 
         self.logger.trace(
-            f"Proposed contents of file {self.path} after re-encryption:\n"
+            f"Proposed contents of file {self.relpath} after re-encryption:\n"
             f"{new_contents}",
         )
 
@@ -215,7 +225,7 @@ class PartiallyEncryptedFile:
             self.encrypt()
 
         if isinstance(self.reencrypted_contents, str):
-            self.logger.debug("Writing updated file %s", self.path)
+            self.logger.debug("Writing updated file %s", self.relpath)
             with Path(self.path).open("w") as fdesc:
                 fdesc.seek(0)
                 fdesc.write(self.reencrypted_contents)
@@ -271,6 +281,7 @@ def process_directory(
         EncryptionError: If there was an error encrypting data
     """
     files = []
+    dirpath = str(Path(dirpath).absolute())
     fpaths = collect_file_paths(dirpath=dirpath)
 
     logger.info("Loading files in directory %s ...", dirpath)
@@ -280,6 +291,7 @@ def process_directory(
             decryption_gpg_keyring=decryption_gpg_keyring,
             encryption_gpg_keyring=encryption_gpg_keyring,
             recipient=recipient,
+            root_dirpath=dirpath,
         )
         file.find_encrypted_blocks()
         files.append(file)
