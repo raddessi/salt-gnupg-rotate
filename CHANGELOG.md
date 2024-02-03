@@ -2,6 +2,19 @@
 
 
 
+## v1.2.1 (2024-02-03)
+
+### Documentation
+
+* docs: update asciinema link (#44) ([`1512e9f`](https://github.com/raddessi/salt-gnupg-rotate/commit/1512e9f4abc07b145c94d8a4b0949bde211f5011))
+
+* docs: add asciinema demos (#42) ([`f7e65e6`](https://github.com/raddessi/salt-gnupg-rotate/commit/f7e65e6e62d9d93a8aec19c21646ef9c018a800f))
+
+### Fix
+
+* fix: readme code style badge (#43) ([`2ac513f`](https://github.com/raddessi/salt-gnupg-rotate/commit/2ac513f0bd285d4abc5e366ff1d3b3b5ef47e60a))
+
+
 ## v1.2.0 (2024-02-03)
 
 ### Chore
