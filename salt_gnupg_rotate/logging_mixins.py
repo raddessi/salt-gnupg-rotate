@@ -61,6 +61,7 @@ def create_logger(
             rich_tracebacks=True,
             console=console,
             show_path=False,
+            log_time_format="[%X]",  # time only, no date
         ),
     )
 
