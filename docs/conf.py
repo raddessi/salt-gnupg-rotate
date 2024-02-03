@@ -1,4 +1,5 @@
 """Sphinx configuration."""
+
 # ruff: noqa: INP001
 
 from datetime import datetime, timezone
@@ -25,6 +26,7 @@ extensions = [
     "sphinx_click",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
+    "sphinxcontrib.asciinema",
     "sphinxcontrib.mermaid",
     "sphinxcontrib.spelling",
     "sphinxemoji.sphinxemoji",
@@ -49,3 +51,9 @@ spelling_exclude_patterns = ["changelog.md"]
 smv_branch_whitelist = r"^main$"  # do not whitelist any branches
 smv_remote_whitelist = r"^origin$"
 smv_tag_whitelist = r"^v\d+\.\d+\.\d+$"
+sphinxcontrib_asciinema_defaults = {
+    "theme": "solarized-dark",
+    "preload": 1,
+    "font-size": "15px",
+    "path": "_asciinema",
+}
