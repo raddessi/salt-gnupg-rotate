@@ -74,11 +74,12 @@ class PartiallyEncryptedFile:
         total_count = len(self.encrypted_blocks)
         for count, encrypted_block in enumerate(self.encrypted_blocks, start=1):
             self.logger.trace(
-                "Block %s of %s in file %s before decryption:\n%s",
+                "Block %s of %s in file %s before decryption:\n[bright_black bold]%s",
                 count,
                 total_count,
                 self.relpath,
                 escape(encrypted_block),
+                extra={"markup": True, "highlighter": None},
             )
 
     def decrypt(self) -> None:
@@ -126,8 +127,10 @@ class PartiallyEncryptedFile:
                 raise DecryptionError(msg)
 
             self.logger.trace(
-                "Block after decryption (some characters may not be printable):\n%s",
+                "Block after decryption (some characters may not be printable):\n"
+                "[bright_black bold]%s",
                 escape(decrypted_block.data.decode()),
+                extra={"markup": True, "highlighter": None},
             )
             decrypted_blocks.append(
                 (
@@ -191,11 +194,12 @@ class PartiallyEncryptedFile:
                 self.relpath,
             )
             self.logger.trace(
-                "Block %s of %s in file %s after re-encryption:\n%s",
+                "Block %s of %s in file %s after re-encryption:\n[bright_black bold]%s",
                 count,
                 total_count,
                 self.relpath,
                 escape(reencrypted_padded_block),
+                extra={"markup": True, "highlighter": None},
             )
 
             proposed_change = new_contents.replace(
@@ -214,7 +218,8 @@ class PartiallyEncryptedFile:
 
         self.logger.trace(
             f"Proposed contents of file {self.relpath} after re-encryption:\n"
-            f"{new_contents}",
+            f"[bright_black bold]{new_contents}",
+            extra={"markup": True, "highlighter": None},
         )
 
         self.reencrypted_contents = new_contents
