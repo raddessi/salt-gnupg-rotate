@@ -11,7 +11,7 @@
 #$ send  -l trace
 #$ wait 1000
 #$ send \n
-#$ wait 3000
+#$ wait 2000
 #$ expect \\xe2\\x9d\\xaf
 
 #$ sendarrow up 1

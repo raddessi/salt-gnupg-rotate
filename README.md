@@ -17,7 +17,7 @@ controllers. Like probably at least some of you I am bad at rotating encryption
 keys due to the effort and time required. This tool is meant to make that task
 quick and painless.
 
-[![main-demo](https://github.com/raddessi/salt-gnupg-rotate/assets/6693022/77aedf57-9054-44e3-9de9-aa42f9dddff2)](https://asciinema.org/a/636043)
+[![main-demo](https://github.com/raddessi/salt-gnupg-rotate/assets/6693022/a8546480-3437-42ba-94f0-acca215d6fcc)](https://asciinema.org/a/636043)
 
 ## Documentation
 
