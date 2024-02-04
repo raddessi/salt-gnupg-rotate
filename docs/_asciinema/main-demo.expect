@@ -17,7 +17,7 @@
 #$ sendarrow up 1
 #$ wait 100
 #$ send \b\b\b\b\b\b\b\b
-#$ send  --write
+#$ send --write
 #$ wait 1000
 #$ send \n
 #$ expect \\xe2\\x9d\\xaf
