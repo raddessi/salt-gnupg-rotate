@@ -2,6 +2,13 @@
 
 
 
+## v1.3.0 (2024-02-03)
+
+### Feature
+
+* feat: consistent coloring in trace level output (#45) ([`f9f3d89`](https://github.com/raddessi/salt-gnupg-rotate/commit/f9f3d896490d335534234018be88f6a5fea7939d))
+
+
 ## v1.2.1 (2024-02-03)
 
 ### Documentation
