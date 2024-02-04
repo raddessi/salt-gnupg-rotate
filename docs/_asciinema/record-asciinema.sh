@@ -23,13 +23,11 @@ fi
 DOCKER_IMAGE=salt-gnupg-rotate-asciinema
 GIT_TOP_DIRPATH=$(git rev-parse --show-toplevel)
 REBUILD=true
+COLS=90
+ROWS=24
 
 # Loop through all arguments
 while [[ ${#} -gt 0 ]]; do
-    if [ -z "${2}" ]; then
-        echo "No argument passed for keyword $1"
-        exit 2
-    fi
     case $1 in
     -h | --help)
         show_help
@@ -42,9 +40,13 @@ while [[ ${#} -gt 0 ]]; do
             exit 4
         fi
         shift
+        shift
+        continue
         ;;
     --no-rebuild)
         REBUILD=false
+        shift
+        continue
         ;;
     *)
         # Handle other arguments
@@ -52,7 +54,10 @@ while [[ ${#} -gt 0 ]]; do
         exit 3
         ;;
     esac
-    shift
+    if [ -z "${2}" ]; then
+        echo "No argument passed for keyword $1"
+        exit 2
+    fi
 done
 
 # we will eventually write the output cast to the same directory as the expect script,
@@ -88,12 +93,12 @@ docker run \
             --standard-deviation 15 \
             --asciinema-arguments ' \
                 --overwrite \
-                --rows 24 \
-                --cols 120 \
+                --rows ${ROWS} \
+                --cols ${COLS} \
                 --env SHELL,TERM,PATH \
                 -c \"env bash\" \
             ' \
-            '$(realpath --relative-to=${GIT_TOP_DIRPATH} ${FPATH})' \
+            '/output/$(realpath --relative-to=${OUTPUT_DIRPATH} ${FPATH})' \
             '/output/${CAST_FNAME}' \
     "
 
@@ -103,8 +108,8 @@ agg \
     --theme monokai \
     --font-size 20 \
     --speed 1 \
-    --rows 24 \
-    --cols 120 \
+    --rows ${ROWS} \
+    --cols ${COLS} \
     --no-loop \
     "${OUTPUT_DIRPATH}/${CAST_FNAME}" \
     "${OUTPUT_DIRPATH}/${GIF_FNAME}"
