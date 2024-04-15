@@ -1,0 +1,608 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="author" title="About these documents" href="about.html" /><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Contributing" href="contributing.html" /><link rel="prev" title="Building the documentation" href="how-to-guides/building-documentation.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>Changelog - salt-gnupg-rotate documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="_static/asciinema-player_3.6.3.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">salt-gnupg-rotate  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">salt-gnupg-rotate  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/create-and-rotate-pillar.html">Encrypt and rotate encryption on a Salt pillar</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference-guides/index.html">Reference Guides</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Reference Guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference-guides/salt-gnupg-rotate.html">CLI Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="how-to-guides/index.html">How-To Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of How-To Guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="how-to-guides/setting-up-for-development.html">Setting Up for Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-guides/running-tests.html">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-guides/building-documentation.html">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Policy</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate">GitHub Repository</a></li>
+</ul>
+
+</div>
+<div class="sidebar-tree">
+  <p class="caption" role="heading">
+    <span class="caption-text">Branches</span>
+  </p>
+  <ul>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../main/changelog.html">main</a>
+    </li>
+  </ul>
+  <p class="caption" role="heading">
+    <span class="caption-text">Tags</span>
+  </p>
+  <ul>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.0.0/changelog.html">v1.0.0</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.0.1/changelog.html">v1.0.1</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.1.0/changelog.html">v1.1.0</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.2.0/changelog.html">v1.2.0</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.2.1/changelog.html">v1.2.1</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="../v1.3.0/changelog.html">v1.3.0</a>
+    </li>
+    <li class="toctree-l1">
+      <a class="reference internal" href="changelog.html">v1.3.1</a>
+    </li>
+  </ul>
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
+<section id="v1-3-1-2024-04-15">
+<h2>v1.3.1 (2024-04-15)<a class="headerlink" href="#v1-3-1-2024-04-15" title="Permalink to this heading">#</a></h2>
+<section id="build">
+<h3>Build<a class="headerlink" href="#build" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>build(deps-dev): bump cryptography from 42.0.2 to 42.0.4 (#55)</p></li>
+</ul>
+<p>Bumps <a class="reference external" href="https://github.com/pyca/cryptography">cryptography</a> from 42.0.2 to 42.0.4.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pyca/cryptography/blob/main/CHANGELOG.rst">Changelog</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pyca/cryptography/compare/42.0.2...42.0.4">Commits</a></p></li>
+</ul>
+<hr class="docutils" />
+<p>updated-dependencies:</p>
+<ul class="simple">
+<li><p>dependency-name: cryptography
+dependency-type: indirect
+…</p></li>
+</ul>
+<p>Signed-off-by: dependabot[bot] &lt;support&#64;github.com&gt;
+Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/d134d27a052ff3ba944c7f85856cca2152c5434b"><code class="docutils literal notranslate"><span class="pre">d134d27</span></code></a>)</p>
+</section>
+<section id="chore">
+<h3>Chore<a class="headerlink" href="#chore" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(deps): update dependency pre-commit to v3.7.0 (#74)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/9f559d2e0671a565fb32740cf418577468d3ba8e"><code class="docutils literal notranslate"><span class="pre">9f559d2</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency typeguard to v4.2.1 (#70)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/2f0f3119b618a16e30cc6f149377878950276c0d"><code class="docutils literal notranslate"><span class="pre">2f0f311</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency pytest-mock to v3.13.0 (#68)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/aec7e1714bb202354d72d13bb40234a4cd72b70c"><code class="docutils literal notranslate"><span class="pre">aec7e17</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update python-semantic-release/python-semantic-release action to v9.2.0 (#65)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/5f9d50261183d54345545611f5f64090496c6475"><code class="docutils literal notranslate"><span class="pre">5f9d502</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency pytest to v8.0.2 (#57)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/9eb9dda0481ed0fd8fbc8358112c514893597b13"><code class="docutils literal notranslate"><span class="pre">9eb9dda</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update python-semantic-release/python-semantic-release action to v9.1.1 (#58)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/0374e22a8daada25e0ab99dca6d1d21ee94a2122"><code class="docutils literal notranslate"><span class="pre">0374e22</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency coverage to v7.4.3 (#56)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/3d12c8d717a964347d26d221cc09ed0e1fc4f3e3"><code class="docutils literal notranslate"><span class="pre">3d12c8d</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency coverage to v7.4.2 (#54)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/76ab1138f637d6dfade1d5038a25c90f7742cfc4"><code class="docutils literal notranslate"><span class="pre">76ab113</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency pytest to v8.0.1 (#53)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/0298e84200f8bb848aea34427027b357daf15eec"><code class="docutils literal notranslate"><span class="pre">0298e84</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update python-semantic-release/python-semantic-release action to v9.1.0 (#52)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/06d4dc958eadd4b4f706fca67ef9d73140800980"><code class="docutils literal notranslate"><span class="pre">06d4dc9</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update python-semantic-release/python-semantic-release action to v9.0.3 (#51)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/9736a09017f3e43088fbba501b9e010ef1473592"><code class="docutils literal notranslate"><span class="pre">9736a09</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update pre-commit/action action to v3.0.1 (#50)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/9a226b41d719c406e7a5fe47173a27de6884f76c"><code class="docutils literal notranslate"><span class="pre">9a226b4</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update ribtoks/tdg-github-action action to v0.4.8 (#49)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/d5891685e9afcfdc99297c73b021690df5080bd1"><code class="docutils literal notranslate"><span class="pre">d589168</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency ruamel.yaml to v0.18.6 (#48)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/1ba7fac40cf783adb4fbdb1b084f246d98b965cc"><code class="docutils literal notranslate"><span class="pre">1ba7fac</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update python-semantic-release/python-semantic-release action to v9 (#47)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/b4402f6fa3320c8a7dcbb8881893f8a0b77e53e4"><code class="docutils literal notranslate"><span class="pre">b4402f6</span></code></a>)</p>
+</section>
+<section id="ci">
+<h3>Ci<a class="headerlink" href="#ci" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>ci: revert python-semantic-release (#78)</p></li>
+</ul>
+<p>https://github.com/python-semantic-release/python-semantic-release/issues/723
+is still an issue (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/40bb46a27cb6b15ef2382e45c0f178a46cd26800"><code class="docutils literal notranslate"><span class="pre">40bb46a</span></code></a>)</p>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>docs: update demo cast (#46) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/258fff39125921fdec1cab09b5cf3e873ea7ec70"><code class="docutils literal notranslate"><span class="pre">258fff3</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="fix">
+<h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>fix: bump deps in pyproject (#77) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/b246f7905527f6aa4324cf0accba23b85f482afb"><code class="docutils literal notranslate"><span class="pre">b246f79</span></code></a>)</p></li>
+<li><p>fix: bump locked dependency versions (#73) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/874bfa2ebb0c3d6311d937a2ad872fc466d18fea"><code class="docutils literal notranslate"><span class="pre">874bfa2</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v1-3-0-2024-02-03">
+<h2>v1.3.0 (2024-02-03)<a class="headerlink" href="#v1-3-0-2024-02-03" title="Permalink to this heading">#</a></h2>
+<section id="feature">
+<h3>Feature<a class="headerlink" href="#feature" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>feat: consistent coloring in trace level output (#45) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/f9f3d896490d335534234018be88f6a5fea7939d"><code class="docutils literal notranslate"><span class="pre">f9f3d89</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v1-2-1-2024-02-03">
+<h2>v1.2.1 (2024-02-03)<a class="headerlink" href="#v1-2-1-2024-02-03" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Documentation<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>docs: update asciinema link (#44) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/1512e9f4abc07b145c94d8a4b0949bde211f5011"><code class="docutils literal notranslate"><span class="pre">1512e9f</span></code></a>)</p></li>
+<li><p>docs: add asciinema demos (#42) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/f7e65e6e62d9d93a8aec19c21646ef9c018a800f"><code class="docutils literal notranslate"><span class="pre">f7e65e6</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Fix<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>fix: readme code style badge (#43) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/2ac513f0bd285d4abc5e366ff1d3b3b5ef47e60a"><code class="docutils literal notranslate"><span class="pre">2ac513f</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v1-2-0-2024-02-03">
+<h2>v1.2.0 (2024-02-03)<a class="headerlink" href="#v1-2-0-2024-02-03" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>Chore<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(deps): update actions/upload-artifact action to v4 (#40)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/051a51acb3d45b80091a7c07de9f2c1b010bc392"><code class="docutils literal notranslate"><span class="pre">051a51a</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency typeguard to v4 (#27)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt;
+Co-authored-by: Ryan Addessi &lt;raddessi&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/a57ebd9b09110789248cd54d06b05162a13b9e84"><code class="docutils literal notranslate"><span class="pre">a57ebd9</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update actions/upload-artifact action to v4 (#38)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/4db105437758cd1e8a3accc97eabd02ae288babf"><code class="docutils literal notranslate"><span class="pre">4db1054</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update codecov/codecov-action action to v4 (#35)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/77212dc122fb6926083c050a7e754e5ff2646c28"><code class="docutils literal notranslate"><span class="pre">77212dc</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency ipython to v8.21.0 (#34)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/2cde203db72b71418c5d93fbabbb16e635aebae2"><code class="docutils literal notranslate"><span class="pre">2cde203</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency xdoctest to v1.1.3 (#33)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/2af8bc2f29cb28e1edcc92ec4c54cfc157e658f8"><code class="docutils literal notranslate"><span class="pre">2af8bc2</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update actions/setup-python action to v5 (#26)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/906b8927533cc546901205f93ea73e1a2ce37908"><code class="docutils literal notranslate"><span class="pre">906b892</span></code></a>)</p>
+<ul class="simple">
+<li><p>chore(deps): update dependency furo to v2024 (#30)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/03fdf339b68d6b31b734c5805cbbd7065c6b7ea6"><code class="docutils literal notranslate"><span class="pre">03fdf33</span></code></a>)</p>
+</section>
+<section id="id4">
+<h3>Ci<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>ci: always upload artifacts (#39) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/d813e1431c8f127a91b4ed261111c94348fc7b36"><code class="docutils literal notranslate"><span class="pre">d813e14</span></code></a>)</p></li>
+<li><p>ci: upload coverage artifacts (#37) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/ba015b013f80c67b6710575596ebcab1d0321c42"><code class="docutils literal notranslate"><span class="pre">ba015b0</span></code></a>)</p></li>
+<li><p>ci: ignore mixed line endings on the CHANGELOG (#32) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/3a86244ac7bec7969f044e0b42014ad4687415f5"><code class="docutils literal notranslate"><span class="pre">3a86244</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Feature<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>feat: print relative file paths (#41) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/586fbafcf0bae2dbb3378f061c85c5f81d86a081"><code class="docutils literal notranslate"><span class="pre">586fbaf</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="test">
+<h3>Test<a class="headerlink" href="#test" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>test: test against all current python versions (#36) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/ff29e82c597638fee0eaa529dbedffc86657d551"><code class="docutils literal notranslate"><span class="pre">ff29e82</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v1-1-0-2024-01-30">
+<h2>v1.1.0 (2024-01-30)<a class="headerlink" href="#v1-1-0-2024-01-30" title="Permalink to this heading">#</a></h2>
+<section id="id6">
+<h3>Chore<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(deps): update actions/checkout action to v4 (#25)</p></li>
+</ul>
+<p>Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]&#64;users.noreply.github.com&gt; (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/474696d13df1fb20b1ca621909a61a011a39bd28"><code class="docutils literal notranslate"><span class="pre">474696d</span></code></a>)</p>
+</section>
+<section id="id7">
+<h3>Documentation<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>docs: fix CI badge and link to online docs (#29) (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/315697762d2178cbe523bdbfa41ad992b97de3cd"><code class="docutils literal notranslate"><span class="pre">3156977</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Feature<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>feat: abort earlier on errors (#31)</p></li>
+</ul>
+<p>This change does a few things:</p>
+<ul class="simple">
+<li><p>raises exceptions immediately after an error is encountered</p></li>
+<li><p>swaps out older linters for ruff</p></li>
+<li><p>fixes some stability and performance issues raised from the new linter (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/68b703083257b9566744a800667d08645f7c7415"><code class="docutils literal notranslate"><span class="pre">68b7030</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v1-0-1-2024-01-29">
+<h2>v1.0.1 (2024-01-29)<a class="headerlink" href="#v1-0-1-2024-01-29" title="Permalink to this heading">#</a></h2>
+<section id="id9">
+<h3>Fix<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>fix: duplicate blocks in the same file causes errors (#28)</p></li>
+</ul>
+<p>When an encrypted block is present more than one time in a file it causes errors since the first replacement replaces both instances and the second then fails. (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/21b85430313d4e9923773d03a5f9dab0c033281a"><code class="docutils literal notranslate"><span class="pre">21b8543</span></code></a>)</p>
+</section>
+</section>
+<section id="v1-0-0-2024-01-29">
+<h2>v1.0.0 (2024-01-29)<a class="headerlink" href="#v1-0-0-2024-01-29" title="Permalink to this heading">#</a></h2>
+<section id="breaking">
+<h3>Breaking<a class="headerlink" href="#breaking" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>feat!: initial release (<a class="reference external" href="https://github.com/raddessi/salt-gnupg-rotate/commit/7eefa6a9c262bcd5e36f68af2a7bafb752cbce4e"><code class="docutils literal notranslate"><span class="pre">7eefa6a</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="contributing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Contributing</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="how-to-guides/building-documentation.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Building the documentation</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Ryan Addessi
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#v1-3-1-2024-04-15">v1.3.1 (2024-04-15)</a><ul>
+<li><a class="reference internal" href="#build">Build</a></li>
+<li><a class="reference internal" href="#chore">Chore</a></li>
+<li><a class="reference internal" href="#ci">Ci</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#fix">Fix</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-3-0-2024-02-03">v1.3.0 (2024-02-03)</a><ul>
+<li><a class="reference internal" href="#feature">Feature</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-2-1-2024-02-03">v1.2.1 (2024-02-03)</a><ul>
+<li><a class="reference internal" href="#id1">Documentation</a></li>
+<li><a class="reference internal" href="#id2">Fix</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-2-0-2024-02-03">v1.2.0 (2024-02-03)</a><ul>
+<li><a class="reference internal" href="#id3">Chore</a></li>
+<li><a class="reference internal" href="#id4">Ci</a></li>
+<li><a class="reference internal" href="#id5">Feature</a></li>
+<li><a class="reference internal" href="#test">Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-1-0-2024-01-30">v1.1.0 (2024-01-30)</a><ul>
+<li><a class="reference internal" href="#id6">Chore</a></li>
+<li><a class="reference internal" href="#id7">Documentation</a></li>
+<li><a class="reference internal" href="#id8">Feature</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-0-1-2024-01-29">v1.0.1 (2024-01-29)</a><ul>
+<li><a class="reference internal" href="#id9">Fix</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v1-0-0-2024-01-29">v1.0.0 (2024-01-29)</a><ul>
+<li><a class="reference internal" href="#breaking">Breaking</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=30646c52"></script>
+    <script src="_static/tabs.js?v=3ee01567"></script>
+    <script src="_static/asciinema-player_3.6.3.js"></script>
+    </body>
+</html>
