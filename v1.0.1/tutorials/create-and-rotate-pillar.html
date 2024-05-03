@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="author" title="About these documents" href="../about.html" /><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reference Guides" href="../reference-guides/index.html" /><link rel="prev" title="Tutorials" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Encrypt and rotate encryption on a Salt pillar - salt-gnupg-rotate documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/asciinema-player_3.6.3.css" />
@@ -114,6 +114,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -248,14 +250,14 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="encrypt-and-rotate-encryption-on-a-salt-pillar">
-<h1>Encrypt and rotate encryption on a Salt pillar<a class="headerlink" href="#encrypt-and-rotate-encryption-on-a-salt-pillar" title="Permalink to this heading">#</a></h1>
+<h1>Encrypt and rotate encryption on a Salt pillar<a class="headerlink" href="#encrypt-and-rotate-encryption-on-a-salt-pillar" title="Permalink to this heading">¶</a></h1>
 <p>Let’s generate some encrypted pillars and then rotate the keys on them.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">¶</a></h2>
 <section id="install-packages">
-<h3>Install packages<a class="headerlink" href="#install-packages" title="Permalink to this heading">#</a></h3>
+<h3>Install packages<a class="headerlink" href="#install-packages" title="Permalink to this heading">¶</a></h3>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">pipx</label><div class="tab-content docutils">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipx</span> <span class="n">install</span> <span class="n">salt</span><span class="o">-</span><span class="n">gnupg</span><span class="o">-</span><span class="n">rotate</span> <span class="n">yq</span>
@@ -270,7 +272,7 @@
 </div>
 </section>
 <section id="make-tutorial-directories-to-work-in">
-<h3>Make tutorial directories to work in<a class="headerlink" href="#make-tutorial-directories-to-work-in" title="Permalink to this heading">#</a></h3>
+<h3>Make tutorial directories to work in<a class="headerlink" href="#make-tutorial-directories-to-work-in" title="Permalink to this heading">¶</a></h3>
 <p>We will create a new directory for some test pillars and a directory for a
 temporary gnupg keyring:</p>
 <div class="tab-set docutils">
@@ -284,7 +286,7 @@ chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>.
 </div>
 </section>
 <section id="tell-gpg-to-use-this-new-keyring-home-directory">
-<h3>Tell <code class="docutils literal notranslate"><span class="pre">gpg</span></code> to use this new keyring home directory<a class="headerlink" href="#tell-gpg-to-use-this-new-keyring-home-directory" title="Permalink to this heading">#</a></h3>
+<h3>Tell <code class="docutils literal notranslate"><span class="pre">gpg</span></code> to use this new keyring home directory<a class="headerlink" href="#tell-gpg-to-use-this-new-keyring-home-directory" title="Permalink to this heading">¶</a></h3>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">Linux</label><div class="tab-content docutils">
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GNUPGHOME</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/.gnupg
@@ -295,7 +297,7 @@ chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>.
 </div>
 </section>
 <section id="create-the-new-keyring-and-list-the-keys">
-<h3>Create the new keyring and list the keys<a class="headerlink" href="#create-the-new-keyring-and-list-the-keys" title="Permalink to this heading">#</a></h3>
+<h3>Create the new keyring and list the keys<a class="headerlink" href="#create-the-new-keyring-and-list-the-keys" title="Permalink to this heading">¶</a></h3>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">Linux</label><div class="tab-content docutils">
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># this will create the empty keyring</span>
@@ -326,7 +328,7 @@ gpg<span class="w"> </span>--list-keys
 </section>
 </section>
 <section id="create-some-encrypted-files">
-<h2>Create some encrypted files<a class="headerlink" href="#create-some-encrypted-files" title="Permalink to this heading">#</a></h2>
+<h2>Create some encrypted files<a class="headerlink" href="#create-some-encrypted-files" title="Permalink to this heading">¶</a></h2>
 <p>Let’s create a completely encrypted file with the contents <code class="docutils literal notranslate"><span class="pre">Hello!</span></code>, using the
 encryption key <code class="docutils literal notranslate"><span class="pre">salt-controller-key1</span></code> and then verify that we can decrypt it:</p>
 <div class="tab-set docutils">
@@ -364,7 +366,7 @@ vim<span class="w"> </span>pillar/encrypted_pillar.sls
 editor.</p>
 </section>
 <section id="create-a-new-secret-key-we-can-use-to-rotate-encryption">
-<h2>Create a new secret key we can use to rotate encryption<a class="headerlink" href="#create-a-new-secret-key-we-can-use-to-rotate-encryption" title="Permalink to this heading">#</a></h2>
+<h2>Create a new secret key we can use to rotate encryption<a class="headerlink" href="#create-a-new-secret-key-we-can-use-to-rotate-encryption" title="Permalink to this heading">¶</a></h2>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">Linux</label><div class="tab-content docutils">
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Key-Type: 1</span>
@@ -390,7 +392,7 @@ editor.</p>
 </div>
 </section>
 <section id="rotate-encryption-using-salt-gnupg-rotate">
-<h2>Rotate encryption using <code class="docutils literal notranslate"><span class="pre">salt-gnupg-rotate</span></code><a class="headerlink" href="#rotate-encryption-using-salt-gnupg-rotate" title="Permalink to this heading">#</a></h2>
+<h2>Rotate encryption using <code class="docutils literal notranslate"><span class="pre">salt-gnupg-rotate</span></code><a class="headerlink" href="#rotate-encryption-using-salt-gnupg-rotate" title="Permalink to this heading">¶</a></h2>
 <p>First you can just verify that the script can decrypt and re-encrypt the data
 using the specified key <code class="docutils literal notranslate"><span class="pre">salt-controller-key2</span></code> for re-encryption without errors
 by running without the <code class="docutils literal notranslate"><span class="pre">--write</span></code> flag:</p>
@@ -436,7 +438,7 @@ can see the contents of the decrypted and re-encrypted blocks in the files:</p>
 </div>
 </section>
 <section id="check-that-the-encrypted-data-was-rotated">
-<h2>Check that the encrypted data was rotated<a class="headerlink" href="#check-that-the-encrypted-data-was-rotated" title="Permalink to this heading">#</a></h2>
+<h2>Check that the encrypted data was rotated<a class="headerlink" href="#check-that-the-encrypted-data-was-rotated" title="Permalink to this heading">¶</a></h2>
 <p>To do this we will delete the key that was originally used to encrypt the
 pillars <code class="docutils literal notranslate"><span class="pre">salt-controller-key1</span></code> and then try to decode them using only the new
 key <code class="docutils literal notranslate"><span class="pre">salt-controller-key2</span></code>.</p>
@@ -544,7 +546,7 @@ cat<span class="w"> </span>pillar/encrypted_pillar.sls<span class="w"> </span><s
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/tabs.js?v=3ee01567"></script>
