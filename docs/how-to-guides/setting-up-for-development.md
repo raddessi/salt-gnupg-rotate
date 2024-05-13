@@ -13,7 +13,10 @@ You will need the following python modules installed on your system:
 
 ````{tab} pipx
 ```bash
-pipx install poetry nox nox-poetry pre-commit
+pipx install poetry
+pipx install pre-commit
+pipx install nox
+pipx inject nox nox-poetry
 ```
 ````
 
@@ -24,25 +27,29 @@ pip install poetry nox nox-poetry pre-commit
 ````
 
 You will also need either `conda` or `mamba` for virtual environment management.
-I am partial to miniforge myself but any flavor should work.
+I am partial to miniforge myself which includes both utilities but any flavor of installer should work as long as `conda` or `mamba` are present on your system.
 
-```{tab} Miniforge
-See the Miniforge [README](https://github.com/conda-forge/miniforge)
-```
+`````{tab} Miniforge
+````{tab} Miniforge Installer
+See the Miniforge [README](https://github.com/conda-forge/miniforge) and [installation instructions](https://github.com/conda-forge/miniforge#install) for your operating system
+````
+`````
 
+`````{tab} Conda
 ````{tab} Fedora
 ```bash
 sudo dnf install conda
 ```
 ````
+`````
 
-## Checkout the project and install hooks
+## Checkout the project and install git hooks
 
 Checkout the upstream or your own fork of the project
 
 ```bash
-# checkout
-git checkout <github project url>
+# checkout the project locally
+git checkout https://github.com/raddessi/salt-gnupg-rotate
 
 # install commit hooks
 cd salt-gnupg-rotate
