@@ -326,7 +326,10 @@
 </ul>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">pipx</label><div class="tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pipx<span class="w"> </span>install<span class="w"> </span>poetry<span class="w"> </span>nox<span class="w"> </span>nox-poetry<span class="w"> </span>pre-commit
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pipx<span class="w"> </span>install<span class="w"> </span>poetry
+pipx<span class="w"> </span>install<span class="w"> </span>pre-commit
+pipx<span class="w"> </span>install<span class="w"> </span>nox
+pipx<span class="w"> </span>inject<span class="w"> </span>nox<span class="w"> </span>nox-poetry
 </pre></div>
 </div>
 </div>
@@ -337,23 +340,31 @@
 </div>
 </div>
 <p>You will also need either <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">mamba</span></code> for virtual environment management.
-I am partial to miniforge myself but any flavor should work.</p>
+I am partial to miniforge myself which includes both utilities but any flavor of installer should work as long as <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">mamba</span></code> are present on your system.</p>
 <div class="tab-set docutils">
-<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Miniforge</label><div class="tab-content docutils">
-<p>See the Miniforge <a class="reference external" href="https://github.com/conda-forge/miniforge">README</a></p>
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">Miniforge</label><div class="tab-content docutils">
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Miniforge Installer</label><div class="tab-content docutils">
+<p>See the Miniforge <a class="reference external" href="https://github.com/conda-forge/miniforge">README</a> and <a class="reference external" href="https://github.com/conda-forge/miniforge#install">installation instructions</a> for your operating system</p>
 </div>
-<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">Fedora</label><div class="tab-content docutils">
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">Conda</label><div class="tab-content docutils">
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">Fedora</label><div class="tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>conda
 </pre></div>
 </div>
 </div>
 </div>
+</div>
+</div>
 </section>
-<section id="checkout-the-project-and-install-hooks">
-<h2>Checkout the project and install hooks<a class="headerlink" href="#checkout-the-project-and-install-hooks" title="Permalink to this heading">¶</a></h2>
+<section id="checkout-the-project-and-install-git-hooks">
+<h2>Checkout the project and install git hooks<a class="headerlink" href="#checkout-the-project-and-install-git-hooks" title="Permalink to this heading">¶</a></h2>
 <p>Checkout the upstream or your own fork of the project</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># checkout</span>
-git<span class="w"> </span>checkout<span class="w"> </span>&lt;github<span class="w"> </span>project<span class="w"> </span>url&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># checkout the project locally</span>
+git<span class="w"> </span>checkout<span class="w"> </span>https://github.com/raddessi/salt-gnupg-rotate
 
 <span class="c1"># install commit hooks</span>
 <span class="nb">cd</span><span class="w"> </span>salt-gnupg-rotate
@@ -423,7 +434,7 @@ pre-commit<span class="w"> </span>install<span class="w"> </span>--install-hooks
             <ul>
 <li><a class="reference internal" href="#">Setting Up for Development</a><ul>
 <li><a class="reference internal" href="#install-dependencies">Install dependencies</a></li>
-<li><a class="reference internal" href="#checkout-the-project-and-install-hooks">Checkout the project and install hooks</a></li>
+<li><a class="reference internal" href="#checkout-the-project-and-install-git-hooks">Checkout the project and install git hooks</a></li>
 </ul>
 </li>
 </ul>
