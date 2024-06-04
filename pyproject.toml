@@ -21,7 +21,7 @@ python = "^3.8"
 click = "^8.1.7"
 rich = ">=13.7.1"
 python-gnupg = ">=0.5.2"
-sphinx-click = "^5.1.0"
+sphinx-click = "^6.0.0"
 
 [tool.poetry.dev-dependencies]
 "ruamel.yaml" = ">=0.18.6"
