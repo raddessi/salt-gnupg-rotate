@@ -1,0 +1,7 @@
+version: "2.0"
+
+security:
+  ignore-vulnerabilities:
+    # We recommend making use of the optional `reason` and `expires` keys for each vulnerability that you ignore.
+    70612:
+      reason: This shouldn't need to be said, don't run untrusted code in an exec.
