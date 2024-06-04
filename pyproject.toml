@@ -5,7 +5,7 @@ requires-python = ">=3.8"
 # Poetry package config
 [tool.poetry]
 name = "salt-gnupg-rotate"
-version = "1.3.1"
+version = "1.3.2"
 description = "Easily rotate gnupg encryption keys of fully or partially encrypted files."
 authors = ["Ryan Addessi <raddessi@users.noreply.github.com>"]
 license = "BSD 2-Clause 'Simplified' License"

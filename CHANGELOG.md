@@ -2,6 +2,127 @@
 
 
 
+## v1.3.2 (2024-06-04)
+
+### Build
+
+* build(deps): bump jinja2 from 3.1.3 to 3.1.4 (#90)
+
+Bumps [jinja2](https://github.com/pallets/jinja) from 3.1.3 to 3.1.4.
+- [Release notes](https://github.com/pallets/jinja/releases)
+- [Changelog](https://github.com/pallets/jinja/blob/main/CHANGES.rst)
+- [Commits](https://github.com/pallets/jinja/compare/3.1.3...3.1.4)
+
+---
+updated-dependencies:
+- dependency-name: jinja2
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
+Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`405f3e3`](https://github.com/raddessi/salt-gnupg-rotate/commit/405f3e3185d6c0c0e1ef438144b15aad828be3dd))
+
+### Chore
+
+* chore(deps): update dependency xdoctest to v1.1.4 (#101)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`00426e9`](https://github.com/raddessi/salt-gnupg-rotate/commit/00426e9bddb99a45ce1dbadaa5600fba67e2a372))
+
+* chore(deps): update jamesives/github-pages-deploy-action action to v4.6.1 (#96)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`8266781`](https://github.com/raddessi/salt-gnupg-rotate/commit/8266781875e379152bbb9d1ea1ab1edba7061bbc))
+
+* chore(deps): update dependency pytest to v8.2.1 (#97)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`a9b4a60`](https://github.com/raddessi/salt-gnupg-rotate/commit/a9b4a60c28c2ec48ef4717a4a41ed88a28d42a88))
+
+* chore(deps): update dependency coverage to v7.5.3 (#99)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`5a61c8b`](https://github.com/raddessi/salt-gnupg-rotate/commit/5a61c8b6b9165d564802ffa9a32f8d57ffeddc5c))
+
+* chore(deps): update dependency typeguard to v4.3.0 (#100)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`9ae1cc9`](https://github.com/raddessi/salt-gnupg-rotate/commit/9ae1cc9508ec2f3ce205d3667a186c142e769d4d))
+
+* chore(deps): update dependency sphinxcontrib-asciinema to v0.4.2 (#91)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`f585743`](https://github.com/raddessi/salt-gnupg-rotate/commit/f58574378fe0e9de5f15e351bbc16a0aae5a4424))
+
+* chore(deps): update dependency coverage to v7.5.1 (#88)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`e3b4a5a`](https://github.com/raddessi/salt-gnupg-rotate/commit/e3b4a5a90337addb8f0bea5422c8a981c9eec942))
+
+* chore(deps): update dependency furo to v2024.5.6 (#89)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`acfe27c`](https://github.com/raddessi/salt-gnupg-rotate/commit/acfe27cfeb56607a40a343e8b4fb581bd35216f3))
+
+* chore(deps): update dependency furo to v2024.4.27 (#84)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`19b24ab`](https://github.com/raddessi/salt-gnupg-rotate/commit/19b24abc2f8b467d1c78af0ad321f1a865353380))
+
+* chore(deps): update dependency pytest to v8.2.0 (#85)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`87fae33`](https://github.com/raddessi/salt-gnupg-rotate/commit/87fae33ff0421a2d25563ce3d399a59743f326e3))
+
+* chore(deps): update dependency myst-parser to v3.0.1 (#86)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`d50a603`](https://github.com/raddessi/salt-gnupg-rotate/commit/d50a603b23fbc3854c300438f05b7d7d7764501f))
+
+* chore(deps): update dependency safety to v3.2.0 (#87)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`4d4f907`](https://github.com/raddessi/salt-gnupg-rotate/commit/4d4f907b6d1e864d8a09cdd2679de766aee19dc6))
+
+* chore(deps): update dependency pytest to v8.1.2 (#83)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`9c7a9f4`](https://github.com/raddessi/salt-gnupg-rotate/commit/9c7a9f46c01b94ac033e7af613887f01efe1b7b4))
+
+* chore(deps): update dependency mypy to v1.10.0 (#82)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`d9bd85c`](https://github.com/raddessi/salt-gnupg-rotate/commit/d9bd85ca56ba51b37c559a621b552b8fcdd33ed4))
+
+* chore(deps): update dependency myst-parser to v3 (#80)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`92d177f`](https://github.com/raddessi/salt-gnupg-rotate/commit/92d177fe0e8e97f7556f7f4fc0298a841e612d3a))
+
+* chore(deps): update dependency coverage to v7.5.0 (#81)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`daa2614`](https://github.com/raddessi/salt-gnupg-rotate/commit/daa261438052c6f988f5e9a9e653054d08d2ab14))
+
+* chore(deps): update jamesives/github-pages-deploy-action action to v4.6.0 (#79)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`d238449`](https://github.com/raddessi/salt-gnupg-rotate/commit/d2384493ee23f2b01409be937a09401cc18b7c58))
+
+* chore(deps): update ribtoks/tdg-github-action action to v0.4.10 (#67)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`0a26e99`](https://github.com/raddessi/salt-gnupg-rotate/commit/0a26e99fb1fa04db91fe97092c59cabc0f8d02d6))
+
+### Ci
+
+* ci: ignore jinja cve (#102) ([`40854c0`](https://github.com/raddessi/salt-gnupg-rotate/commit/40854c0122fae520f5ccf5cddb4e522b267904d1))
+
+### Documentation
+
+* docs: update setting up for development instructions for clarity (#92) ([`40aabb7`](https://github.com/raddessi/salt-gnupg-rotate/commit/40aabb70d4e326e87b48cf6e8837cdc584bdc0db))
+
+### Fix
+
+* fix(deps): update dependency sphinx-click to v6 (#95)
+
+Co-authored-by: renovate[bot] &lt;29139614+renovate[bot]@users.noreply.github.com&gt; ([`1aa175f`](https://github.com/raddessi/salt-gnupg-rotate/commit/1aa175fc1065500551d9f806e2a2a0bf383f3c63))
+
+### Unknown
+
+* --- (#98)
+
+updated-dependencies:
+- dependency-name: requests
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
+Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`14d78fa`](https://github.com/raddessi/salt-gnupg-rotate/commit/14d78fa0c0fd13ab0016d8f1a1ec3eb803283596))
+
+
 ## v1.3.1 (2024-04-15)
 
 ### Build
