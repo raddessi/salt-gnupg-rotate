@@ -124,7 +124,7 @@ def coverage(session: Session) -> None:
         session: The running nox session
 
     """
-    session.install("coverage[toml]")
+    session.install("coverage[toml]", "poetry-plugin-export")
 
     if any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
@@ -156,7 +156,7 @@ def xdoctest(session: Session) -> None:
     """
     args = session.posargs or ["all"]
     session.install(".")
-    session.install("xdoctest[colors]")
+    session.install("poetry-plugin-export", "xdoctest[colors]")
     session.run("python", "-m", "xdoctest", PACKAGE, *args)
 
 
