@@ -68,7 +68,14 @@ def mypy(session: Session) -> None:
         "docs/conf.py",
     ]
     session.install(".")
-    session.install("mypy", "pytest", "pytest-mock", "nox", "nox-poetry")
+    session.install(
+        "mypy",
+        "nox",
+        "nox-poetry",
+        "poetry-plugin-export",
+        "pytest",
+        "pytest-mock",
+    )
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", "noxfile.py")
@@ -86,6 +93,7 @@ def tests(session: Session) -> None:
     session.install(
         "coverage[toml]",
         "jinja2-time",
+        "poetry-plugin-export",
         "pre-commit",
         "pygments",
         "pytest",
@@ -235,6 +243,7 @@ def docs_spelling(session: Session) -> None:
     session.install(
         "furo",
         "myst-parser",
+        "poetry-plugin-export",
         "sphinx",
         "sphinx-autobuild",
         "sphinx-click",
