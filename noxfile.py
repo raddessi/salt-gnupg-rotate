@@ -20,9 +20,8 @@ except ImportError:
 
 
 PACKAGE = "salt_gnupg_rotate"
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.12"
 PYTHON_VERSIONS = [
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -33,12 +32,12 @@ nox.options.default_venv_backend = "conda"
 nox.options.error_on_external_run = True
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = (
-    "safety",
+    # "safety",  # disabled by default now that they require auth
+    "tests",
     "mypy",
+    "xdoctest",
     "docs-build",
     "docs-spelling",
-    "xdoctest",
-    "tests",
 )
 
 
@@ -52,7 +51,7 @@ def safety(session: Session) -> None:
     """
     requirements = session.poetry.export_requirements()
     session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
+    session.run("safety", "scan", "--full-report", f"--file={requirements}")
 
 
 @nox_session(python=PYTHON_VERSIONS)
@@ -162,7 +161,7 @@ def docs_build(session: Session) -> None:
 
     """
     # run with `-b dirhtml` for nicer URLS when building for publishing to a server
-    args = session.posargs or ["-b", "html"]
+    args = session.posargs or []  # dirhtml is broken ["-b", "html"]
     session.install(".")
     session.install(
         "furo",
@@ -262,7 +261,7 @@ def docs(session: Session) -> None:
         session: The running nox session
 
     """
-    args = session.posargs or ["-b", "dirhtml", "--open-browser"]
+    args = session.posargs or ["--open-browser"]  # dirhtml is broken , "-b", "dirhtml"]
     session.install(".")
     session.install(
         "furo",
