@@ -20,12 +20,13 @@ except ImportError:
 
 
 PACKAGE = "salt_gnupg_rotate"
-DEFAULT_PYTHON_VERSION = "3.12"
+DEFAULT_PYTHON_VERSION = "3.13"
 PYTHON_VERSIONS = [
     "3.9",
     "3.10",
     "3.11",
     "3.12",
+    "3.13",
 ]
 nox.needs_version = ">= 2021.10.1"
 nox.options.default_venv_backend = "conda"
