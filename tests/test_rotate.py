@@ -10,7 +10,7 @@ import gnupg
 import pytest
 
 if TYPE_CHECKING:
-    from _pytest.python_api import RaisesContext
+    from _pytest.raises import RaisesExc
 from pytest_mock import MockerFixture  # noqa: TCH002
 
 from salt_gnupg_rotate.exceptions import DecryptionError, EncryptionError
@@ -117,7 +117,7 @@ def test_PartiallyEncryptedFile_decrypt_DecryptionError(
         root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.find_encrypted_blocks()
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if file.encrypted_blocks:
         expectation = pytest.raises(DecryptionError)
     else:
@@ -208,7 +208,7 @@ def test_PartiallyEncryptedFile_encrypt_EncryptionError_1(
         root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.decrypt()
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if file.encrypted_blocks:
         expectation = pytest.raises(EncryptionError)
     else:
@@ -237,7 +237,7 @@ def test_PartiallyEncryptedFile_encrypt_EncryptionError_2(
         root_dirpath=str(Path(salt_pillar_fpath).parent),
     )
     file.decrypt()
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if file.decrypted_blocks:
         # corrupt the replacement source data
         file.decrypted_blocks[0] = ("asdfasdf", *file.decrypted_blocks[0][1:])
@@ -407,7 +407,7 @@ def test_process_directory_decrypt_failure(
         side_effect=Exception,
     )
     gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
@@ -442,7 +442,7 @@ def test_process_directory_encrypt_failure(
         side_effect=Exception,
     )
     gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
@@ -498,7 +498,7 @@ def test_process_directory_write_failure(
         side_effect=Exception,
     )
     gpg = gnupg.GPG(gnupghome=pytest_gnupg_keyring_dirpath)
-    expectation: nullcontext[None] | RaisesContext[Exception]
+    expectation: nullcontext[None] | RaisesExc[Exception]
     if salt_pillar_fpath.endswith("nonconforming_file_type.txt"):
         expectation = nullcontext()
     else:
