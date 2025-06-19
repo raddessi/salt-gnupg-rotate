@@ -129,7 +129,7 @@ jobs:
           # TODO: use -- -b dirhtml once the multiversion index supports it
           nox --session docs-build --force-color
       - name: Deploy documentation 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           branch: gh-pages
           folder: docs/_build
