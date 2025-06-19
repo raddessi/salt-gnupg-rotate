@@ -1,5 +1,4 @@
 version: "3.0"
-
 #security:
 #  ignore-vulnerabilities:
 #    # We recommend making use of the optional `reason` and `expires` keys for each vulnerability that you ignore.
