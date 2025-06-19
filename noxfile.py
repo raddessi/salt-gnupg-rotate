@@ -166,6 +166,7 @@ def docs_build(session: Session) -> None:
     session.install(
         "furo",
         "myst-parser",
+        "poetry-plugin-export",
         "sphinx",
         "sphinx-autobuild",
         "sphinx-click",
