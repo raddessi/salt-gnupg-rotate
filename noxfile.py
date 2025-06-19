@@ -72,7 +72,6 @@ def mypy(session: Session) -> None:
         "mypy",
         "nox",
         "nox-poetry",
-        "poetry-plugin-export",
         "pytest",
         "pytest-mock",
     )
@@ -93,7 +92,6 @@ def tests(session: Session) -> None:
     session.install(
         "coverage[toml]",
         "jinja2-time",
-        "poetry-plugin-export",
         "pre-commit",
         "pygments",
         "pytest",
@@ -156,7 +154,7 @@ def xdoctest(session: Session) -> None:
     """
     args = session.posargs or ["all"]
     session.install(".")
-    session.install("poetry-plugin-export", "xdoctest[colors]")
+    session.install("xdoctest[colors]")
     session.run("python", "-m", "xdoctest", PACKAGE, *args)
 
 
@@ -174,7 +172,6 @@ def docs_build(session: Session) -> None:
     session.install(
         "furo",
         "myst-parser",
-        "poetry-plugin-export",
         "sphinx",
         "sphinx-autobuild",
         "sphinx-click",
@@ -243,7 +240,6 @@ def docs_spelling(session: Session) -> None:
     session.install(
         "furo",
         "myst-parser",
-        "poetry-plugin-export",
         "sphinx",
         "sphinx-autobuild",
         "sphinx-click",
