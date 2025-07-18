@@ -20,7 +20,7 @@ salt-gnupg-rotate = "salt_gnupg_rotate.cli:cli"
 
 # Poetry package config
 [tool.poetry]
-version = "1.3.2"
+version = "1.3.3"
 readme = "README.md"
 packages = [{ include = "salt_gnupg_rotate" }]
 classifiers = []
