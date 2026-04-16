@@ -3252,13 +3252,13 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-asciinema"
-version = "0.4.2"
+version = "0.4.3"
 description = "Embed asciinema casts in your Sphinx docs"
 optional = false
 python-versions = "*"
 groups = ["dev"]
 files = [
-    {file = "sphinxcontrib.asciinema-0.4.2.tar.gz", hash = "sha256:ab38b3e376f335d3e87f445e3ecbd0524e61bab380760c54c32ee4d4a95c3a59"},
+    {file = "sphinxcontrib_asciinema-0.4.3.tar.gz", hash = "sha256:aeb480e33b3ac75edec76b8ad705487c4dff978e523a0143cc3962944dbd5d52"},
 ]
 
 [package.dependencies]
